@@ -23,12 +23,8 @@ loginUI <- function(id) {
   )
 }
 
-login <- function(input, output, session,
-                  data, user_col, pwd_col,
-                  hashed = FALSE,
-                  algo = c("md5", "sha1", "crc32", "sha256", "sha512",
-                           "xxhash32", "xxhash64", "murmur32"),
-                  log_out = NULL) {
+login <- function(input, output, session, data, user_col, pwd_col,
+                  hashed = FALSE, algo = NULL, log_out = NULL) {
 
   credentials <- reactiveValues(user_auth = FALSE)
 
@@ -43,7 +39,7 @@ login <- function(input, output, session,
   users <- enquo(user_col)
   pwds <- enquo(pwd_col)
 
-  observeEvent(input$login_button, {
+  observeEvent(input$button, {
 
     if(!hashed) {
       data <- mutate(data,  !! pwds := sapply(!! pwds, digest))
@@ -65,7 +61,7 @@ login <- function(input, output, session,
 
   })
 
-  # return reactive credentials list
+  # return reactive list containing auth boolean and user information
   reactive({
     reactiveValuesToList(credentials)
   })
