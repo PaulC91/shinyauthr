@@ -28,7 +28,8 @@ Call via \code{shiny::callModule(logout, "your_id", ...)}
 }
 \examples{
 \dontrun{
-  logout_init <- shiny::callModule(logout, "logout", active = reactive(user_credentials()$user_auth))
+  logout_init <- shiny::callModule(logout, "logout", 
+                                   active = reactive(user_credentials()$user_auth))
 }
 
 }
