@@ -16,7 +16,7 @@ ui <- dashboardPage(
   
   dashboardHeader(title = "shinyauthr",
                   tags$li(class = "dropdown", style = "padding: 8px;",
-                          logoutUI("logout")),
+                          shinyauthr::logoutUI("logout")),
                   tags$li(class = "dropdown", 
                           tags$a(icon("github"), 
                                  href = "https://github.com/paulc91/shinyauthr",
@@ -32,7 +32,7 @@ ui <- dashboardPage(
     tags$head(tags$style(".table{margin: 0 auto;}"),
               includeScript("returnClick.js")
     ),
-    loginUI("login"),
+    shinyauthr::loginUI("login"),
     uiOutput("user_table"),
     uiOutput("testUI")
   )
@@ -40,13 +40,13 @@ ui <- dashboardPage(
 
 server <- function(input, output, session) {
   
-  credentials <- callModule(login, "login", 
+  credentials <- callModule(shinyauthr::login, "login", 
                             data = user_base,
                             user_col = user,
                             pwd_col = password,
                             log_out = reactive(logout_init()))
   
-  logout_init <- callModule(logout, "logout", reactive(credentials()$user_auth))
+  logout_init <- callModule(shinyauthr::logout, "logout", reactive(credentials()$user_auth))
   
   observe({
     if(credentials()$user_auth) {
@@ -67,7 +67,6 @@ server <- function(input, output, session) {
       renderTable({user_base})
     )
   })
-  
   
   user_info <- reactive({credentials()$info})
   
