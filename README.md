@@ -4,12 +4,12 @@
 
 It borrows some code from treysp's [shiny_password](https://github.com/treysp/shiny_password) template with the goal of making implementation simpler for end users and allowing the login/logout UIs to fit easily into any UI framework, including [shinydashboard](https://rstudio.github.io/shinydashboard/). See [live example app here](https://cultureofinsight.shinyapps.io/shinyauthr/) and code in the [inst directory](inst/shiny-examples/shinyauthr_example).
  
-### Installation
+## Installation
 
 ```r
 devtools::install_github("paulc91/shinyauthr")
 ```
-### Usage
+## Usage
 
 The package provides 2 module functions each with a UI and server element:
 
@@ -85,7 +85,7 @@ The logout button will only show when `user_auth` is `TRUE`. Clicking the button
 
 You can set the code in your server functions to only run after a successful login through use of the `req()` function inside all reactives, renders and observers. In the example above, using `req(credentials()$user_auth)` inside the `renderTable` function ensures the table showing the returned user information is only rendered when `user_auth` is `TRUE`.
 
-### Hashing Passwords with `digest`
+## Hashing Passwords with `digest`
 
 If you are hosting your user passwords on the internet, it is a good idea to first encrypt them with a hashing algorithm. You can use the [digest package](https://github.com/eddelbuettel/digests) to do this. You can then tell the `shinyauthr::login` module that your passwords are hashed and what algorithm you used when hashing with digest. Your plain text passwords must be a character vector, not factors, when hashing for this to work as shiny inputs are passed as character strings.
 
@@ -96,11 +96,11 @@ For example, a sample user base like the following can be incorporated for use w
 # then save to an rds file in app directory
 user_base <- data.frame(
   user = c("user1", "user2"),
-  password = c("pass1", "pass2"), 
+  password = sapply(c("pass1", "pass2"), digest, "md5"), 
   permissions = c("admin", "standard"),
   name = c("User One", "User Two"),
   stringsAsFactors = FALSE
-) %>% mutate(password = sapply(password, digest, "md5"))
+)
 
 saveRDS(user_base, "user_base.rds")
 ```
@@ -119,7 +119,7 @@ credentials <- callModule(shinyauthr::login, "login",
                           log_out = reactive(logout_init()))
 ```
 
-### Disclaimer
+## Disclaimer
 
 I'm not a security professional so cannot guarantee this authentication procedure to be foolproof. It is ultimately the shiny app developer's responsibility not to expose any sensitive content to the client without the necessary login criteria being met.
 
