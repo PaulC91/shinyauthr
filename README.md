@@ -130,6 +130,7 @@ For apps intended for use within commercial organisations, I would recommend one
 However, I hope that having an easy-to-implement open-source shiny authentication option like this will prove useful when alternative options are not feasible.
 
 _Paul Campbell_
+
 _October 2018_
 
 
