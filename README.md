@@ -49,7 +49,7 @@ server <- function(input, output, session) {
   
   # call the logout module with reactive trigger to hide/show
   logout_init <- callModule(shinyauthr::logout, "logout", 
-                            reactive(credentials()$user_auth))
+                            active = reactive(credentials()$user_auth))
   
   # call login module supplying data frame, user and password cols
   # and reactive trigger
