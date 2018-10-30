@@ -23,6 +23,7 @@ Below is a minimal reproducible example of how to use the authentication modules
 ```r
 library(shiny)
 library(shinyauthr)
+library(shinyjs)
 
 # dataframe that holds usernames, passwords and other user data
 user_base <- data.frame(
@@ -94,6 +95,8 @@ For example, a sample user base like the following can be incorporated for use w
 ```r
 # create a user base then hash passwords with md5 algorithm
 # then save to an rds file in app directory
+library(digest)
+
 user_base <- data.frame(
   user = c("user1", "user2"),
   password = sapply(c("pass1", "pass2"), digest, "md5"), 
