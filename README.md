@@ -38,9 +38,9 @@ ui <- fluidPage(
   # must turn shinyjs on
   shinyjs::useShinyjs(),
   # add login panel UI function
-  shinyauthr::loginUI("login"),
+  shinyauthr::loginUI(id = "login"),
   # add logout button UI 
-  div(class = "pull-right", shinyauthr::logoutUI("logout")),
+  div(class = "pull-right", shinyauthr::logoutUI(id = "logout")),
   # setup table output to show user info after login
   tableOutput("user_table")
 )
@@ -48,12 +48,14 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   
   # call the logout module with reactive trigger to hide/show
-  logout_init <- callModule(shinyauthr::logout, "logout", 
+  logout_init <- callModule(shinyauthr::logout, 
+                            id = "logout", 
                             active = reactive(credentials()$user_auth))
   
   # call login module supplying data frame, user and password cols
   # and reactive trigger
-  credentials <- callModule(shinyauthr::login, "login", 
+  credentials <- callModule(shinyauthr::login, 
+                            id = "login", 
                             data = user_base,
                             user_col = user,
                             pwd_col = password,
