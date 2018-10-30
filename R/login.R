@@ -49,7 +49,7 @@ loginUI <- function(id) {
 #' @param user_col bare (unquoted) column name containing usernames
 #' @param pwd_col bare (unquoted) column name containing passwords
 #' @param hashed have the passwords been hash encrypted using the digest package? defaults to FALSE
-#' @param algo if passwords are hashed, what hashing algorithm was used? options are c("md5", "sha1", "crc32", "sha256", "sha512", "xxhash32", "xxhash64", "murmur32")
+#' @param algo if passwords are hashed, what hashing algorithm was used? options are "md5", "sha1", "crc32", "sha256", "sha512", "xxhash32", "xxhash64", "murmur32".
 #' @param log_out [reactive] supply the returned reactive from \link{logout} here to trigger a user logout
 #'
 #' @return The module will return a reactive 2 element list to your main application. 
@@ -73,7 +73,10 @@ loginUI <- function(id) {
 #'
 #' @export
 login <- function(input, output, session, data, user_col, pwd_col,
-                  hashed = FALSE, algo = NULL, log_out = NULL) {
+                  hashed = FALSE, algo = c("md5", "sha1", "crc32", "sha256", "sha512", "xxhash32", "xxhash64", "murmur32"), 
+                  log_out = NULL) {
+  
+  algo <- match.arg(algo, several.ok = FALSE)
 
   credentials <- shiny::reactiveValues(user_auth = FALSE, info = NULL)
 
@@ -89,34 +92,23 @@ login <- function(input, output, session, data, user_col, pwd_col,
   users <- dplyr::enquo(user_col)
   pwds <- dplyr::enquo(pwd_col)
   
+  # ensure all text columns are character class
   data <- dplyr::mutate_if(data, is.factor, as.character)
 
   shiny::observeEvent(input$button, {
+    
+    # check for match of input username to username column in data
+    row_username <- which(dplyr::pull(data, !! users) == input$user_name)
 
     if(hashed) {
-      
-      if(is.null(algo)) stop("Please provide a hash algorithm argument to the login module if passwords are hashed")
-      
-      if(!algo %in% c("md5", "sha1", "crc32", "sha256", "sha512", "xxhash32", "xxhash64", "murmur32")) {
-        stop('Your hash algorithm name is not valid. Please select from:\n"md5", "sha1", "crc32", "sha256", "sha512", "xxhash32", "xxhash64", "murmur32"')
-      }
-      
       # check for match of hashed input password to hashed password column in data
       row_password <- which(dplyr::pull(data, !! pwds) == digest::digest(input$password, algo = algo))
       
     } else {
       # if passwords are not hashed, hash them with md5 and do the same with the input password
-      # first ensure passwords are character class
-      if(!is.character(dplyr::pull(data, !! pwds))) {
-        data <- dplyr::mutate(data,  !! pwds := as.character(!! pwds))
-      }
-      
       data <- dplyr::mutate(data,  !! pwds := sapply(!! pwds, digest::digest))
       row_password <- which(dplyr::pull(data, !! pwds) == digest::digest(input$password))
     }
-
-    # check for match of input username to username column in data
-    row_username <- which(dplyr::pull(data, !! users) == input$user_name)
     
     # if user name row and password name row are same, credentials are valid
     if (length(row_username) == 1 &&
