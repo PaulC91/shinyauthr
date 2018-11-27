@@ -4,10 +4,12 @@
 \alias{logoutUI}
 \title{logout UI module}
 \usage{
-logoutUI(id)
+logoutUI(id, label = "Log out")
 }
 \arguments{
 \item{id}{Shiny id}
+
+\item{label}{label for the logout button}
 }
 \value{
 Shiny UI action button

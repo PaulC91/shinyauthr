@@ -4,10 +4,22 @@
 \alias{loginUI}
 \title{login UI module}
 \usage{
-loginUI(id)
+loginUI(id, title = "Please log in", user_title = "User Name",
+  pass_title = "Password", login_title = "Log in",
+  error_message = "Invalid username or password!")
 }
 \arguments{
 \item{id}{Shiny id}
+
+\item{title}{header title for the login panel}
+
+\item{user_title}{label for the user name text input}
+
+\item{pass_title}{label for the password text input}
+
+\item{login_title}{label for the login button}
+
+\item{error_message}{message to display after failed login}
 }
 \value{
 Shiny UI

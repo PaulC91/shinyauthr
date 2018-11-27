@@ -5,17 +5,18 @@
 #' Call via \code{logoutUI("your_id")}
 #'
 #' @param id Shiny id
+#' @param label label for the logout button
 #'
 #' @return Shiny UI action button
 #'
 #' @author Paul Campbell, \email{pacampbell91@gmail.com}
 #'
 #' @export
-logoutUI <- function(id) {
+logoutUI <- function(id, label = "Log out") {
   ns <- shiny::NS(id)
 
   shinyjs::hidden(
-    shiny::actionButton(ns("button"), "Log out", class = "btn-danger", style = "color: white;")
+    shiny::actionButton(ns("button"), label, class = "btn-danger", style = "color: white;")
   )
 }
 

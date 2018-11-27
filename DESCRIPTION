@@ -9,4 +9,4 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: shiny, shinyjs, dplyr, digest, rlang
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
