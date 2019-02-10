@@ -12,11 +12,11 @@
 #' @author Paul Campbell, \email{pacampbell91@gmail.com}
 #'
 #' @export
-logoutUI <- function(id, label = "Log out") {
+logoutUI <- function(id, label = "Log out", class = "btn-danger", style = "color: white;") {
   ns <- shiny::NS(id)
-
+  
   shinyjs::hidden(
-    shiny::actionButton(ns("button"), label, class = "btn-danger", style = "color: white;")
+    shiny::actionButton(ns("button"), label, class = class, style = style)
   )
 }
 
