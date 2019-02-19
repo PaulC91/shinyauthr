@@ -4,12 +4,17 @@
 \alias{logoutUI}
 \title{logout UI module}
 \usage{
-logoutUI(id, label = "Log out")
+logoutUI(id, label = "Log out", class = "btn-danger",
+  style = "color: white;")
 }
 \arguments{
 \item{id}{Shiny id}
 
 \item{label}{label for the logout button}
+
+\item{class}{bootstrap class for the logout button}
+
+\item{style}{css styling for the logout button}
 }
 \value{
 Shiny UI action button

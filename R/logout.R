@@ -6,6 +6,8 @@
 #'
 #' @param id Shiny id
 #' @param label label for the logout button
+#' @param class bootstrap class for the logout button
+#' @param style css styling for the logout button
 #'
 #' @return Shiny UI action button
 #'
