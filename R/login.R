@@ -89,6 +89,7 @@ login <- function(input, output, session, data, user_col, pwd_col,
   shiny::observeEvent(log_out(), {
     credentials$user_auth <- FALSE
     credentials$info <- NULL
+    shiny::updateTextInput(session, "password", value = "")
   })
 
   shiny::observeEvent(credentials$user_auth, ignoreInit = TRUE, {
