@@ -133,7 +133,8 @@ login <- function(input, output, session, data, user_col, pwd_col, cookie_col,
       credentials$user_auth <- TRUE
       credentials$info <- dplyr::mutate_at(
           dplyr::filter(data, !! users == input$user_name),
-          as.character(quo_get_expr(cookies)), function(x){return(sessionid)})
+          as.character(rlang::quo_get_expr(cookies)), 
+          function(x){return(sessionid)})
     } else { # if not valid temporarily show error message to user
       shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade")
       shinyjs::delay(5000, shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade"))
