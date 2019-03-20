@@ -4,10 +4,32 @@ library(dplyr)
 library(shinyjs)
 library(glue)
 library(shinyauthr)
+library(DT)
 
-user_base <- data_frame(
+jsCode <- '
+  shinyjs.getcookie = function(params) {
+var cookie = Cookies.get("id");
+if (typeof cookie !== "undefined") {
+Shiny.onInputChange("jscookie", cookie);
+} else {
+var cookie = "";
+Shiny.onInputChange("jscookie", cookie);
+}
+}
+shinyjs.setcookie = function(params) {
+Cookies.set("id", escape(params), { expires: 0.5 });  
+Shiny.onInputChange("jscookie", params);
+}
+shinyjs.rmcookie = function(params) {
+Cookies.remove("id");
+Shiny.onInputChange("jscookie", "");
+}
+'
+
+user_base <- tibble(
   user = c("user1", "user2"),
-  password = c("pass1", "pass2"), 
+  password = c("pass1", "pass2"),
+  cookie = c("", ""),
   permissions = c("admin", "standard"),
   name = c("User One", "User Two")
 )
@@ -29,9 +51,12 @@ ui <- dashboardPage(
   
   dashboardBody(
     shinyjs::useShinyjs(),
+    shinyjs::extendShinyjs(text = jsCode),
     tags$head(tags$style(".table{margin: 0 auto;}"),
-              tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.contentWindow.min.js",
-                          type="text/javascript"),
+              tags$script(src = "https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.contentWindow.min.js",
+                          type = "text/javascript"),
+              tags$script(src = "https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js",
+                          type = "text/javascript"),
               includeScript("returnClick.js")
     ),
     shinyauthr::loginUI("login"),
@@ -47,6 +72,7 @@ server <- function(input, output, session) {
                             data = user_base,
                             user_col = user,
                             pwd_col = password,
+                            cookie_col = cookie,
                             log_out = reactive(logout_init()))
   
   logout_init <- callModule(shinyauthr::logout, "logout", reactive(credentials()$user_auth))
@@ -97,6 +123,7 @@ server <- function(input, output, session) {
       column(
         width = 12,
         tags$h2(glue("Your permission level is: {user_info()$permissions}. 
+                     Your cookie value is: {user_info()$cookie}.
                      Your data is: {ifelse(user_info()$permissions == 'admin', 'Starwars', 'Storms')}.")),
         box(width = NULL, status = "primary",
             title = ifelse(user_info()$permissions == 'admin', "Starwars Data", "Storms Data"),

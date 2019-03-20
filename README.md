@@ -2,8 +2,8 @@
 
 `shinyauthr` is an R package providing module functions that can be used to add an authentication layer to your shiny apps.
 
-It borrows some code from treysp's [shiny_password](https://github.com/treysp/shiny_password) template with the goal of making implementation simpler for end users and allowing the login/logout UIs to fit easily into any UI framework, including [shinydashboard](https://rstudio.github.io/shinydashboard/). See [live example app here](https://cultureofinsight.shinyapps.io/shinyauthr/) and code in the [inst directory](inst/shiny-examples/shinyauthr_example).
- 
+It borrows some code from treysp's [shiny_password](https://github.com/treysp/shiny_password) template with the goal of making implementation simpler for end users and allowing the login/logout UIs to fit easily into any UI framework, including [shinydashboard](https://rstudio.github.io/shinydashboard/). To enable cookie-based authentification in browsers, it also borrows code from calligross's [Shiny Cookie Based Authentication Example](https://gist.github.com/calligross/e779281b500eb93ee9e42e4d72448189). See [live example app here](https://cultureofinsight.shinyapps.io/shinyauthr/) and code in the [inst directory](inst/shiny-examples/shinyauthr_example).
+
 ## Installation
 
 ```r
@@ -25,50 +25,90 @@ library(shiny)
 library(shinyauthr)
 library(shinyjs)
 
+# required javascript code
+jsCode <- '
+shinyjs.getcookie = function(params) {
+var cookie = Cookies.get("id");
+if (typeof cookie !== "undefined") {
+Shiny.onInputChange("jscookie", cookie);
+} else {
+var cookie = "";
+Shiny.onInputChange("jscookie", cookie);
+}
+}
+shinyjs.setcookie = function(params) {
+Cookies.set("id", escape(params), { expires: 0.5 });  
+Shiny.onInputChange("jscookie", params);
+}
+shinyjs.rmcookie = function(params) {
+Cookies.remove("id");
+Shiny.onInputChange("jscookie", "");
+}
+'
+
 # dataframe that holds usernames, passwords and other user data
 user_base <- data.frame(
-  user = c("user1", "user2"),
-  password = c("pass1", "pass2"), 
-  permissions = c("admin", "standard"),
-  name = c("User One", "User Two"),
-  stringsAsFactors = FALSE
+    user = c("user1", "user2"),
+    password = c("pass1", "pass2"), 
+    permissions = c("admin", "standard"),
+    name = c("User One", "User Two"),
+    cookie = c("", ""),
+    stringsAsFactors = FALSE
 )
 
 ui <- fluidPage(
-  # must turn shinyjs on
-  shinyjs::useShinyjs(),
-  # add logout button UI 
-  div(class = "pull-right", shinyauthr::logoutUI(id = "logout")),
-  # add login panel UI function
-  shinyauthr::loginUI(id = "login"),
-  # setup table output to show user info after login
-  tableOutput("user_table")
+    # enable cookie based authentification
+    tags$head(
+        tags$script(src = "https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js",
+                    type = "text/javascript")),
+    # must turn shinyjs on and enable the js code
+    shinyjs::useShinyjs(),
+    shinyjs::extendShinyjs(text = jsCode),
+    # add logout button UI 
+    div(class = "pull-right", shinyauthr::logoutUI(id = "logout")),
+    # add login panel UI function
+    shinyauthr::loginUI(id = "login"),
+    # status
+    textOutput("status"),
+    # setup table output to show user info after login
+    tableOutput("user_table")
 )
 
 server <- function(input, output, session) {
-  
-  # call the logout module with reactive trigger to hide/show
-  logout_init <- callModule(shinyauthr::logout, 
-                            id = "logout", 
-                            active = reactive(credentials()$user_auth))
-  
-  # call login module supplying data frame, user and password cols
-  # and reactive trigger
-  credentials <- callModule(shinyauthr::login, 
-                            id = "login", 
-                            data = user_base,
-                            user_col = user,
-                            pwd_col = password,
-                            log_out = reactive(logout_init()))
-  
-  # pulls out the user information returned from login module
-  user_data <- reactive({credentials()$info})
-  
-  output$user_table <- renderTable({
-    # use req to only render results when credentials()$user_auth is TRUE
-    req(credentials()$user_auth)
-    user_data()
-  })
+    
+    # call the logout module with reactive trigger to hide/show
+    logout_init <- callModule(shinyauthr::logout, 
+                              id = "logout", 
+                              active = reactive(credentials()$user_auth))
+    
+    # call login module supplying data frame, user and password cols
+    # and reactive trigger
+    credentials <- callModule(shinyauthr::login, 
+                              id = "login", 
+                              data = user_base,
+                              user_col = user,
+                              pwd_col = password,
+                              cookie_col = cookie,
+                              log_out = reactive(logout_init()))
+    
+    # pulls out the user information returned from login module
+    user_data <- reactive({credentials()$info})
+    
+    output$status <- renderText({
+        if (credentials()$user_auth) {
+            paste0('You are logged on with a cookie value of:\n', 
+                   user_data()$cookie)
+        } else {
+            paste0('You are logged out')
+        }
+    })
+    
+    output$user_table <- renderTable({
+        # use req to only render results when credentials()$user_auth is TRUE
+        req(credentials()$user_auth)
+        user_data()
+    })
+    
 }
 
 shinyApp(ui = ui, server = server)
@@ -82,7 +122,7 @@ When the login module is called, it returns a reactive list containing 2 element
 - `info`
 
 The initial values of these variables are `FALSE` and `NULL` respectively. However,
-given a data frame or tibble containing user names, passwords and other user data (optional), the login module will assign a `user_auth` value of `TRUE` if the user supplies a matching user name and password. The value of `info` then becomes the row of data associated with that user which can be used in the main to control content based on user permission variables etc.
+given a data frame or tibble containing user names, passwords, cookies and other user data (optional), the login module will assign a `user_auth` value of `TRUE` if the user supplies a matching user name and password. The value of `info` then becomes the row of data associated with that user which can be used in the main to control content based on user permission variables etc.
 
 The logout button will only show when `user_auth` is `TRUE`. Clicking the button will reset `user_auth` back to `FALSE` which will hide the button and show the login panel again.
 
@@ -104,6 +144,7 @@ user_base <- data.frame(
   password = sapply(c("pass1", "pass2"), digest, "md5"), 
   permissions = c("admin", "standard"),
   name = c("User One", "User Two"),
+  cookie = c("", ""),
   stringsAsFactors = FALSE
 )
 
@@ -119,6 +160,7 @@ credentials <- callModule(shinyauthr::login, "login",
                           data = user_base,
                           user_col = user,
                           pwd_col = password,
+                          cookie_col = cookie,
                           hashed = TRUE,
                           algo = "md5",
                           log_out = reactive(logout_init()))

@@ -54,6 +54,7 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
 #' @param data data frame or tibble containing usernames, passwords and other user data
 #' @param user_col bare (unquoted) column name containing usernames
 #' @param pwd_col bare (unquoted) column name containing passwords
+#' @param cookie_col bare (unquoted) column name to store session cookies
 #' @param hashed have the passwords been hash encrypted using the digest package? defaults to FALSE
 #' @param algo if passwords are hashed, what hashing algorithm was used? options are "md5", "sha1", "crc32", "sha256", "sha512", "xxhash32", "xxhash64", "murmur32".
 #' @param log_out [reactive] supply the returned reactive from \link{logout} here to trigger a user logout
@@ -74,21 +75,25 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
 #'                                         data = user_base,
 #'                                         user_col = user,
 #'                                         pwd_col = password,
+#'                                         cookie_col = cookie,
 #'                                         log_out = reactive(logout_init()))
 #' }
 #'
 #' @export
-login <- function(input, output, session, data, user_col, pwd_col,
+login <- function(input, output, session, data, user_col, pwd_col, cookie_col,
                   hashed = FALSE, algo = c("md5", "sha1", "crc32", "sha256", "sha512", "xxhash32", "xxhash64", "murmur32"), 
                   log_out = NULL) {
   
   algo <- match.arg(algo, several.ok = FALSE)
 
   credentials <- shiny::reactiveValues(user_auth = FALSE, info = NULL)
+  cookieStatus <- shiny::reactiveVal(value = NULL)
 
   shiny::observeEvent(log_out(), {
     credentials$user_auth <- FALSE
     credentials$info <- NULL
+    cookieStatus('out')
+    js$rmcookie()
     shiny::updateTextInput(session, "password", value = "")
   })
 
@@ -98,10 +103,12 @@ login <- function(input, output, session, data, user_col, pwd_col,
 
   users <- dplyr::enquo(user_col)
   pwds <- dplyr::enquo(pwd_col)
+  cookies <- dplyr::enquo(cookie_col)
   
   # ensure all text columns are character class
   data <- dplyr::mutate_if(data, is.factor, as.character)
-
+  
+  # login through login button
   shiny::observeEvent(input$button, {
     
     # check for match of input username to username column in data
@@ -121,18 +128,52 @@ login <- function(input, output, session, data, user_col, pwd_col,
     if (length(row_username) == 1 &&
         length(row_password) >= 1 &&  # more than one user may have same pw
         (row_username %in% row_password)) {
+      sessionid <- randomString()
+      js$setcookie(sessionid)
       credentials$user_auth <- TRUE
-      credentials$info <- dplyr::filter(data, !! users == input$user_name)
+      credentials$info <- dplyr::mutate_at(
+          dplyr::filter(data, !! users == input$user_name),
+          as.character(quo_get_expr(cookies)), function(x){return(sessionid)})
     } else { # if not valid temporarily show error message to user
       shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade")
       shinyjs::delay(5000, shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade"))
+      cookieStatus('out')
     }
-
   })
-
+  
+  # login through a present valid cookie
+  shiny::observe({
+    js$getcookie()
+    if (is.null(input$jscookie)) {
+      cookieStatus('out')
+      if (exists("sessionid")) {rm(sessionid)}
+    } else {
+      if (exists("sessionid")) {
+        if (input$jscookie == sessionid) {
+          cookieStatus(paste0('in with sessionid ', input$jscookie))
+        }
+      } else {
+        # get all valid cookies from the user data
+        cookie_data <- dplyr::pull(data, !! cookies != "")
+        cookie_data <- cookie_data[cookie_data != ""]
+        
+        if (input$jscookie %in% cookie_data) {
+          sessionid <- input$jscookie
+          cookieStatus(paste0('in with sessionid ', input$jscookie))
+          credentials$user_auth <- TRUE
+          credentials$info <- dplyr::filter(data, !! cookies == input$jscookie)
+        } else {
+          # disable cookie
+          cookieStatus('out')
+          js$rmcookie()
+        }
+      }
+    }
+  })
+  
   # return reactive list containing auth boolean and user information
   shiny::reactive({
     shiny::reactiveValuesToList(credentials)
   })
-
+  
 }
