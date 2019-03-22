@@ -54,7 +54,7 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
 #' @param data data frame or tibble containing usernames, passwords and other user data
 #' @param user_col bare (unquoted) column name containing usernames
 #' @param pwd_col bare (unquoted) column name containing passwords
-#' @param cookie_col bare (unquoted) column name to store session cookies
+#' @param cookie_col \code{character} with column name to store session cookies
 #' @param hashed have the passwords been hash encrypted using the digest package? defaults to FALSE
 #' @param algo if passwords are hashed, what hashing algorithm was used? options are "md5", "sha1", "crc32", "sha256", "sha512", "xxhash32", "xxhash64", "murmur32".
 #' @param log_out [reactive] supply the returned reactive from \link{logout} here to trigger a user logout
@@ -75,7 +75,7 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
 #'                                         data = user_base,
 #'                                         user_col = user,
 #'                                         pwd_col = password,
-#'                                         cookie_col = cookie,
+#'                                         cookie_col = "cookie",
 #'                                         log_out = reactive(logout_init()))
 #' }
 #'
@@ -103,7 +103,6 @@ login <- function(input, output, session, data, user_col, pwd_col, cookie_col,
 
   users <- dplyr::enquo(user_col)
   pwds <- dplyr::enquo(pwd_col)
-  cookies <- dplyr::enquo(cookie_col)
   
   # ensure all text columns are character class
   data <- dplyr::mutate_if(data, is.factor, as.character)
@@ -113,7 +112,7 @@ login <- function(input, output, session, data, user_col, pwd_col, cookie_col,
     
     # check for match of input username to username column in data
     row_username <- which(dplyr::pull(data, !! users) == input$user_name)
-
+    
     if(hashed) {
       # check for match of hashed input password to hashed password column in data
       row_password <- which(dplyr::pull(data, !! pwds) == digest::digest(input$password, algo = algo))
@@ -131,10 +130,9 @@ login <- function(input, output, session, data, user_col, pwd_col, cookie_col,
       sessionid <- randomString()
       js$setcookie(sessionid)
       credentials$user_auth <- TRUE
-      credentials$info <- dplyr::mutate_at(
-          dplyr::filter(data, !! users == input$user_name),
-          as.character(rlang::quo_get_expr(cookies)), 
-          function(x){return(sessionid)})
+      info <- as.data.frame(dplyr::filter(data, !! users == input$user_name))
+      info[, cookie_col] <- sessionid 
+      credentials$info <- info
     } else { # if not valid temporarily show error message to user
       shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade")
       shinyjs::delay(5000, shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade"))
