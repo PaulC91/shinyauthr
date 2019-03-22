@@ -4,3 +4,4 @@
 .Ruserdata
 *.Rproj
 inst/shiny-examples/shinyauthr_example/rsconnect/
+_install.R
