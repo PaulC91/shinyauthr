@@ -1,3 +1,9 @@
 # shinyauthr 0.0.99
 
-* Added a `NEWS.md` file to track changes to the package.
+### April 2019 - switched to the sodium package for password hashing and decryption
+
+If you plan to use hashed passwords with shinyauthr you now must use the [sodium package](https://github.com/jeroen/sodium) to do hash your passwords and the `sodium_hashed = TRUE` argument of the `shinyauthr::login` module call for decrpytion to work appropriately.
+
+This means that previously used `hashed` and `algo` arguments that interfaced with the `digest` package are now deprecated. If you had previously hashed your passwords with the digest package to use with shinyauthr, please re-hash them with `sodium` and use the `sodium_hashed` argument instead. 
+
+Sorry for this breaking change, but sodium hashing provides added protection against brute-force attacks on stored passwords. More information on this [here](https://download.libsodium.org/doc/password_hashing/).

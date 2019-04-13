@@ -4,8 +4,8 @@
 \alias{login}
 \title{login server module}
 \usage{
-login(input, output, session, data, user_col, pwd_col, hashed = FALSE,
-  log_out = NULL)
+login(input, output, session, data, user_col, pwd_col,
+  sodium_hashed = FALSE, hashed, algo, log_out = NULL)
 }
 \arguments{
 \item{input}{shiny input}
@@ -20,9 +20,13 @@ login(input, output, session, data, user_col, pwd_col, hashed = FALSE,
 
 \item{pwd_col}{bare (unquoted) column name containing passwords}
 
-\item{log_out}{[reactive] supply the returned reactive from \link{logout} here to trigger a user logout}
-
 \item{sodium_hashed}{have the passwords been hash encrypted using the sodium package? defaults to FALSE}
+
+\item{hashed}{Deprecated. shinyauthr now uses the sodium package for password hashing and decryption. If you have previously hashed your passwords with the digest package to use with shinyauthr please re-hash them with sodium for decryption to work.}
+
+\item{algo}{Deprecated}
+
+\item{log_out}{[reactive] supply the returned reactive from \link{logout} here to trigger a user logout}
 }
 \value{
 The module will return a reactive 2 element list to your main application. 

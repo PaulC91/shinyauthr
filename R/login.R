@@ -55,6 +55,8 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
 #' @param user_col bare (unquoted) column name containing usernames
 #' @param pwd_col bare (unquoted) column name containing passwords
 #' @param sodium_hashed have the passwords been hash encrypted using the sodium package? defaults to FALSE
+#' @param hashed Deprecated. shinyauthr now uses the sodium package for password hashing and decryption. If you have previously hashed your passwords with the digest package to use with shinyauthr please re-hash them with sodium for decryption to work. 
+#' @param algo Deprecated
 #' @param log_out [reactive] supply the returned reactive from \link{logout} here to trigger a user logout
 #'
 #' @return The module will return a reactive 2 element list to your main application. 
@@ -77,8 +79,13 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
 #' }
 #'
 #' @export
-login <- function(input, output, session, data, user_col, pwd_col, hashed = FALSE, log_out = NULL) {
+login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed = FALSE, hashed, algo, log_out = NULL) {
 
+  if (!missing(hashed)) {
+    stop("in shinyauthr::login module call. Argument hashed is deprecated. shinyauthr now uses the sodium package for password hashing and decryption. If you had previously hashed your passwords with the digest package to use with shinyauthr, please re-hash them with sodium and use the sodium_hashed argument instead for decryption to work. Sorry for this breaking change but sodium hashing provides added protection against brute-force attacks on stored passwords.", 
+            call. = FALSE)
+  }
+  
   credentials <- shiny::reactiveValues(user_auth = FALSE, info = NULL)
 
   shiny::observeEvent(log_out(), {
@@ -97,7 +104,7 @@ login <- function(input, output, session, data, user_col, pwd_col, hashed = FALS
   # ensure all text columns are character class
   data <- dplyr::mutate_if(data, is.factor, as.character)
   # if password column hasn't been hashed with sodium, do it for them
-  if (!hashed) data <- dplyr::mutate(data,  !!pwds := sapply(!!pwds, sodium::password_store))
+  if (!sodium_hashed) data <- dplyr::mutate(data,  !!pwds := sapply(!!pwds, sodium::password_store))
 
   shiny::observeEvent(input$button, {
     
