@@ -88,20 +88,20 @@ The logout button will only show when `user_auth` is `TRUE`. Clicking the button
 
 You can set the code in your server functions to only run after a successful login through use of the `req()` function inside all reactives, renders and observers. In the example above, using `req(credentials()$user_auth)` inside the `renderTable` function ensures the table showing the returned user information is only rendered when `user_auth` is `TRUE`.
 
-## Hashing Passwords with `digest`
+## Hashing Passwords with `sodium`
 
-If you are hosting your user passwords on the internet, it is a good idea to first encrypt them with a hashing algorithm. You can use the [digest package](https://github.com/eddelbuettel/digests) to do this. You can then tell the `shinyauthr::login` module that your passwords are hashed and what algorithm you used when hashing with digest. Your plain text passwords must be a character vector, not factors, when hashing for this to work as shiny inputs are passed as character strings.
+If you are hosting your user passwords on the internet, it is a good idea to first encrypt them with a hashing algorithm. You can use the [sodium package](https://github.com/jeroen/sodium) to do this. Sodium uses a slow hashing algorithm that is specifically designed to protect stored passwords from brute-force attacks. More on this [here](https://download.libsodium.org/doc/password_hashing/). You then tell the `shinyauthr::login` module that your passwords have been hashed by `sodium` and `shinyauthr` will then decrypt when login is requested. Your plain text passwords must be a character vector, not factors, when hashing for this to work as shiny inputs are passed as character strings.
 
 For example, a sample user base like the following can be incorporated for use with `shinyauthr`:
 
 ```r
-# create a user base then hash passwords with md5 algorithm
+# create a user base then hash passwords with sodium
 # then save to an rds file in app directory
-library(digest)
+library(sodium)
 
 user_base <- data.frame(
   user = c("user1", "user2"),
-  password = sapply(c("pass1", "pass2"), digest, "md5"), 
+  password = sapply(c("pass1", "pass2"), sodium::password_store), 
   permissions = c("admin", "standard"),
   name = c("User One", "User Two"),
   stringsAsFactors = FALSE
@@ -114,13 +114,12 @@ saveRDS(user_base, "user_base.rds")
 user_base <- readRDS("user_base.rds")
 ```
 ```r
-# then when calling the module, set hashed = TRUE and algo = "md5"
+# then when calling the module set sodium_hashed = TRUE
 credentials <- callModule(shinyauthr::login, "login", 
                           data = user_base,
                           user_col = user,
                           pwd_col = password,
-                          hashed = TRUE,
-                          algo = "md5",
+                          sodium_hashed = TRUE,
                           log_out = reactive(logout_init()))
 ```
 
@@ -136,6 +135,6 @@ However, I hope that having an easy-to-implement open-source shiny authenticatio
 
 _Paul Campbell_
 
-_October 2018_
+_April 2019_
 
 
