@@ -54,8 +54,7 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
 #' @param data data frame or tibble containing usernames, passwords and other user data
 #' @param user_col bare (unquoted) column name containing usernames
 #' @param pwd_col bare (unquoted) column name containing passwords
-#' @param hashed have the passwords been hash encrypted using the digest package? defaults to FALSE
-#' @param algo if passwords are hashed, what hashing algorithm was used? options are "md5", "sha1", "crc32", "sha256", "sha512", "xxhash32", "xxhash64", "murmur32".
+#' @param sodium_hashed have the passwords been hash encrypted using the sodium package? defaults to FALSE
 #' @param log_out [reactive] supply the returned reactive from \link{logout} here to trigger a user logout
 #'
 #' @return The module will return a reactive 2 element list to your main application. 
@@ -78,11 +77,7 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
 #' }
 #'
 #' @export
-login <- function(input, output, session, data, user_col, pwd_col,
-                  hashed = FALSE, algo = c("md5", "sha1", "crc32", "sha256", "sha512", "xxhash32", "xxhash64", "murmur32"), 
-                  log_out = NULL) {
-  
-  algo <- match.arg(algo, several.ok = FALSE)
+login <- function(input, output, session, data, user_col, pwd_col, hashed = FALSE, log_out = NULL) {
 
   credentials <- shiny::reactiveValues(user_auth = FALSE, info = NULL)
 
@@ -101,28 +96,36 @@ login <- function(input, output, session, data, user_col, pwd_col,
   
   # ensure all text columns are character class
   data <- dplyr::mutate_if(data, is.factor, as.character)
+  # if password column hasn't been hashed with sodium, do it for them
+  if (!hashed) data <- dplyr::mutate(data,  !!pwds := sapply(!!pwds, sodium::password_store))
 
   shiny::observeEvent(input$button, {
     
     # check for match of input username to username column in data
-    row_username <- which(dplyr::pull(data, !! users) == input$user_name)
-
-    if(hashed) {
-      # check for match of hashed input password to hashed password column in data
-      row_password <- which(dplyr::pull(data, !! pwds) == digest::digest(input$password, algo = algo))
-      
+    row_username <- which(dplyr::pull(data, !!users) == input$user_name)
+    
+    if (length(row_username)) {
+      row_password <- dplyr::filter(data,dplyr::row_number() == row_username)
+      row_password <- dplyr::pull(row_password, !!pwds)
+      password_match <- sodium::password_verify(row_password, input$password)
     } else {
-      # if passwords are not hashed, hash them with md5 and do the same with the input password
-      data <- dplyr::mutate(data,  !! pwds := sapply(!! pwds, digest::digest))
-      row_password <- which(dplyr::pull(data, !! pwds) == digest::digest(input$password))
+      password_match <- FALSE
     }
+
+    # if (hashed) {
+    #   # check for match of hashed input password to hashed password column in data
+    #   row_password <- which(dplyr::pull(data, !! pwds) == digest::digest(input$password, algo = algo))
+    #   
+    # } else {
+    #   # if passwords are not hashed, hash them with md5 and do the same with the input password
+    #   data <- dplyr::mutate(data,  !! pwds := sapply(!! pwds, digest::digest))
+    #   row_password <- which(dplyr::pull(data, !! pwds) == digest::digest(input$password))
+    # }
     
     # if user name row and password name row are same, credentials are valid
-    if (length(row_username) == 1 &&
-        length(row_password) >= 1 &&  # more than one user may have same pw
-        (row_username %in% row_password)) {
+    if (length(row_username) == 1 && password_match) {
       credentials$user_auth <- TRUE
-      credentials$info <- dplyr::filter(data, !! users == input$user_name)
+      credentials$info <- dplyr::filter(data, !!users == input$user_name)
     } else { # if not valid temporarily show error message to user
       shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade")
       shinyjs::delay(5000, shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade"))

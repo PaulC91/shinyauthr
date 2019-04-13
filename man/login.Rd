@@ -5,8 +5,7 @@
 \title{login server module}
 \usage{
 login(input, output, session, data, user_col, pwd_col, hashed = FALSE,
-  algo = c("md5", "sha1", "crc32", "sha256", "sha512", "xxhash32",
-  "xxhash64", "murmur32"), log_out = NULL)
+  log_out = NULL)
 }
 \arguments{
 \item{input}{shiny input}
@@ -21,11 +20,9 @@ login(input, output, session, data, user_col, pwd_col, hashed = FALSE,
 
 \item{pwd_col}{bare (unquoted) column name containing passwords}
 
-\item{hashed}{have the passwords been hash encrypted using the digest package? defaults to FALSE}
-
-\item{algo}{if passwords are hashed, what hashing algorithm was used? options are "md5", "sha1", "crc32", "sha256", "sha512", "xxhash32", "xxhash64", "murmur32".}
-
 \item{log_out}{[reactive] supply the returned reactive from \link{logout} here to trigger a user logout}
+
+\item{sodium_hashed}{have the passwords been hash encrypted using the sodium package? defaults to FALSE}
 }
 \value{
 The module will return a reactive 2 element list to your main application. 

@@ -8,6 +8,7 @@ library(shinyauthr)
 user_base <- data_frame(
   user = c("user1", "user2"),
   password = c("pass1", "pass2"), 
+  password_hash = sapply(c("pass1", "pass2"), sodium::password_store), 
   permissions = c("admin", "standard"),
   name = c("User One", "User Two")
 )
@@ -46,7 +47,8 @@ server <- function(input, output, session) {
   credentials <- callModule(shinyauthr::login, "login", 
                             data = user_base,
                             user_col = user,
-                            pwd_col = password,
+                            pwd_col = password_hash,
+                            hashed = TRUE,
                             log_out = reactive(logout_init()))
   
   logout_init <- callModule(shinyauthr::logout, "logout", reactive(credentials()$user_auth))
@@ -67,7 +69,7 @@ server <- function(input, output, session) {
       tags$p("test the different outputs from the sample logins below 
              as well as an invalid login attempt.", class = "text-center"),
       
-      renderTable({user_base})
+      renderTable({user_base[, -3]})
     )
   })
   

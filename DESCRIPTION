@@ -8,5 +8,10 @@ Maintainer: Paul Campbell <pacampbell91@gmail.com>
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: shiny, shinyjs, dplyr, digest, rlang
+Imports: 
+    shiny,
+    shinyjs,
+    dplyr,
+    rlang,
+    sodium
 RoxygenNote: 6.1.1
