@@ -114,12 +114,12 @@ saveRDS(user_base, "user_base.rds")
 user_base <- readRDS("user_base.rds")
 ```
 ```r
-# then when calling the module, set hashed = TRUE and algo = "md5"
+# then when calling the module set sodium_hashed = TRUE
 credentials <- callModule(shinyauthr::login, "login", 
                           data = user_base,
                           user_col = user,
                           pwd_col = password,
-                          hashed = TRUE,
+                          sodium_hashed = TRUE,
                           log_out = reactive(logout_init()))
 ```
 
