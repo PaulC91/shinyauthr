@@ -48,7 +48,7 @@ server <- function(input, output, session) {
                             data = user_base,
                             user_col = user,
                             pwd_col = password_hash,
-                            hashed = TRUE,
+                            sodium_hashed = TRUE,
                             log_out = reactive(logout_init()))
   
   logout_init <- callModule(shinyauthr::logout, "logout", reactive(credentials()$user_auth))
