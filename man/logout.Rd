@@ -13,11 +13,11 @@ logout(input, output, session, active)
 
 \item{session}{shiny session}
 
-\item{active}{[reactive] supply the returned \code{user_auth} boolean reactive from \link{login} 
+\item{active}{[reactive] supply the returned \code{user_auth} boolean reactive from \link{login}
 here to hide/show the logout button}
 }
 \value{
-The reactive output of this module should be supplied as the \code{log_out} argument to the 
+The reactive output of this module should be supplied as the \code{log_out} argument to the
   \link{login} module to trigger the logout process
 }
 \description{
@@ -28,7 +28,7 @@ Call via \code{shiny::callModule(logout, "your_id", ...)}
 }
 \examples{
 \dontrun{
-  logout_init <- shiny::callModule(logout, "logout", 
+  logout_init <- shiny::callModule(logout, "logout",
                                    active = reactive(user_credentials()$user_auth))
 }
 
