@@ -1,9 +1,10 @@
 Package: shinyauthr
 Type: Package
 Title: Shiny Authentication Modules
+Version: 0.1.0
+Authors@R:
+    person("Paul", "Campbell", email = "pacampbell91@gmail.com", role = c("aut", "cre"))
 Description: Easily add user authentication to shiny apps and build dynamic UIs based on user information.
-Version: 0.0.99
-Author: Paul Campbell <pacampbell91@gmail.com>
 Maintainer: Paul Campbell <pacampbell91@gmail.com>
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -15,3 +16,5 @@ Imports:
     rlang,
     sodium
 RoxygenNote: 6.1.1
+URL: https://github.com/paulc91/shinyauthr
+BugReports: https://github.com/paulc91/shinyauthr/issues

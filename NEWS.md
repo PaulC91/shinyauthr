@@ -1,3 +1,7 @@
+# shinyauthr 0.1.0
+
+* Prepare for CRAN submission
+
 # shinyauthr 0.0.99
 
 ### April 2019 - switched to the sodium package for password hashing and decryption
