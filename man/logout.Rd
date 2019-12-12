@@ -33,6 +33,3 @@ Call via \code{shiny::callModule(logout, "your_id", ...)}
 }
 
 }
-\author{
-Paul Campbell, \email{pacampbell91@gmail.com}
-}

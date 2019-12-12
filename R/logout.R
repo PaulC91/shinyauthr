@@ -12,8 +12,6 @@
 #'
 #' @return Shiny UI action button
 #'
-#' @author Paul Campbell, \email{pacampbell91@gmail.com}
-#'
 #' @export
 logoutUI <- function(id, label = "Log out", icon = NULL, class = "btn-danger", style = "color: white;") {
   ns <- shiny::NS(id)
@@ -37,8 +35,6 @@ logoutUI <- function(id, label = "Log out", icon = NULL, class = "btn-danger", s
 #'
 #' @return The reactive output of this module should be supplied as the \code{log_out} argument to the
 #'   \link{login} module to trigger the logout process
-#'
-#' @author Paul Campbell, \email{pacampbell91@gmail.com}
 #'
 #' @examples
 #' \dontrun{

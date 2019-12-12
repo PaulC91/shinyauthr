@@ -1,5 +1,9 @@
 # shinyauthr
 
+<!-- badges: start -->
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+<!-- badges: end -->
+
 `shinyauthr` is an R package providing module functions that can be used to add an authentication layer to your shiny apps.
 
 It borrows some code from treysp's [shiny_password](https://github.com/treysp/shiny_password) template with the goal of making implementation simpler for end users and allowing the login/logout UIs to fit easily into any UI framework, including [shinydashboard](https://rstudio.github.io/shinydashboard/). See [live example app here](https://cultureofinsight.shinyapps.io/shinyauthr/) and code in the [inst directory](inst/shiny-examples/shinyauthr_example).
@@ -7,16 +11,16 @@ It borrows some code from treysp's [shiny_password](https://github.com/treysp/sh
 ## Installation
 
 ```r
-devtools::install_github("paulc91/shinyauthr")
+remotes::install_github("paulc91/shinyauthr")
 ```
 ## Usage
 
 The package provides 2 module functions each with a UI and server element:
 
-- `login`
-- `loginUI`
-- `logout`
-- `logoutUI`
+- `login()`
+- `loginUI()`
+- `logout()`
+- `logoutUI()`
 
 Below is a minimal reproducible example of how to use the authentication modules in a shiny app. Note that you must initiate the use of the shinyjs package with `shinyjs::useShinyjs()` in your UI code for this to work appropriately.
 
@@ -39,9 +43,9 @@ ui <- fluidPage(
   # must turn shinyjs on
   shinyjs::useShinyjs(),
   # add logout button UI 
-  div(class = "pull-right", shinyauthr::logoutUI(id = "logout")),
+  div(class = "pull-right", logoutUI(id = "logout")),
   # add login panel UI function
-  shinyauthr::loginUI(id = "login"),
+  loginUI(id = "login"),
   # setup table output to show user info after login
   tableOutput("user_table")
 )
@@ -131,12 +135,10 @@ I'm not a security professional so cannot guarantee this authentication procedur
 
 I would welcome any feedback on any potential vulnerabilities in the process. I know that apps hosted on a server without an SSL certificate could be open to interception of usernames and passwords submitted by a user. As such I would not recommend the use of shinyauthr without an HTTPS connection.
 
-For apps intended for use within commercial organisations, I would recommend one of RStudio's commercial shiny hosting options with built in authetication.
+For apps intended for use within commercial organisations, I would recommend one of RStudio's commercial shiny hosting options, or [shinyproxy](https://www.shinyproxy.io/), both of which have built in authetication options.
 
 However, I hope that having an easy-to-implement open-source shiny authentication option like this will prove useful when alternative options are not feasible.
 
 _Paul Campbell_
-
-_April 2019_
 
 

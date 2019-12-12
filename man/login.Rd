@@ -51,6 +51,3 @@ Call via \code{shiny::callModule(login, "your_id", ...)}
 }
 
 }
-\author{
-Paul Campbell, \email{pacampbell91@gmail.com}
-}

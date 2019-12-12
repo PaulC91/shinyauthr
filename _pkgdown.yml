@@ -1,0 +1,36 @@
+destination: docs
+url: 
+
+authors:
+  Paul Campbell:
+    href: https://github.com/paulc91
+
+template:
+  params:
+    bootswatch: simplex
+
+navbar:
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: Reference
+      href: reference/index.html
+    - text: Changelog
+      href: news/index.html
+  right:
+    - icon: fa-github fa-lg
+      href: https://github.com/paulc91/shinyauthr
+
+reference:
+  - title: "Login"
+    desc: >
+      Login modules
+    contents:
+      - login
+      - loginUI
+  - title: "Logout"
+    desc: >
+      Logout modules
+    contents:
+      - logout
+      - logoutUI

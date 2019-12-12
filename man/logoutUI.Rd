@@ -27,6 +27,3 @@ Shiny UI Module for use with \link{logout}
 \details{
 Call via \code{logoutUI("your_id")}
 }
-\author{
-Paul Campbell, \email{pacampbell91@gmail.com}
-}

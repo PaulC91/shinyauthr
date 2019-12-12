@@ -64,8 +64,6 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
 #'   a successful login or not. Second element \code{info} will be the data frame provided
 #'   to the function, filtered to the row matching the succesfully logged in username. 
 #'   When \code{user_auth} is FALSE \code{info} is NULL.
-#'
-#' @author Paul Campbell, \email{pacampbell91@gmail.com}
 #' 
 #' @importFrom rlang :=
 #' 
@@ -104,7 +102,7 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
   # ensure all text columns are character class
   data <- dplyr::mutate_if(data, is.factor, as.character)
   # if password column hasn't been hashed with sodium, do it for them
-  if (!sodium_hashed) data <- dplyr::mutate(data,  !!pwds := sapply(!!pwds, sodium::password_store))
+  # if (!sodium_hashed) data <- dplyr::mutate(data,  !!pwds := sapply(!!pwds, sodium::password_store))
 
   shiny::observeEvent(input$button, {
     
@@ -114,20 +112,14 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
     if (length(row_username)) {
       row_password <- dplyr::filter(data,dplyr::row_number() == row_username)
       row_password <- dplyr::pull(row_password, !!pwds)
-      password_match <- sodium::password_verify(row_password, input$password)
+      if (sodium_hashed) {
+        password_match <- sodium::password_verify(row_password, input$password)
+      } else {
+        password_match <- identical(row_password, input$password)
+      }
     } else {
       password_match <- FALSE
     }
-
-    # if (hashed) {
-    #   # check for match of hashed input password to hashed password column in data
-    #   row_password <- which(dplyr::pull(data, !! pwds) == digest::digest(input$password, algo = algo))
-    #   
-    # } else {
-    #   # if passwords are not hashed, hash them with md5 and do the same with the input password
-    #   data <- dplyr::mutate(data,  !! pwds := sapply(!! pwds, digest::digest))
-    #   row_password <- which(dplyr::pull(data, !! pwds) == digest::digest(input$password))
-    # }
     
     # if user name row and password name row are same, credentials are valid
     if (length(row_username) == 1 && password_match) {
