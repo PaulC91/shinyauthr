@@ -24,7 +24,6 @@ test_that("user_auth and info get updated after successful login", {
   app_login(app, role = "admin")
   
   values <- app$getAllValues()
-  print(values) # 
   testthat::expect_true(values$export$auth_status) 
   testthat::expect_s3_class(values$export$auth_info, "data.frame")
   
