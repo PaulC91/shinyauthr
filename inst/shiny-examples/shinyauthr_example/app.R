@@ -108,6 +108,12 @@ server <- function(input, output, session) {
     )
   })
   
+  # Export reactive values for testing
+  exportTestValues(
+    auth_status = credentials()$user_auth,
+    auth_info   = credentials()$info
+  )
+  
 }
 
 shiny::shinyApp(ui, server)
