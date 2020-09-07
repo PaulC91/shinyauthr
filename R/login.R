@@ -10,6 +10,7 @@
 #' @param pass_title label for the password text input
 #' @param login_title label for the login button
 #' @param error_message message to display after failed login
+#' @param additional_ui additional shiny UI element to add below login button. Wrap multiple inside \code{shiny::tagList()}
 #'
 #' @return Shiny UI
 #'
@@ -17,7 +18,7 @@
 #'
 #' @export
 loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_title = "Password",
-                    login_title = "Log in", error_message = "Invalid username or password!") {
+                    login_title = "Log in", error_message = "Invalid username or password!", additional_ui = NULL) {
   ns <- shiny::NS(id)
 
   shiny::div(id = ns("panel"), style = "width: 500px; max-width: 100%; margin: 0 auto; padding: 20px;",
@@ -32,6 +33,8 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
           style = "text-align: center;",
           shiny::actionButton(ns("button"), login_title, class = "btn-primary", style = "color: white;")
         ),
+        
+        additional_ui,
 
         shinyjs::hidden(
           shiny::div(id = ns("error"),

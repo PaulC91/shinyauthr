@@ -6,7 +6,8 @@
 \usage{
 loginUI(id, title = "Please log in", user_title = "User Name",
   pass_title = "Password", login_title = "Log in",
-  error_message = "Invalid username or password!")
+  error_message = "Invalid username or password!",
+  additional_ui = NULL)
 }
 \arguments{
 \item{id}{Shiny id}
@@ -20,6 +21,8 @@ loginUI(id, title = "Please log in", user_title = "User Name",
 \item{login_title}{label for the login button}
 
 \item{error_message}{message to display after failed login}
+
+\item{additional_ui}{additional shiny UI element to add below login button. Wrap multiple inside \code{shiny::tagList()}}
 }
 \value{
 Shiny UI
