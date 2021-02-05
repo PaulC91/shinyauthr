@@ -1,3 +1,7 @@
+# shinyauthr 0.1.1
+
+* Added cookie-based authentication
+
 # shinyauthr 0.1.0
 
 * Prepare for CRAN submission

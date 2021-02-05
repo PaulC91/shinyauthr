@@ -6,8 +6,12 @@
 
 `shinyauthr` is an R package providing module functions that can be used to add an authentication layer to your shiny apps.
 
-It borrows some code from treysp's [shiny_password](https://github.com/treysp/shiny_password) template with the goal of making implementation simpler for end users and allowing the login/logout UIs to fit easily into any UI framework, including [shinydashboard](https://rstudio.github.io/shinydashboard/). See [live example app here](https://cultureofinsight.shinyapps.io/shinyauthr/) and code in the [inst directory](inst/shiny-examples/shinyauthr_example).
- 
+It borrows some code from treysp's [shiny_password](https://github.com/treysp/shiny_password) template with the goal of making implementation simpler for end users and allowing the login/logout UIs to fit easily into any UI framework, including [shinydashboard](https://rstudio.github.io/shinydashboard/). 
+
+To enable cookie-based authentication in browsers, it also borrows code from calligross's [Shiny Cookie Based Authentication Example](https://gist.github.com/calligross/e779281b500eb93ee9e42e4d72448189) and from an earlier PR from [aqualogy](https://github.com/aqualogy/shinyauthr).
+
+See [live example app here](https://cultureofinsight.shinyapps.io/shinyauthr/) and code in the [inst directory](inst/shiny-examples/shinyauthr_example).
+
 ## Installation
 
 ```r
@@ -79,6 +83,107 @@ server <- function(input, output, session) {
 shinyApp(ui = ui, server = server)
 
 ```
+
+## Cookie-Based Authentication
+
+To enable cookie-based automatic login for returning users, you must create your own functions to save and load session info in a database.
+
+The first required function must accept two parameters `user` and `session`.  The first of these is the user name for log in.  The second is a randomly generated string that identifies the session.  The app asks the user's web browser to save this session id as a cookie.
+
+The second required function is called without parameters and must return a data.frame of valid `user` and `session` ids.  If the user's web browser sends your app a cookie which appears in the `session` column, then the corresponding `user` is automatically logged in.
+
+Pass these functions to the login module via `callModule(shinyauthr::login, ...)` as the `cookie_setter` and `cookie_getter` parameters.  A minimal example is below.
+
+```r
+library(shiny)
+library(shinyauthr)
+library(shinyjs)
+library(dplyr)
+library(lubridate)
+library(DBI)
+library(RSQLite)
+
+cookie_expiry <- 7 # Days until session expires
+
+# This function must accept two parameters: user and sessionid. It will be called whenever the user
+# successfully logs in with a password.  This function saves to your database.
+
+add_sessionid_to_db <- function(user, sessionid, conn = db){
+	tibble(user = user, sessionid = sessionid, login_time = as.character(now())) %>%
+		dbWriteTable(conn, "sessionids", ., append = TRUE)
+}
+
+# This function must return a data.frame with columns user and sessionid  Other columns are also okay
+# and will be made available to the app after log in as columns in credentials()$user_auth
+
+get_sessionids_from_db <- function(conn = db, expiry = cookie_expiry){
+	dbReadTable(conn, "sessionids") %>%
+		mutate(login_time = ymd_hms(login_time)) %>%
+		as_tibble() %>%
+		filter(login_time > now() - days(expiry))
+}
+
+if(file.exists("my_db_file")){
+	db <- dbConnect(SQLite(), "my_db_file")
+} else{
+	db <- dbConnect(SQLite(), "my_db_file")
+	dbCreateTable(db, "sessionids", c(user = "TEXT", sessionid = "TEXT", login_time = "TEXT"))
+}
+
+# dataframe that holds usernames, passwords and other user data
+user_base <- data.frame(
+	user = c("user1", "user2"),
+	password = c("pass1", "pass2"),
+	permissions = c("admin", "standard"),
+	name = c("User One", "User Two"),
+	stringsAsFactors = FALSE,
+	row.names = NULL
+)
+
+ui <- fluidPage(
+	# must turn shinyjs on
+	shinyjs::useShinyjs(),
+	# add logout button UI
+	div(class = "pull-right", logoutUI(id = "logout")),
+	# add login panel UI function
+	loginUI(id = "login", cookie_expiry = cookie_expiry),
+	# setup table output to show user info after login
+	tableOutput("user_table")
+)
+
+server <- function(input, output, session) {
+
+	# call the logout module with reactive trigger to hide/show
+	logout_init <- callModule(shinyauthr::logout,
+							  id = "logout",
+							  active = reactive(credentials()$user_auth))
+
+	# call login module supplying data frame, user and password cols
+	# and reactive trigger
+	credentials <- callModule(shinyauthr::login,
+							  id = "login",
+							  data = user_base,
+							  user_col = user,
+							  pwd_col = password,
+							  sessionid_col = sessionid,
+							  cookie_getter = get_sessionids_from_db,
+							  cookie_setter = add_sessionid_to_db,
+							  log_out = reactive(logout_init()))
+
+	# pulls out the user information returned from login module
+	user_data <- reactive({credentials()$info})
+
+	output$user_table <- renderTable({
+		# use req to only render results when credentials()$user_auth is TRUE
+		req(credentials()$user_auth)
+		user_data() %>%
+			mutate(across(starts_with("login_time"), as.character))
+	})
+}
+
+shinyApp(ui = ui, server = server)
+```
+
 ## Details
 
 When the login module is called, it returns a reactive list containing 2 elements:
