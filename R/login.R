@@ -22,7 +22,8 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
                     login_title = "Log in", error_message = "Invalid username or password!", additional_ui = NULL, cookie_expiry = 7) {
   ns <- shiny::NS(id)
 
-  shiny::div(id = ns("panel"), style = "width: 500px; max-width: 100%; margin: 0 auto; padding: 20px;",
+  shinyjs::hidden(
+    shiny::div(id = ns("panel"), style = "width: 500px; max-width: 100%; margin: 0 auto; padding: 20px;",
       shiny::wellPanel(
 
         jscookie_script(),
@@ -48,6 +49,7 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
                      style = "color: red; font-weight: bold; padding-top: 5px;", class = "text-center"))
         )
       )
+    )
   )
 }
 
@@ -100,6 +102,7 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
   }
 
   credentials <- shiny::reactiveValues(user_auth = FALSE, info = NULL)
+  cookie_already_checked <- shiny::reactiveVal(value = FALSE)
 
   shiny::observeEvent(log_out(), {
     credentials$user_auth <- FALSE
@@ -108,16 +111,16 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
     shiny::updateTextInput(session, "password", value = "")
   })
 
-  shiny::observeEvent(credentials$user_auth, ignoreInit = TRUE, {
-    shinyjs::toggle(id = "panel")
+  shiny::observe({
+    if(credentials$user_auth){
+      shinyjs::hide(id = "panel")
+    } else if (cookie_already_checked()){
+      shinyjs::show(id = "panel")
+    }
   })
 
   users <- dplyr::enquo(user_col)
   pwds <- dplyr::enquo(pwd_col)
-
-  # if(!is.null(sessionid_col)){
-  #   sessionids <-  dplyr::enquo(sessionid_col)
-  # }
 
   if(missing(cookie_getter) | missing(cookie_setter) | missing(sessionid_col)){
     cookie_getter <- default_cookie_getter
@@ -181,6 +184,9 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
   })
   # second, once cookie is found try to use it
   shiny::observeEvent(input$jscookie, {
+
+    cookie_already_checked(TRUE)
+
     # if already logged in or cookie missing, ignore change in input$jscookie
     shiny::req(credentials$user_auth == FALSE,
         is.null(input$jscookie) == FALSE,
