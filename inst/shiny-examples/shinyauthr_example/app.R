@@ -62,8 +62,7 @@ ui <- dashboardPage(
               tags$script(src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.contentWindow.min.js",
                           type="text/javascript")
     ),
-    shinyauthr::loginUI("login", cookie_expiry = cookie_expiry),
-    uiOutput("user_table"),
+    shinyauthr::loginUI("login", cookie_expiry = cookie_expiry, additional_ui = uiOutput("user_table")),
     uiOutput("testUI"),
     HTML('<div data-iframe-height></div>')
   )
@@ -94,6 +93,8 @@ server <- function(input, output, session) {
   output$user_table <- renderUI({
     # only show pre-login
     if(credentials()$user_auth) return(NULL)
+    # if we don't pass this as addition_ui, then we need to add the following to avoid brief flash:
+    #if(credentials()$cookie_already_checked == FALSE) return(NULL)
 
     tagList(
       tags$p("test the different outputs from the sample logins below

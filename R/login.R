@@ -101,8 +101,7 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
             call. = FALSE)
   }
 
-  credentials <- shiny::reactiveValues(user_auth = FALSE, info = NULL)
-  cookie_already_checked <- shiny::reactiveVal(value = FALSE)
+  credentials <- shiny::reactiveValues(user_auth = FALSE, info = NULL, cookie_already_checked = FALSE)
 
   shiny::observeEvent(log_out(), {
     credentials$user_auth <- FALSE
@@ -114,7 +113,7 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
   shiny::observe({
     if(credentials$user_auth){
       shinyjs::hide(id = "panel")
-    } else if (cookie_already_checked()){
+    } else if (credentials$cookie_already_checked){
       shinyjs::show(id = "panel")
     }
   })
@@ -157,7 +156,6 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
     if (length(row_username) == 1 && password_match) {
       .sessionid <- randomString()
       js$setcookie(.sessionid)
-      js$getcookie()
 
       cookie_setter(input$user_name, .sessionid)
 
@@ -185,7 +183,7 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
   # second, once cookie is found try to use it
   shiny::observeEvent(input$jscookie, {
 
-    cookie_already_checked(TRUE)
+    credentials$cookie_already_checked <- TRUE
 
     # if already logged in or cookie missing, ignore change in input$jscookie
     shiny::req(credentials$user_auth == FALSE,
@@ -197,9 +195,19 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
     if(nrow(cookie_data) != 1){
       js$rmcookie()
     } else {
+      # if valid cookie, we reset it to update expiry date
+      .userid <- cookie_data$user
+      .sessionid <- randomString()
+
+      js$setcookie(.sessionid)
+
+      cookie_setter(.userid, .sessionid)
+
+      cookie_data <- head(dplyr::filter(cookie_getter(), !!sessionids == .sessionid, !!users == .userid))
+
       credentials$user_auth <- TRUE
       credentials$info <-  dplyr::bind_cols(
-        dplyr::filter(data, !!users == cookie_data$user),
+        dplyr::filter(data, !!users == .userid),
         dplyr::select(cookie_data, -!!users))
     }
 
