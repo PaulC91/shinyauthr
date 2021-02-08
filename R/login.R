@@ -203,7 +203,7 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
 
       cookie_setter(.userid, .sessionid)
 
-      cookie_data <- head(dplyr::filter(cookie_getter(), !!sessionids == .sessionid, !!users == .userid))
+      cookie_data <- utils::head(dplyr::filter(cookie_getter(), !!sessionids == .sessionid, !!users == .userid))
 
       credentials$user_auth <- TRUE
       credentials$info <-  dplyr::bind_cols(
