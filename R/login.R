@@ -134,7 +134,45 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
   # if password column hasn't been hashed with sodium, do it for them
   # if (!sodium_hashed) data <- dplyr::mutate(data,  !!pwds := sapply(!!pwds, sodium::password_store))
 
-  # possibility 1: login through login button
+  # possibility 1: login through a present valid cookie
+  # first, check for a cookie once javascript is ready
+  shiny::observeEvent(shiny::isTruthy(js$getcookie()),{
+    js$getcookie()
+  })
+  # second, once cookie is found try to use it
+  shiny::observeEvent(input$jscookie, {
+
+    credentials$cookie_already_checked <- TRUE
+
+    # if already logged in or cookie missing, ignore change in input$jscookie
+    shiny::req(credentials$user_auth == FALSE,
+               is.null(input$jscookie) == FALSE,
+               nchar(input$jscookie) > 0)
+
+    cookie_data <- dplyr::filter(cookie_getter(), !!sessionids == input$jscookie)
+    dplyr::filter(cookie_getter(), !!sessionids == input$jscookie)
+    if(nrow(cookie_data) != 1){
+      js$rmcookie()
+    } else {
+      # if valid cookie, we reset it to update expiry date
+      .userid <- cookie_data$user
+      .sessionid <- randomString()
+
+      js$setcookie(.sessionid)
+
+      cookie_setter(.userid, .sessionid)
+
+      cookie_data <- utils::head(dplyr::filter(cookie_getter(), !!sessionids == .sessionid, !!users == .userid))
+
+      credentials$user_auth <- TRUE
+      credentials$info <-  dplyr::bind_cols(
+        dplyr::filter(data, !!users == .userid),
+        dplyr::select(cookie_data, -!!users))
+    }
+
+  })
+
+  # possibility 2: login through login button
   shiny::observeEvent(input$button, {
 
     # check for match of input username to username column in data
@@ -171,44 +209,6 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
     } else { # if not valid temporarily show error message to user
       shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade")
       shinyjs::delay(5000, shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade"))
-    }
-
-  })
-
-  # possibility 2: login through a present valid cookie
-  # first, check for a cookie once javascript is ready
-  shiny::observeEvent(shiny::isTruthy(js$getcookie()),{
-    js$getcookie()
-  })
-  # second, once cookie is found try to use it
-  shiny::observeEvent(input$jscookie, {
-
-    credentials$cookie_already_checked <- TRUE
-
-    # if already logged in or cookie missing, ignore change in input$jscookie
-    shiny::req(credentials$user_auth == FALSE,
-        is.null(input$jscookie) == FALSE,
-        nchar(input$jscookie) > 0)
-
-    cookie_data <- dplyr::filter(cookie_getter(), !!sessionids == input$jscookie)
-    dplyr::filter(cookie_getter(), !!sessionids == input$jscookie)
-    if(nrow(cookie_data) != 1){
-      js$rmcookie()
-    } else {
-      # if valid cookie, we reset it to update expiry date
-      .userid <- cookie_data$user
-      .sessionid <- randomString()
-
-      js$setcookie(.sessionid)
-
-      cookie_setter(.userid, .sessionid)
-
-      cookie_data <- utils::head(dplyr::filter(cookie_getter(), !!sessionids == .sessionid, !!users == .userid))
-
-      credentials$user_auth <- TRUE
-      credentials$info <-  dplyr::bind_cols(
-        dplyr::filter(data, !!users == .userid),
-        dplyr::select(cookie_data, -!!users))
     }
 
   })
