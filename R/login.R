@@ -150,12 +150,12 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
                nchar(input$jscookie) > 0)
 
     cookie_data <- dplyr::filter(cookie_getter(), !!sessionids == input$jscookie)
-    dplyr::filter(cookie_getter(), !!sessionids == input$jscookie)
+
     if(nrow(cookie_data) != 1){
       js$rmcookie()
     } else {
       # if valid cookie, we reset it to update expiry date
-      .userid <- cookie_data$user
+      .userid <- dplyr::pull(cookie_data, !!users)
       .sessionid <- randomString()
 
       js$setcookie(.sessionid)
