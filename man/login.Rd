@@ -4,8 +4,21 @@
 \alias{login}
 \title{login server module}
 \usage{
-login(input, output, session, data, user_col, pwd_col,
-  sodium_hashed = FALSE, hashed, algo, log_out = NULL)
+login(
+  input,
+  output,
+  session,
+  data,
+  user_col,
+  pwd_col,
+  sodium_hashed = FALSE,
+  hashed,
+  algo,
+  log_out = NULL,
+  sessionid_col,
+  cookie_getter,
+  cookie_setter
+)
 }
 \arguments{
 \item{input}{shiny input}
@@ -27,12 +40,18 @@ login(input, output, session, data, user_col, pwd_col,
 \item{algo}{Deprecated}
 
 \item{log_out}{[reactive] supply the returned reactive from \link{logout} here to trigger a user logout}
+
+\item{sessionid_col}{bare (unquoted) column name containing session ids}
+
+\item{cookie_getter}{a function that returns a data.frame with at least two columns: user and session}
+
+\item{cookie_setter}{a function with two parameters: user and session.  The function must save these to a database.}
 }
 \value{
-The module will return a reactive 2 element list to your main application. 
+The module will return a reactive 2 element list to your main application.
   First element \code{user_auth} is a boolean inditcating whether there has been
   a successful login or not. Second element \code{info} will be the data frame provided
-  to the function, filtered to the row matching the succesfully logged in username. 
+  to the function, filtered to the row matching the succesfully logged in username.
   When \code{user_auth} is FALSE \code{info} is NULL.
 }
 \description{
@@ -43,7 +62,7 @@ Call via \code{shiny::callModule(login, "your_id", ...)}
 }
 \examples{
 \dontrun{
-  user_credentials <- shiny::callModule(login, "login", 
+  user_credentials <- shiny::callModule(login, "login",
                                         data = user_base,
                                         user_col = user,
                                         pwd_col = password,

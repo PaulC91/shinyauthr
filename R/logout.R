@@ -45,8 +45,12 @@ logoutUI <- function(id, label = "Log out", icon = NULL, class = "btn-danger", s
 #' @export
 logout <- function(input, output, session, active) {
 
-  shiny::observeEvent(active(), ignoreInit = TRUE, {
-    shinyjs::toggle(id = "button", anim = TRUE, time = 1, animType = "fade")
+  shiny::observe({
+    if(active()){
+      shinyjs::show(id = "button", anim = TRUE, time = 1, animType = "fade")
+    } else{
+      shinyjs::hide(id = "button", anim = TRUE, time = 1, animType = "fade")
+    }
   })
 
   # return reactive logout button tracker

@@ -4,8 +4,13 @@
 \alias{logoutUI}
 \title{logout UI module}
 \usage{
-logoutUI(id, label = "Log out", icon = NULL, class = "btn-danger",
-  style = "color: white;")
+logoutUI(
+  id,
+  label = "Log out",
+  icon = NULL,
+  class = "btn-danger",
+  style = "color: white;"
+)
 }
 \arguments{
 \item{id}{Shiny id}
