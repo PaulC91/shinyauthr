@@ -122,7 +122,7 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
   pwds <- dplyr::enquo(pwd_col)
 
   if(missing(cookie_getter) | missing(cookie_setter) | missing(sessionid_col)){
-    cookie_getter <- default_cookie_getter
+    cookie_getter <- default_cookie_getter(dplyr::as_label(users), "session_id")
     cookie_setter <- default_cookie_setter
     sessionids <- "session_id"
   } else{
