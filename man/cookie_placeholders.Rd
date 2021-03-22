@@ -6,7 +6,7 @@
 \alias{default_cookie_setter}
 \title{Place Holder Database Cookie Handlers}
 \usage{
-default_cookie_getter()
+default_cookie_getter(user_string, session_string)
 
 default_cookie_setter(user, session)
 }

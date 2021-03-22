@@ -29,8 +29,10 @@ NULL
 
 #' @rdname cookie_placeholders
 #' @keywords internal
-default_cookie_getter <- function(){
-	data.frame(user = character(0), session = character(0))
+default_cookie_getter <- function(user_string, session_string){
+	df <- data.frame(user = character(0), session = character(0))
+	names(df) <- c(user_string, session_string)
+	function(){df}
 }
 
 
