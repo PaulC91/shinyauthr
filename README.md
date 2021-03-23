@@ -10,13 +10,20 @@ It borrows some code from treysp's [shiny_password](https://github.com/treysp/sh
 
 To enable cookie-based authentication in browsers, it also borrows code from calligross's [Shiny Cookie Based Authentication Example](https://gist.github.com/calligross/e779281b500eb93ee9e42e4d72448189) and from an earlier PR from [aqualogy](https://github.com/aqualogy/shinyauthr).
 
-See [live example app here](https://cultureofinsight.shinyapps.io/shinyauthr/) and code in the [inst directory](inst/shiny-examples/shinyauthr_example).
-
 ## Installation
 
 ```r
 remotes::install_github("paulc91/shinyauthr")
 ```
+
+## Run example app
+
+```r
+shinyauthr::runShinyExample()
+```
+
+See full code in the [inst directory](inst/shiny-examples/shinyauthr_example).
+
 ## Usage
 
 The package provides 2 module functions each with a UI and server element:
