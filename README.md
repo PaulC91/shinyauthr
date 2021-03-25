@@ -33,12 +33,10 @@ The package provides 2 module functions each with a UI and server element:
 - `logout()`
 - `logoutUI()`
 
-Below is a minimal reproducible example of how to use the authentication modules in a shiny app. Note that you must initiate the use of the shinyjs package with `shinyjs::useShinyjs()` in your UI code for this to work appropriately.
+Below is a minimal reproducible example of how to use the authentication modules in a shiny app. Note that this package invisibly calls `shinyjs::useShinyjs()` and there is no need for you to do so (although there is no harm if you do).
 
 ```r
 library(shiny)
-library(shinyauthr)
-library(shinyjs)
 
 # dataframe that holds usernames, passwords and other user data
 user_base <- data.frame(
@@ -51,12 +49,10 @@ user_base <- data.frame(
 )
 
 ui <- fluidPage(
-  # must turn shinyjs on
-  shinyjs::useShinyjs(),
   # add logout button UI 
-  div(class = "pull-right", logoutUI(id = "logout")),
+  div(class = "pull-right", shinyauthr::logoutUI(id = "logout")),
   # add login panel UI function
-  loginUI(id = "login"),
+  shinyauthr::loginUI(id = "login"),
   # setup table output to show user info after login
   tableOutput("user_table")
 )
@@ -103,8 +99,6 @@ Pass these functions to the login module via `callModule(shinyauthr::login, ...)
 
 ```r
 library(shiny)
-library(shinyauthr)
-library(shinyjs)
 library(dplyr)
 library(lubridate)
 library(DBI)
@@ -148,12 +142,10 @@ user_base <- data.frame(
 )
 
 ui <- fluidPage(
-	# must turn shinyjs on
-	shinyjs::useShinyjs(),
 	# add logout button UI
-	div(class = "pull-right", logoutUI(id = "logout")),
+	div(class = "pull-right", shinyauthr::logoutUI(id = "logout")),
 	# add login panel UI function
-	loginUI(id = "login", cookie_expiry = cookie_expiry),
+	shinyauthr::loginUI(id = "login", cookie_expiry = cookie_expiry),
 	# setup table output to show user info after login
 	tableOutput("user_table")
 )

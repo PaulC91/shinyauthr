@@ -1,6 +1,4 @@
 library(shiny)
-library(shinyauthr)
-library(shinyjs)
 
 # dataframe that holds usernames, passwords and other user data
 user_base <- data.frame(
@@ -13,12 +11,10 @@ user_base <- data.frame(
 )
 
 ui <- fluidPage(
-	# must turn shinyjs on
-	shinyjs::useShinyjs(),
 	# add logout button UI
-	div(class = "pull-right", logoutUI(id = "logout")),
+	div(class = "pull-right", shinyauthr::logoutUI(id = "logout")),
 	# add login panel UI function
-	loginUI(id = "login"),
+	shinyauthr::loginUI(id = "login"),
 	# setup table output to show user info after login
 	tableOutput("user_table")
 )

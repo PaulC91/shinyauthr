@@ -26,6 +26,7 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
     shiny::div(id = ns("panel"), style = "width: 500px; max-width: 100%; margin: 0 auto; padding: 20px;",
       shiny::wellPanel(
 
+        shinyjs::useShinyjs(),
         jscookie_script(),
         shinyjs::extendShinyjs(text = js_cookie_to_r_code(ns("jscookie")), functions=c("getcookie","setcookie","rmcookie")),
         shinyjs::extendShinyjs(text = js_return_click(ns("password"), ns("button")), functions = c()),
@@ -52,8 +53,6 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
     )
   )
 }
-
-utils::globalVariables("js")
 
 #' login server module
 #'
@@ -106,7 +105,7 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
   shiny::observeEvent(log_out(), {
     credentials$user_auth <- FALSE
     credentials$info <- NULL
-    js$rmcookie()
+    shinyjs::js$rmcookie()
     shiny::updateTextInput(session, "password", value = "")
   })
 
@@ -136,8 +135,8 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
 
   # possibility 1: login through a present valid cookie
   # first, check for a cookie once javascript is ready
-  shiny::observeEvent(shiny::isTruthy(js$getcookie()),{
-    js$getcookie()
+  shiny::observeEvent(shiny::isTruthy(shinyjs::js$getcookie()),{
+    shinyjs::js$getcookie()
   })
   # second, once cookie is found try to use it
   shiny::observeEvent(input$jscookie, {
@@ -152,13 +151,13 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
     cookie_data <- dplyr::filter(cookie_getter(), !!sessionids == input$jscookie)
 
     if(nrow(cookie_data) != 1){
-      js$rmcookie()
+      shinyjs::js$rmcookie()
     } else {
       # if valid cookie, we reset it to update expiry date
       .userid <- dplyr::pull(cookie_data, !!users)
       .sessionid <- randomString()
 
-      js$setcookie(.sessionid)
+      shinyjs::js$setcookie(.sessionid)
 
       cookie_setter(.userid, .sessionid)
 
@@ -193,7 +192,7 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
     # if user name row and password name row are same, credentials are valid
     if (length(row_username) == 1 && password_match) {
       .sessionid <- randomString()
-      js$setcookie(.sessionid)
+      shinyjs::js$setcookie(.sessionid)
 
       cookie_setter(input$user_name, .sessionid)
 
