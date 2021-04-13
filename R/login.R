@@ -73,6 +73,7 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
 #' @param sessionid_col bare (unquoted) column name containing session ids
 #' @param cookie_getter a function that returns a data.frame with at least two columns: user and session
 #' @param cookie_setter a function with two parameters: user and session.  The function must save these to a database.
+#' @param reload_on_logout should app force reload on logout?
 #'
 #' @return The module will return a reactive 2 element list to your main application.
 #'   First element \code{user_auth} is a boolean inditcating whether there has been
@@ -93,7 +94,7 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
 #'
 #' @export
 login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed = FALSE, hashed, algo, log_out = NULL,
-                  sessionid_col, cookie_getter, cookie_setter) {
+                  sessionid_col, cookie_getter, cookie_setter, reload_on_logout = FALSE) {
 
   if (!missing(hashed)) {
     stop("in shinyauthr::login module call. Argument hashed is deprecated. shinyauthr now uses the sodium package for password hashing and decryption. If you had previously hashed your passwords with the digest package to use with shinyauthr, please re-hash them with sodium and use the sodium_hashed argument instead for decryption to work. Sorry for this breaking change but sodium hashing provides added protection against brute-force attacks on stored passwords.",
@@ -103,10 +104,16 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
   credentials <- shiny::reactiveValues(user_auth = FALSE, info = NULL, cookie_already_checked = FALSE)
 
   shiny::observeEvent(log_out(), {
-    credentials$user_auth <- FALSE
-    credentials$info <- NULL
+
     shinyjs::js$rmcookie()
-    shiny::updateTextInput(session, "password", value = "")
+
+    if(reload_on_logout){
+      session$reload()
+    } else {
+      shiny::updateTextInput(session, "password", value = "")
+      credentials$user_auth <- FALSE
+      credentials$info <- NULL
+    }
   })
 
   shiny::observe({
