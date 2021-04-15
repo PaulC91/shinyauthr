@@ -18,36 +18,44 @@
 #' @author Paul Campbell, \email{pacampbell91@gmail.com}
 #'
 #' @export
-loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_title = "Password",
-                    login_title = "Log in", error_message = "Invalid username or password!", additional_ui = NULL, cookie_expiry = 7) {
+loginUI <- function(
+  id,
+  title = "Please log in",
+  user_title = "User Name",
+  pass_title = "Password",
+  login_title = "Log in",
+  error_message = "Invalid username or password!",
+  additional_ui = NULL,
+  cookie_expiry = 7
+) {
   ns <- shiny::NS(id)
 
   shinyjs::hidden(
-    shiny::div(id = ns("panel"), style = "width: 500px; max-width: 100%; margin: 0 auto; padding: 20px;",
+    shiny::div(
+      id = ns("panel"),
+      style = "width: 500px; max-width: 100%; margin: 0 auto; padding: 20px;",
       shiny::wellPanel(
-
         shinyjs::useShinyjs(),
         jscookie_script(),
-        shinyjs::extendShinyjs(text = js_cookie_to_r_code(ns("jscookie")), functions=c("getcookie","setcookie","rmcookie")),
+        shinyjs::extendShinyjs(text = js_cookie_to_r_code(ns("jscookie")), functions = c("getcookie", "setcookie", "rmcookie")),
         shinyjs::extendShinyjs(text = js_return_click(ns("password"), ns("button")), functions = c()),
-
         shiny::tags$h2(title, class = "text-center", style = "padding-top: 0;"),
-
         shiny::textInput(ns("user_name"), shiny::tagList(shiny::icon("user"), user_title)),
-
         shiny::passwordInput(ns("password"), shiny::tagList(shiny::icon("unlock-alt"), pass_title)),
-
         shiny::div(
           style = "text-align: center;",
           shiny::actionButton(ns("button"), login_title, class = "btn-primary", style = "color: white;")
         ),
-
         additional_ui,
-
         shinyjs::hidden(
-          shiny::div(id = ns("error"),
-                     shiny::tags$p(error_message,
-                     style = "color: red; font-weight: bold; padding-top: 5px;", class = "text-center"))
+          shiny::div(
+            id = ns("error"),
+            shiny::tags$p(
+              error_message,
+              style = "color: red; font-weight: bold; padding-top: 5px;",
+              class = "text-center"
+            )
+          )
         )
       )
     )
@@ -77,27 +85,44 @@ loginUI <- function(id, title = "Please log in", user_title = "User Name", pass_
 #' @return The module will return a reactive 2 element list to your main application.
 #'   First element \code{user_auth} is a boolean inditcating whether there has been
 #'   a successful login or not. Second element \code{info} will be the data frame provided
-#'   to the function, filtered to the row matching the succesfully logged in username.
+#'   to the function, filtered to the row matching the successfully logged in username.
 #'   When \code{user_auth} is FALSE \code{info} is NULL.
 #'
 #' @importFrom rlang :=
 #'
 #' @examples
 #' \dontrun{
-#'   user_credentials <- shiny::callModule(login, "login",
-#'                                         data = user_base,
-#'                                         user_col = user,
-#'                                         pwd_col = password,
-#'                                         log_out = reactive(logout_init()))
+#' user_credentials <- shiny::callModule(
+#'   login,
+#'   id = "login",
+#'   data = user_base,
+#'   user_col = user,
+#'   pwd_col = password,
+#'   log_out = reactive(logout_init())
+#' )
 #' }
 #'
 #' @export
-login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed = FALSE, hashed, algo, log_out = NULL,
-                  sessionid_col, cookie_getter, cookie_setter) {
-
+login <- function(
+  input,
+  output,
+  session,
+  data,
+  user_col,
+  pwd_col,
+  sodium_hashed = FALSE,
+  hashed,
+  algo,
+  log_out = NULL,
+  sessionid_col,
+  cookie_getter,
+  cookie_setter
+) {
   if (!missing(hashed)) {
-    stop("in shinyauthr::login module call. Argument hashed is deprecated. shinyauthr now uses the sodium package for password hashing and decryption. If you had previously hashed your passwords with the digest package to use with shinyauthr, please re-hash them with sodium and use the sodium_hashed argument instead for decryption to work. Sorry for this breaking change but sodium hashing provides added protection against brute-force attacks on stored passwords.",
-            call. = FALSE)
+    stop(
+      "in shinyauthr::login module call. Argument hashed is deprecated. shinyauthr now uses the sodium package for password hashing and decryption. If you had previously hashed your passwords with the digest package to use with shinyauthr, please re-hash them with sodium and use the sodium_hashed argument instead for decryption to work.",
+      call. = FALSE
+    )
   }
 
   credentials <- shiny::reactiveValues(user_auth = FALSE, info = NULL, cookie_already_checked = FALSE)
@@ -110,9 +135,9 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
   })
 
   shiny::observe({
-    if(credentials$user_auth){
+    if (credentials$user_auth) {
       shinyjs::hide(id = "panel")
-    } else if (credentials$cookie_already_checked){
+    } else if (credentials$cookie_already_checked) {
       shinyjs::show(id = "panel")
     }
   })
@@ -120,37 +145,36 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
   users <- dplyr::enquo(user_col)
   pwds <- dplyr::enquo(pwd_col)
 
-  if(missing(cookie_getter) | missing(cookie_setter) | missing(sessionid_col)){
+  if (missing(cookie_getter) | missing(cookie_setter) | missing(sessionid_col)) {
     cookie_getter <- default_cookie_getter(dplyr::as_label(users), "session_id")
     cookie_setter <- default_cookie_setter
     sessionids <- "session_id"
-  } else{
-    sessionids <-  dplyr::enquo(sessionid_col)
+  } else {
+    sessionids <- dplyr::enquo(sessionid_col)
   }
 
   # ensure all text columns are character class
   data <- dplyr::mutate_if(data, is.factor, as.character)
-  # if password column hasn't been hashed with sodium, do it for them
-  # if (!sodium_hashed) data <- dplyr::mutate(data,  !!pwds := sapply(!!pwds, sodium::password_store))
 
   # possibility 1: login through a present valid cookie
   # first, check for a cookie once javascript is ready
-  shiny::observeEvent(shiny::isTruthy(shinyjs::js$getcookie()),{
+  shiny::observeEvent(shiny::isTruthy(shinyjs::js$getcookie()), {
     shinyjs::js$getcookie()
   })
   # second, once cookie is found try to use it
   shiny::observeEvent(input$jscookie, {
-
     credentials$cookie_already_checked <- TRUE
 
     # if already logged in or cookie missing, ignore change in input$jscookie
-    shiny::req(credentials$user_auth == FALSE,
-               is.null(input$jscookie) == FALSE,
-               nchar(input$jscookie) > 0)
+    shiny::req(
+      credentials$user_auth == FALSE,
+      is.null(input$jscookie) == FALSE,
+      nchar(input$jscookie) > 0
+    )
 
     cookie_data <- dplyr::filter(cookie_getter(), !!sessionids == input$jscookie)
 
-    if(nrow(cookie_data) != 1){
+    if (nrow(cookie_data) != 1) {
       shinyjs::js$rmcookie()
     } else {
       # if valid cookie, we reset it to update expiry date
@@ -164,11 +188,11 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
       cookie_data <- utils::head(dplyr::filter(cookie_getter(), !!sessionids == .sessionid, !!users == .userid))
 
       credentials$user_auth <- TRUE
-      credentials$info <-  dplyr::bind_cols(
+      credentials$info <- dplyr::bind_cols(
         dplyr::filter(data, !!users == .userid),
-        dplyr::select(cookie_data, -!!users))
+        dplyr::select(cookie_data, -!!users)
+      )
     }
-
   })
 
   # possibility 2: login through login button
@@ -178,7 +202,7 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
     row_username <- which(dplyr::pull(data, !!users) == input$user_name)
 
     if (length(row_username)) {
-      row_password <- dplyr::filter(data,dplyr::row_number() == row_username)
+      row_password <- dplyr::filter(data, dplyr::row_number() == row_username)
       row_password <- dplyr::pull(row_password, !!pwds)
       if (sodium_hashed) {
         password_match <- sodium::password_verify(row_password, input$password)
@@ -201,20 +225,17 @@ login <- function(input, output, session, data, user_col, pwd_col, sodium_hashed
       credentials$user_auth <- TRUE
       credentials$info <- dplyr::filter(data, !!users == input$user_name)
 
-      if(nrow(cookie_data) == 1){
+      if (nrow(cookie_data) == 1) {
         credentials$info <- dplyr::bind_cols(credentials$info, cookie_data)
       }
-
     } else { # if not valid temporarily show error message to user
       shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade")
       shinyjs::delay(5000, shinyjs::toggle(id = "error", anim = TRUE, time = 1, animType = "fade"))
     }
-
   })
 
   # return reactive list containing auth boolean and user information
   shiny::reactive({
     shiny::reactiveValuesToList(credentials)
   })
-
 }
