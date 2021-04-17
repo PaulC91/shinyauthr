@@ -3,7 +3,8 @@ Type: Package
 Title: Shiny Authentication Modules
 Version: 0.1.1
 Authors@R:
-    person("Paul", "Campbell", email = "pacampbell91@gmail.com", role = c("aut", "cre"))
+    c(person("Paul", "Campbell", email = "pacampbell91@gmail.com", role = c("aut", "cre")),
+      person("Michael", "Dewar", email = "michael.p.dewar@gmail.com", role = "ctb"))
 Description: Easily add user authentication to shiny apps and build dynamic UIs based on user information.
 Maintainer: Paul Campbell <pacampbell91@gmail.com>
 License: MIT + file LICENSE
