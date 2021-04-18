@@ -17,7 +17,8 @@ login(
   log_out = NULL,
   sessionid_col,
   cookie_getter,
-  cookie_setter
+  cookie_setter,
+  reload_on_logout = FALSE
 )
 }
 \arguments{
@@ -46,6 +47,8 @@ login(
 \item{cookie_getter}{a function that returns a data.frame with at least two columns: user and session}
 
 \item{cookie_setter}{a function with two parameters: user and session.  The function must save these to a database.}
+
+\item{reload_on_logout}{should app force reload on logout?}
 }
 \value{
 The module will return a reactive 2 element list to your main application.
