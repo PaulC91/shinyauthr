@@ -21,8 +21,10 @@ to get the correct module namespace.  This function is used internally only.
 }
 \examples{
 \dontrun{
-shinyjs::extendShinyjs(text = js_cookie_to_r_code(ns("jscookie")),
-                       functions=c("getcookie","setcookie","rmcookie"))
+shinyjs::extendShinyjs(
+  text = js_cookie_to_r_code(ns("jscookie")),
+  functions = c("getcookie", "setcookie", "rmcookie")
+)
 }
 }
 \keyword{internal}
