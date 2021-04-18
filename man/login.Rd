@@ -54,7 +54,7 @@ login(
 The module will return a reactive 2 element list to your main application.
   First element \code{user_auth} is a boolean inditcating whether there has been
   a successful login or not. Second element \code{info} will be the data frame provided
-  to the function, filtered to the row matching the succesfully logged in username.
+  to the function, filtered to the row matching the successfully logged in username.
   When \code{user_auth} is FALSE \code{info} is NULL.
 }
 \description{
@@ -65,11 +65,14 @@ Call via \code{shiny::callModule(login, "your_id", ...)}
 }
 \examples{
 \dontrun{
-  user_credentials <- shiny::callModule(login, "login",
-                                        data = user_base,
-                                        user_col = user,
-                                        pwd_col = password,
-                                        log_out = reactive(logout_init()))
+user_credentials <- shiny::callModule(
+  login,
+  id = "login",
+  data = user_base,
+  user_col = user,
+  pwd_col = password,
+  log_out = reactive(logout_init())
+)
 }
 
 }

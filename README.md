@@ -39,17 +39,15 @@ Below is a minimal reproducible example of how to use the authentication modules
 library(shiny)
 
 # dataframe that holds usernames, passwords and other user data
-user_base <- data.frame(
+user_base <- tibble::tibble(
   user = c("user1", "user2"),
-  password = c("pass1", "pass2"), 
+  password = c("pass1", "pass2"),
   permissions = c("admin", "standard"),
-  name = c("User One", "User Two"),
-  stringsAsFactors = FALSE,
-  row.names = NULL
+  name = c("User One", "User Two")
 )
 
 ui <- fluidPage(
-  # add logout button UI 
+  # add logout button UI
   div(class = "pull-right", shinyauthr::logoutUI(id = "logout")),
   # add login panel UI function
   shinyauthr::loginUI(id = "login"),
@@ -58,24 +56,30 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  
+
   # call the logout module with reactive trigger to hide/show
-  logout_init <- callModule(shinyauthr::logout, 
-                            id = "logout", 
-                            active = reactive(credentials()$user_auth))
-  
+  logout_init <- callModule(
+    shinyauthr::logout,
+    id = "logout",
+    active = reactive(credentials()$user_auth)
+  )
+
   # call login module supplying data frame, user and password cols
   # and reactive trigger
-  credentials <- callModule(shinyauthr::login, 
-                            id = "login", 
-                            data = user_base,
-                            user_col = user,
-                            pwd_col = password,
-                            log_out = reactive(logout_init()))
-  
+  credentials <- callModule(
+    shinyauthr::login,
+    id = "login",
+    data = user_base,
+    user_col = user,
+    pwd_col = password,
+    log_out = reactive(logout_init())
+  )
+
   # pulls out the user information returned from login module
-  user_data <- reactive({credentials()$info})
-  
+  user_data <- reactive({
+    credentials()$info
+  })
+
   output$user_table <- renderTable({
     # use req to only render results when credentials()$user_auth is TRUE
     req(credentials()$user_auth)
@@ -84,7 +88,6 @@ server <- function(input, output, session) {
 }
 
 shinyApp(ui = ui, server = server)
-
 ```
 
 ## Cookie-Based Authentication
@@ -109,75 +112,79 @@ cookie_expiry <- 7 # Days until session expires
 # This function must accept two parameters: user and sessionid. It will be called whenever the user
 # successfully logs in with a password.  This function saves to your database.
 
-add_sessionid_to_db <- function(user, sessionid, conn = db){
-	tibble(user = user, sessionid = sessionid, login_time = as.character(now())) %>%
-		dbWriteTable(conn, "sessionids", ., append = TRUE)
+add_sessionid_to_db <- function(user, sessionid, conn = db) {
+  tibble(user = user, sessionid = sessionid, login_time = as.character(now())) %>%
+    dbWriteTable(conn, "sessionids", ., append = TRUE)
 }
 
 # This function must return a data.frame with columns user and sessionid  Other columns are also okay
 # and will be made available to the app after log in as columns in credentials()$user_auth
 
-get_sessionids_from_db <- function(conn = db, expiry = cookie_expiry){
-	dbReadTable(conn, "sessionids") %>%
-		mutate(login_time = ymd_hms(login_time)) %>%
-		as_tibble() %>%
-		filter(login_time > now() - days(expiry))
+get_sessionids_from_db <- function(conn = db, expiry = cookie_expiry) {
+  dbReadTable(conn, "sessionids") %>%
+    mutate(login_time = ymd_hms(login_time)) %>%
+    as_tibble() %>%
+    filter(login_time > now() - days(expiry))
 }
 
-if(file.exists("my_db_file")){
-	db <- dbConnect(SQLite(), "my_db_file")
-} else{
-	db <- dbConnect(SQLite(), "my_db_file")
-	dbCreateTable(db, "sessionids", c(user = "TEXT", sessionid = "TEXT", login_time = "TEXT"))
+if (file.exists("my_db_file")) {
+  db <- dbConnect(SQLite(), "my_db_file")
+} else {
+  db <- dbConnect(SQLite(), "my_db_file")
+  dbCreateTable(db, "sessionids", c(user = "TEXT", sessionid = "TEXT", login_time = "TEXT"))
 }
 
 # dataframe that holds usernames, passwords and other user data
-user_base <- data.frame(
-	user = c("user1", "user2"),
-	password = c("pass1", "pass2"),
-	permissions = c("admin", "standard"),
-	name = c("User One", "User Two"),
-	stringsAsFactors = FALSE,
-	row.names = NULL
+user_base <- tibble::tibble(
+  user = c("user1", "user2"),
+  password = c("pass1", "pass2"),
+  permissions = c("admin", "standard"),
+  name = c("User One", "User Two")
 )
 
 ui <- fluidPage(
-	# add logout button UI
-	div(class = "pull-right", shinyauthr::logoutUI(id = "logout")),
-	# add login panel UI function
-	shinyauthr::loginUI(id = "login", cookie_expiry = cookie_expiry),
-	# setup table output to show user info after login
-	tableOutput("user_table")
+  # add logout button UI
+  div(class = "pull-right", shinyauthr::logoutUI(id = "logout")),
+  # add login panel UI function
+  shinyauthr::loginUI(id = "login", cookie_expiry = cookie_expiry),
+  # setup table output to show user info after login
+  tableOutput("user_table")
 )
 
 server <- function(input, output, session) {
 
-	# call the logout module with reactive trigger to hide/show
-	logout_init <- callModule(shinyauthr::logout,
-							  id = "logout",
-							  active = reactive(credentials()$user_auth))
+  # call the logout module with reactive trigger to hide/show
+  logout_init <- callModule(
+    shinyauthr::logout,
+    id = "logout",
+    active = reactive(credentials()$user_auth)
+  )
 
-	# call login module supplying data frame, user and password cols
-	# and reactive trigger
-	credentials <- callModule(shinyauthr::login,
-							  id = "login",
-							  data = user_base,
-							  user_col = user,
-							  pwd_col = password,
-							  sessionid_col = sessionid,
-							  cookie_getter = get_sessionids_from_db,
-							  cookie_setter = add_sessionid_to_db,
-							  log_out = reactive(logout_init()))
+  # call login module supplying data frame, user and password cols
+  # and reactive trigger
+  credentials <- callModule(
+    shinyauthr::login,
+    id = "login",
+    data = user_base,
+    user_col = user,
+    pwd_col = password,
+    sessionid_col = sessionid,
+    cookie_getter = get_sessionids_from_db,
+    cookie_setter = add_sessionid_to_db,
+    log_out = reactive(logout_init())
+  )
 
-	# pulls out the user information returned from login module
-	user_data <- reactive({credentials()$info})
+  # pulls out the user information returned from login module
+  user_data <- reactive({
+    credentials()$info
+  })
 
-	output$user_table <- renderTable({
-		# use req to only render results when credentials()$user_auth is TRUE
-		req(credentials()$user_auth)
-		user_data() %>%
-			mutate(across(starts_with("login_time"), as.character))
-	})
+  output$user_table <- renderTable({
+    # use req to only render results when credentials()$user_auth is TRUE
+    req(credentials()$user_auth)
+    user_data() %>%
+      mutate(across(starts_with("login_time"), as.character))
+  })
 }
 
 shinyApp(ui = ui, server = server)
@@ -208,13 +215,11 @@ For example, a sample user base like the following can be incorporated for use w
 # then save to an rds file in app directory
 library(sodium)
 
-user_base <- data.frame(
+user_base <- tibble::tibble(
   user = c("user1", "user2"),
-  password = sapply(c("pass1", "pass2"), sodium::password_store), 
+  password = purrr::map_chr(c("pass1", "pass2"), sodium::password_store),
   permissions = c("admin", "standard"),
-  name = c("User One", "User Two"),
-  stringsAsFactors = FALSE,
-  row.names = NULL
+  name = c("User One", "User Two")
 )
 
 saveRDS(user_base, "user_base.rds")
@@ -225,12 +230,15 @@ user_base <- readRDS("user_base.rds")
 ```
 ```r
 # then when calling the module set sodium_hashed = TRUE
-credentials <- callModule(shinyauthr::login, "login", 
-                          data = user_base,
-                          user_col = user,
-                          pwd_col = password,
-                          sodium_hashed = TRUE,
-                          log_out = reactive(logout_init()))
+credentials <- callModule(
+  shinyauthr::login,
+  id = "login",
+  data = user_base,
+  user_col = user,
+  pwd_col = password,
+  sodium_hashed = TRUE,
+  log_out = reactive(logout_init())
+)
 ```
 
 ## Disclaimer
@@ -239,7 +247,7 @@ I'm not a security professional so cannot guarantee this authentication procedur
 
 I would welcome any feedback on any potential vulnerabilities in the process. I know that apps hosted on a server without an SSL certificate could be open to interception of usernames and passwords submitted by a user. As such I would not recommend the use of shinyauthr without an HTTPS connection.
 
-For apps intended for use within commercial organisations, I would recommend one of RStudio's commercial shiny hosting options, or [shinyproxy](https://www.shinyproxy.io/), both of which have built in authetication options.
+For apps intended for use within commercial organisations, I would recommend one of RStudio's commercial shiny hosting options, or [shinyproxy](https://www.shinyproxy.io/), both of which have built in authentication options.
 
 However, I hope that having an easy-to-implement open-source shiny authentication option like this will prove useful when alternative options are not feasible.
 
