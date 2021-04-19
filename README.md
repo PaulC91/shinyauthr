@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![R-CMD-check](https://github.com/PaulC91/shinyauthr/workflows/R-CMD-check/badge.svg)](https://github.com/PaulC91/shinyauthr/actions)
 <!-- badges: end -->
 
 `shinyauthr` is an R package providing module functions that can be used to add an authentication layer to your shiny apps.
