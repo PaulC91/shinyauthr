@@ -91,15 +91,29 @@ server <- function(input, output, session) {
 shinyApp(ui = ui, server = server)
 ```
 
+## Details
+
+When the login module is called, it returns a reactive list containing 2 elements:
+
+- `user_auth`
+- `info`
+
+The initial values of these variables are `FALSE` and `NULL` respectively. However,
+given a data frame or tibble containing user names, passwords and other user data (optional), the login module will assign a `user_auth` value of `TRUE` if the user supplies a matching user name and password. The value of `info` then becomes the row of data associated with that user which can be used in the main app to control content based on user permission variables etc.
+
+The logout button will only show when `user_auth` is `TRUE`. Clicking the button will reset `user_auth` back to `FALSE` which will hide the button and show the login panel again.
+
+You can set the code in your server functions to only run after a successful login through use of the `req()` function inside all reactives, renders and observers. In the example above, using `req(credentials()$user_auth)` inside the `renderTable` function ensures the table showing the returned user information is only rendered when `user_auth` is `TRUE`.
+
 ## Cookie-Based Authentication
 
-To enable cookie-based automatic login for returning users, you must create your own functions to save and load session info in a database.
+Most authentication systems use browser cookies to avoid returning users having to re-enter their user name and password every time they return to the app. `shinyauthr` provides a method for cookie-based automatic login, but you must create your own functions to save and load session info into a database with [persistent data storage](https://shiny.rstudio.com/articles/persistent-data-storage.html).
 
 The first required function must accept two parameters `user` and `session`.  The first of these is the user name for log in.  The second is a randomly generated string that identifies the session.  The app asks the user's web browser to save this session id as a cookie.
 
 The second required function is called without parameters and must return a data.frame of valid `user` and `session` ids.  If the user's web browser sends your app a cookie which appears in the `session` column, then the corresponding `user` is automatically logged in.
 
-Pass these functions to the login module via `callModule(shinyauthr::login, ...)` as the `cookie_setter` and `cookie_getter` parameters.  A minimal example is below.
+Pass these functions to the login module via `callModule(shinyauthr::login, ...)` as the `cookie_setter` and `cookie_getter` parameters.  A minimal example, using [RSQLite](https://rsqlite.r-dbi.org/) as a local database to write and store user session data, is below.
 
 ```r
 library(shiny)
@@ -108,6 +122,16 @@ library(lubridate)
 library(DBI)
 library(RSQLite)
 
+# connect to, or setup and connect to local SQLite db
+if (file.exists("my_db_file")) {
+  db <- dbConnect(SQLite(), "my_db_file")
+} else {
+  db <- dbConnect(SQLite(), "my_db_file")
+  dbCreateTable(db, "sessionids", c(user = "TEXT", sessionid = "TEXT", login_time = "TEXT"))
+}
+
+# a user who has not visited the app for this many days
+# will be asked to login with user name and password again
 cookie_expiry <- 7 # Days until session expires
 
 # This function must accept two parameters: user and sessionid. It will be called whenever the user
@@ -126,13 +150,6 @@ get_sessionids_from_db <- function(conn = db, expiry = cookie_expiry) {
     mutate(login_time = ymd_hms(login_time)) %>%
     as_tibble() %>%
     filter(login_time > now() - days(expiry))
-}
-
-if (file.exists("my_db_file")) {
-  db <- dbConnect(SQLite(), "my_db_file")
-} else {
-  db <- dbConnect(SQLite(), "my_db_file")
-  dbCreateTable(db, "sessionids", c(user = "TEXT", sessionid = "TEXT", login_time = "TEXT"))
 }
 
 # dataframe that holds usernames, passwords and other user data
@@ -191,20 +208,6 @@ server <- function(input, output, session) {
 shinyApp(ui = ui, server = server)
 ```
 
-## Details
-
-When the login module is called, it returns a reactive list containing 2 elements:
-
-- `user_auth`
-- `info`
-
-The initial values of these variables are `FALSE` and `NULL` respectively. However,
-given a data frame or tibble containing user names, passwords and other user data (optional), the login module will assign a `user_auth` value of `TRUE` if the user supplies a matching user name and password. The value of `info` then becomes the row of data associated with that user which can be used in the main to control content based on user permission variables etc.
-
-The logout button will only show when `user_auth` is `TRUE`. Clicking the button will reset `user_auth` back to `FALSE` which will hide the button and show the login panel again.
-
-You can set the code in your server functions to only run after a successful login through use of the `req()` function inside all reactives, renders and observers. In the example above, using `req(credentials()$user_auth)` inside the `renderTable` function ensures the table showing the returned user information is only rendered when `user_auth` is `TRUE`.
-
 ## Hashing Passwords with `sodium`
 
 If you are hosting your user passwords on the internet, it is a good idea to first encrypt them with a hashing algorithm. You can use the [sodium package](https://github.com/jeroen/sodium) to do this. Sodium uses a slow hashing algorithm that is specifically designed to protect stored passwords from brute-force attacks. More on this [here](https://download.libsodium.org/doc/password_hashing/). You then tell the `shinyauthr::login` module that your passwords have been hashed by `sodium` and `shinyauthr` will then decrypt when login is requested. Your plain text passwords must be a character vector, not factors, when hashing for this to work as shiny inputs are passed as character strings.
@@ -246,7 +249,7 @@ credentials <- callModule(
 
 I'm not a security professional so cannot guarantee this authentication procedure to be foolproof. It is ultimately the shiny app developer's responsibility not to expose any sensitive content to the client without the necessary login criteria being met.
 
-I would welcome any feedback on any potential vulnerabilities in the process. I know that apps hosted on a server without an SSL certificate could be open to interception of usernames and passwords submitted by a user. As such I would not recommend the use of shinyauthr without an HTTPS connection.
+I would welcome any feedback on any potential vulnerabilities in the process. I know that apps hosted on a server without an SSL certificate could be open to interception of user names and passwords submitted by a user. As such I would not recommend the use of shinyauthr without an HTTPS connection.
 
 For apps intended for use within commercial organisations, I would recommend one of RStudio's commercial shiny hosting options, or [shinyproxy](https://www.shinyproxy.io/), both of which have built in authentication options.
 
