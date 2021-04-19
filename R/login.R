@@ -18,8 +18,7 @@
 #' @author Paul Campbell, \email{pacampbell91@gmail.com}
 #'
 #' @export
-loginUI <- function(
-                    id,
+loginUI <- function(id,
                     title = "Please log in",
                     user_title = "User Name",
                     pass_title = "Password",
