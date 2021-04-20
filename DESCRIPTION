@@ -11,7 +11,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    shiny,
+    shiny (>= 1.5.0),
     shinyjs,
     dplyr,
     rlang,
@@ -24,4 +24,7 @@ Suggests:
     DBI,
     RSQLite,
     lubridate,
-    shinydashboard
+    shinydashboard,
+    testthat (>= 3.0.0),
+    shinytest
+Config/testthat/edition: 3

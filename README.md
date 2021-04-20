@@ -23,7 +23,7 @@ remotes::install_github("paulc91/shinyauthr")
 shinyauthr::runShinyExample()
 ```
 
-See full code in the [inst directory](inst/shiny-examples/shinyauthr_example).
+[See full code here](inst/shiny-examples/shinyauthr_example).
 
 ## Usage
 
@@ -59,16 +59,14 @@ ui <- fluidPage(
 server <- function(input, output, session) {
 
   # call the logout module with reactive trigger to hide/show
-  logout_init <- callModule(
-    shinyauthr::logout,
+  logout_init <- shinyauthr::logoutServer(
     id = "logout",
     active = reactive(credentials()$user_auth)
   )
 
   # call login module supplying data frame, user and password cols
   # and reactive trigger
-  credentials <- callModule(
-    shinyauthr::login,
+  credentials <- shinyauthr::loginServer(
     id = "login",
     data = user_base,
     user_col = user,
@@ -172,20 +170,19 @@ ui <- fluidPage(
 server <- function(input, output, session) {
 
   # call the logout module with reactive trigger to hide/show
-  logout_init <- callModule(
-    shinyauthr::logout,
+  logout_init <- shinyauthr::logoutServer(
     id = "logout",
     active = reactive(credentials()$user_auth)
   )
 
   # call login module supplying data frame, user and password cols
   # and reactive trigger
-  credentials <- callModule(
-    shinyauthr::login,
+  credentials <- shinyauthr::loginServer(
     id = "login",
     data = user_base,
     user_col = user,
     pwd_col = password,
+    cookie_logins = TRUE,
     sessionid_col = sessionid,
     cookie_getter = get_sessionids_from_db,
     cookie_setter = add_sessionid_to_db,
@@ -234,8 +231,7 @@ user_base <- readRDS("user_base.rds")
 ```
 ```r
 # then when calling the module set sodium_hashed = TRUE
-credentials <- callModule(
-  shinyauthr::login,
+credentials <- shinyauthr::loginServer(
   id = "login",
   data = user_base,
   user_col = user,

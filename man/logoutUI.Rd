@@ -13,7 +13,7 @@ logoutUI(
 )
 }
 \arguments{
-\item{id}{Shiny id}
+\item{id}{An ID string that corresponds with the ID used to call the module's server function}
 
 \item{label}{label for the logout button}
 

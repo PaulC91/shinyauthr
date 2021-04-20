@@ -4,7 +4,7 @@
 #'
 #' Call via \code{logoutUI("your_id")}
 #'
-#' @param id Shiny id
+#' @param id An ID string that corresponds with the ID used to call the module's server function
 #' @param label label for the logout button
 #' @param icon An optional \code{\link[shiny]{icon}} to appear on the button.
 #' @param class bootstrap class for the logout button
@@ -18,6 +18,45 @@ logoutUI <- function(id, label = "Log out", icon = NULL, class = "btn-danger", s
 
   shinyjs::hidden(
     shiny::actionButton(ns("button"), label, icon = icon, class = class, style = style)
+  )
+}
+
+#' logout server module
+#'
+#' Shiny authentication module for use with \link{logoutUI}
+#'
+#' Call via \code{logoutServer(id = "id", ...)}
+#'
+#' @param id An ID string that corresponds with the ID used to call the module's UI function
+#' @param active \code{reactive} supply the returned \code{user_auth} boolean reactive from \link{loginServer}
+#'   here to hide/show the logout button
+#' @param ... arguments passed to \link[shinyjs]{toggle}
+#'
+#' @return The reactive output of this module should be supplied as the \code{log_out} argument to the
+#'   \link{loginServer} module to trigger the logout process
+#'
+#' @examples
+#' \dontrun{
+#' logout_init <- logoutServer(
+#'   id = "logout",
+#'   active = reactive(credentials()$user_auth)
+#' )
+#' }
+#'
+#' @export
+logoutServer <- function(id, active, ...) {
+  shiny::moduleServer(
+    id,
+    function (input, output, session) {
+      shiny::observe({
+        shinyjs::toggle(id = "button", condition = active(), ...)
+      })
+      
+      # return reactive logout button tracker
+      shiny::reactive({
+        input$button
+      })
+    }
   )
 }
 
