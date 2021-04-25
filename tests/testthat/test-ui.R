@@ -1,6 +1,8 @@
-library(shinytest)
 library(testthat)
 library(shiny)
+library(shinytest)
+
+shinytest::installDependencies()
 
 options(shiny.testmode = TRUE)
 
