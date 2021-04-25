@@ -2,8 +2,6 @@
 #'
 #' Shiny UI Module for use with \link{login}
 #'
-#' Call via \code{loginUI("id")}
-#'
 #' @param id An ID string that corresponds with the ID used to call the module's server function
 #' @param title header title for the login panel
 #' @param user_title label for the user name text input
@@ -14,8 +12,6 @@
 #' @param cookie_expiry number of days to request browser to retain login cookie
 #'
 #' @return Shiny UI
-#'
-#' @author Paul Campbell, \email{pacampbell91@gmail.com}
 #'
 #' @export
 loginUI <- function(id,
@@ -63,8 +59,11 @@ loginUI <- function(id,
 #' login server module
 #'
 #' Shiny authentication module for use with \link{loginUI}
-#'
-#' Call via \code{loginServer("id", ...)}
+#' 
+#' This module uses shiny's new \link[shiny]{moduleServer} method as opposed to the \link[shiny]{callModule}
+#' method used by the now deprecated \link{login} function and must be called differently in your app.
+#' For details on how to migrate see the 'Migrating from callModule to moduleServer' section of 
+#' \href{https://shiny.rstudio.com/articles/modules.html}{Modularizing Shiny app code}.
 #'
 #' @param id 	An ID string that corresponds with the ID used to call the module's UI function
 #' @param data data frame or tibble containing user names, passwords and other user data
@@ -72,7 +71,7 @@ loginUI <- function(id,
 #' @param pwd_col bare (unquoted) or quoted column name containing passwords
 #' @param sodium_hashed have the passwords been hash encrypted using the sodium package? defaults to FALSE
 #' @param log_out [reactive] supply the returned reactive from \link{logoutServer} here to trigger a user logout
-#' @param reload_on_logout should app force reload on logout?
+#' @param reload_on_logout should app force a session reload on logout?
 #' @param cookie_logins enable automatic logins via browser cookies?
 #' @param sessionid_col bare (unquoted) or quoted column name containing session ids
 #' @param cookie_getter a function that returns a data.frame with at least two columns: user and session
@@ -259,11 +258,17 @@ loginServer <- function(id,
   )
 }
 
-#' login server module
+#' login server module (deprecated)
 #'
 #' Shiny authentication module for use with \link{loginUI}
-#'
-#' Call via \code{shiny::callModule(login, "your_id", ...)}
+#' 
+#' Call via \code{shiny::callModule(shinyauthr::login, "id", ...)}
+#' 
+#' This function is now deprecated in favour of \link{loginServer} which uses shiny's new \link[shiny]{moduleServer} 
+#' method as opposed to the \link[shiny]{callModule} method used by this function. 
+#' See the \link{loginServer} documentation For details on how to migrate.
+#' 
+#' @usage NULL
 #'
 #' @param input shiny input
 #' @param output shiny output
@@ -315,9 +320,16 @@ login <- function(input,
                   cookie_getter,
                   cookie_setter,
                   reload_on_logout = FALSE) {
+  
+  .Deprecated(msg = paste0("'shinyauthr::login' is deprecated. Use 'shinyauthr::loginServer' instead.\n", 
+                           "See ?shinyauthr::loginServer for information on how to switch."))
+  
   if (!missing(hashed)) {
     stop(
-      "in shinyauthr::login module call. Argument hashed is deprecated. shinyauthr now uses the sodium package for password hashing and decryption. If you had previously hashed your passwords with the digest package to use with shinyauthr, please re-hash them with sodium and use the sodium_hashed argument instead for decryption to work.",
+      paste("in shinyauthr::login module call. Argument hashed is deprecated. shinyauthr now uses", 
+            "the sodium package for password hashing and decryption.", 
+            "If you had previously hashed your passwords with the digest package to use with shinyauthr,", 
+            "please re-hash them with sodium and use the sodium_hashed argument instead for decryption to work."),
       call. = FALSE
     )
   }

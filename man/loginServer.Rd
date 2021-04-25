@@ -31,7 +31,7 @@ loginServer(
 
 \item{log_out}{[reactive] supply the returned reactive from \link{logoutServer} here to trigger a user logout}
 
-\item{reload_on_logout}{should app force reload on logout?}
+\item{reload_on_logout}{should app force a session reload on logout?}
 
 \item{cookie_logins}{enable automatic logins via browser cookies?}
 
@@ -52,7 +52,10 @@ The module will return a reactive 2 element list to your main application.
 Shiny authentication module for use with \link{loginUI}
 }
 \details{
-Call via \code{loginServer("id", ...)}
+This module uses shiny's new \link[shiny]{moduleServer} method as opposed to the \link[shiny]{callModule}
+method used by the now deprecated \link{login} function and must be called differently in your app.
+For details on how to migrate see the 'Migrating from callModule to moduleServer' section of 
+\href{https://shiny.rstudio.com/articles/modules.html}{Modularizing Shiny app code}.
 }
 \examples{
 \dontrun{

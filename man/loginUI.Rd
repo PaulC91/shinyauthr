@@ -38,9 +38,3 @@ Shiny UI
 \description{
 Shiny UI Module for use with \link{login}
 }
-\details{
-Call via \code{loginUI("id")}
-}
-\author{
-Paul Campbell, \email{pacampbell91@gmail.com}
-}

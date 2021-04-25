@@ -55,8 +55,7 @@ server <- function(input, output, session) {
     auth_info   = credentials()$info
   )
   
-  # call login module supplying data frame, user and password cols
-  # and reactive trigger
+  # call login module supplying data frame, user and password cols and reactive trigger
   credentials <- shinyauthr::loginServer(
     id = "login",
     data = user_base,

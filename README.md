@@ -1,25 +1,26 @@
 # shinyauthr
 
 <!-- badges: start -->
-[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![R-CMD-check](https://github.com/PaulC91/shinyauthr/workflows/R-CMD-check/badge.svg)](https://github.com/PaulC91/shinyauthr/actions)
+
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![R-CMD-check](https://github.com/PaulC91/shinyauthr/workflows/R-CMD-check/badge.svg)](https://github.com/PaulC91/shinyauthr/actions)
+
 <!-- badges: end -->
 
 `shinyauthr` is an R package providing module functions that can be used to add an authentication layer to your shiny apps.
 
-It borrows some code from treysp's [shiny_password](https://github.com/treysp/shiny_password) template with the goal of making implementation simpler for end users and allowing the login/logout UIs to fit easily into any UI framework, including [shinydashboard](https://rstudio.github.io/shinydashboard/). 
+It borrows some code from treysp's [shiny_password](https://github.com/treysp/shiny_password) template with the goal of making implementation simpler for end users and allowing the login/logout UIs to fit easily into any UI framework, including [shinydashboard](https://rstudio.github.io/shinydashboard/).
 
 To enable cookie-based authentication in browsers, it also borrows code from calligross's [Shiny Cookie Based Authentication Example](https://gist.github.com/calligross/e779281b500eb93ee9e42e4d72448189) and from an earlier PR from [aqualogy](https://github.com/aqualogy/shinyauthr).
 
 ## Installation
 
-```r
+``` r
 remotes::install_github("paulc91/shinyauthr")
 ```
 
 ## Run example app
 
-```r
+``` r
 shinyauthr::runShinyExample()
 ```
 
@@ -29,14 +30,16 @@ shinyauthr::runShinyExample()
 
 The package provides 2 module functions each with a UI and server element:
 
-- `login()`
-- `loginUI()`
-- `logout()`
-- `logoutUI()`
+-   `loginUI()`
+-   `loginServer()`
+-   `logoutUI()`
+-   `logoutServer()`
 
-Below is a minimal reproducible example of how to use the authentication modules in a shiny app. Note that this package invisibly calls `shinyjs::useShinyjs()` and there is no need for you to do so (although there is no harm if you do).
+**Note**: the server modules use shiny's new (version \>= 1.5.0) `shiny::moduleServer` method as opposed to the `shiny::callModule` method used by the now deprecated `shinyauthr::login` and `shinyauthr::logout` functions. These functions will remain in the package for backwards compatibility but it is recommended you migrate to the new server functions. This will require some adjustments to the module server function calling method used in your app. For details on how to migrate see the 'Migrating from callModule to moduleServer' section of [Modularizing Shiny app code](https://shiny.rstudio.com/articles/modules.html).
 
-```r
+Below is a minimal reproducible example of how to use the authentication modules in a shiny app. Note that this package invisibly calls `shinyjs::useShinyjs()` internally and there is no need for you to do so yourself (although there is no harm if you do).
+
+``` r
 library(shiny)
 
 # dataframe that holds usernames, passwords and other user data
@@ -58,20 +61,20 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
 
-  # call the logout module with reactive trigger to hide/show
-  logout_init <- shinyauthr::logoutServer(
-    id = "logout",
-    active = reactive(credentials()$user_auth)
-  )
-
-  # call login module supplying data frame, user and password cols
-  # and reactive trigger
+  # call login module supplying data frame, 
+  # user and password cols and reactive trigger
   credentials <- shinyauthr::loginServer(
     id = "login",
     data = user_base,
     user_col = user,
     pwd_col = password,
     log_out = reactive(logout_init())
+  )
+
+  # call the logout module with reactive trigger to hide/show
+  logout_init <- shinyauthr::logoutServer(
+    id = "logout",
+    active = reactive(credentials()$user_auth)
   )
 
   # pulls out the user information returned from login module
@@ -93,11 +96,10 @@ shinyApp(ui = ui, server = server)
 
 When the login module is called, it returns a reactive list containing 2 elements:
 
-- `user_auth`
-- `info`
+-   `user_auth`
+-   `info`
 
-The initial values of these variables are `FALSE` and `NULL` respectively. However,
-given a data frame or tibble containing user names, passwords and other user data (optional), the login module will assign a `user_auth` value of `TRUE` if the user supplies a matching user name and password. The value of `info` then becomes the row of data associated with that user which can be used in the main app to control content based on user permission variables etc.
+The initial values of these variables are `FALSE` and `NULL` respectively. However, given a data frame or tibble containing user names, passwords and other user data (optional), the login module will assign a `user_auth` value of `TRUE` if the user supplies a matching user name and password. The value of `info` then becomes the row of data associated with that user which can be used in the main app to control content based on user permission variables etc.
 
 The logout button will only show when `user_auth` is `TRUE`. Clicking the button will reset `user_auth` back to `FALSE` which will hide the button and show the login panel again.
 
@@ -107,13 +109,13 @@ You can set the code in your server functions to only run after a successful log
 
 Most authentication systems use browser cookies to avoid returning users having to re-enter their user name and password every time they return to the app. `shinyauthr` provides a method for cookie-based automatic login, but you must create your own functions to save and load session info into a database with [persistent data storage](https://shiny.rstudio.com/articles/persistent-data-storage.html).
 
-The first required function must accept two parameters `user` and `session`.  The first of these is the user name for log in.  The second is a randomly generated string that identifies the session.  The app asks the user's web browser to save this session id as a cookie.
+The first required function must accept two parameters `user` and `session`. The first of these is the user name for log in. The second is a randomly generated string that identifies the session. The app asks the user's web browser to save this session id as a cookie.
 
-The second required function is called without parameters and must return a data.frame of valid `user` and `session` ids.  If the user's web browser sends your app a cookie which appears in the `session` column, then the corresponding `user` is automatically logged in.
+The second required function is called without parameters and must return a data.frame of valid `user` and `session` ids. If the user's web browser sends your app a cookie which appears in the `session` column, then the corresponding `user` is automatically logged in.
 
-Pass these functions to the login module via `callModule(shinyauthr::login, ...)` as the `cookie_setter` and `cookie_getter` parameters.  A minimal example, using [RSQLite](https://rsqlite.r-dbi.org/) as a local database to write and store user session data, is below.
+Pass these functions to the login module via `callModule(shinyauthr::login, ...)` as the `cookie_setter` and `cookie_getter` parameters. A minimal example, using [RSQLite](https://rsqlite.r-dbi.org/) as a local database to write and store user session data, is below.
 
-```r
+``` r
 library(shiny)
 library(dplyr)
 library(lubridate)
@@ -211,7 +213,7 @@ If you are hosting your user passwords on the internet, it is a good idea to fir
 
 For example, a sample user base like the following can be incorporated for use with `shinyauthr`:
 
-```r
+``` r
 # create a user base then hash passwords with sodium
 # then save to an rds file in app directory
 library(sodium)
@@ -225,11 +227,13 @@ user_base <- tibble::tibble(
 
 saveRDS(user_base, "user_base.rds")
 ```
-```r
+
+``` r
 # in your app code, read in the user base rds file
 user_base <- readRDS("user_base.rds")
 ```
-```r
+
+``` r
 # then when calling the module set sodium_hashed = TRUE
 credentials <- shinyauthr::loginServer(
   id = "login",
@@ -251,6 +255,4 @@ For apps intended for use within commercial organisations, I would recommend one
 
 However, I hope that having an easy-to-implement open-source shiny authentication option like this will prove useful when alternative options are not feasible.
 
-_Paul Campbell_
-
-
+*Paul Campbell*

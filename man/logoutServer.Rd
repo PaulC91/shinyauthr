@@ -22,7 +22,10 @@ The reactive output of this module should be supplied as the \code{log_out} argu
 Shiny authentication module for use with \link{logoutUI}
 }
 \details{
-Call via \code{logoutServer(id = "id", ...)}
+This module uses shiny's new \link[shiny]{moduleServer} method as opposed to the \link[shiny]{callModule}
+method used by the now deprecated \link{login} function and must be called differently in your app.
+For details on how to migrate see the 'Migrating from callModule to moduleServer' section of 
+\href{https://shiny.rstudio.com/articles/modules.html}{Modularizing Shiny app code}.
 }
 \examples{
 \dontrun{

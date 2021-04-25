@@ -29,6 +29,3 @@ Shiny UI action button
 \description{
 Shiny UI Module for use with \link{logout}
 }
-\details{
-Call via \code{logoutUI("your_id")}
-}
