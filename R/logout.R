@@ -33,7 +33,7 @@ logoutUI <- function(id, label = "Log out", icon = NULL, class = "btn-danger", s
 #'   here to hide/show the logout button
 #' @param ... arguments passed to \link[shinyjs]{toggle}
 #'
-#' @return The reactive output of this module should be supplied as the \code{log_out} argument to the
+#' @return Reactive boolean, to be supplied as the \code{log_out} argument of the
 #'   \link{loginServer} module to trigger the logout process
 #'
 #' @examples
@@ -79,7 +79,7 @@ logoutServer <- function(id, active, ...) {
 #' @param active [reactive] supply the returned \code{user_auth} boolean reactive from \link{login}
 #'   here to hide/show the logout button
 #'
-#' @return The reactive output of this module should be supplied as the \code{log_out} argument to the
+#' @return Reactive boolean, to be supplied as the \code{log_out} argument of the
 #'   \link{login} module to trigger the logout process
 #'
 #' @examples
