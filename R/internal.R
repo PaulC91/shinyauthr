@@ -7,8 +7,10 @@
 #' @return A random character string.
 #' @keywords internal
 randomString <- function(n = 64) {
-	paste(sample(x = c(letters, LETTERS, 0:9), size = n, replace = TRUE),
-		  collapse = "")
+  paste(
+    sample(x = c(letters, LETTERS, 0:9), size = n, replace = TRUE),
+    collapse = ""
+  )
 }
 
 #' Place Holder Database Cookie Handlers
@@ -29,17 +31,19 @@ NULL
 
 #' @rdname cookie_placeholders
 #' @keywords internal
-default_cookie_getter <- function(user_string, session_string){
-	df <- data.frame(user = character(0), session = character(0))
-	names(df) <- c(user_string, session_string)
-	function(){df}
+default_cookie_getter <- function(user_string, session_string) {
+  df <- data.frame(user = character(0), session = character(0))
+  names(df) <- c(user_string, session_string)
+  function() {
+    df
+  }
 }
 
 
 #' @rdname cookie_placeholders
 #' @keywords internal
-default_cookie_setter <- function(user, session){
-	invisible(NULL)
+default_cookie_setter <- function(user, session) {
+  invisible(NULL)
 }
 
 #' Generate required Javascript
@@ -54,12 +58,15 @@ default_cookie_setter <- function(user, session){
 #' @return Character string of Javascript code
 #' @keywords internal
 #'
-#' @examples \dontrun{
-#' shinyjs::extendShinyjs(text = js_cookie_to_r_code(ns("jscookie")),
-#'                        functions=c("getcookie","setcookie","rmcookie"))
+#' @examples
+#' \dontrun{
+#' shinyjs::extendShinyjs(
+#'   text = js_cookie_to_r_code(ns("jscookie")),
+#'   functions = c("getcookie", "setcookie", "rmcookie")
+#' )
 #' }
-js_cookie_to_r_code <- function(id, expire_days = 7){
-	glue::glue(.open = "{{{", .close = "}}}", '
+js_cookie_to_r_code <- function(id, expire_days = 7) {
+  glue::glue(.open = "{{{", .close = "}}}", '
 	  shinyjs.getcookie = function(params) {
 	    var cookie = Cookies.get("shinyauthr");
 	    if (typeof cookie !== "undefined") {
@@ -85,8 +92,8 @@ js_cookie_to_r_code <- function(id, expire_days = 7){
 #' @param idbutton name of action button, with correct namespace
 #'
 #' @keywords internal
-js_return_click <- function(idpassword, idbutton){
-	glue::glue(.open = "{{{", .close = "}}}", '
+js_return_click <- function(idpassword, idbutton) {
+  glue::glue(.open = "{{{", .close = "}}}", '
 	  $(document).keyup(function(event) {
     if ($("#{{{idpassword}}}").is(":focus") && (event.keyCode == 13)) {
         $("#{{{idbutton}}}").click();
@@ -100,6 +107,6 @@ js_return_click <- function(idpassword, idbutton){
 #' to make the shinyauthr package more self-contained
 #'
 #' @keywords internal
-jscookie_script <- function(){
-	shiny::includeScript(system.file("js-cookie/js-cookie.js", package = "shinyauthr"))
+jscookie_script <- function() {
+  shiny::includeScript(system.file("js-cookie/js-cookie.js", package = "shinyauthr"))
 }

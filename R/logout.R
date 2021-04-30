@@ -38,21 +38,25 @@ logoutUI <- function(id, label = "Log out", icon = NULL, class = "btn-danger", s
 #'
 #' @examples
 #' \dontrun{
-#'   logout_init <- shiny::callModule(logout, "logout",
-#'                                    active = reactive(user_credentials()$user_auth))
+#' logout_init <- shiny::callModule(
+#'   logout,
+#'   id = "logout",
+#'   active = reactive(user_credentials()$user_auth)
+#' )
 #' }
 #'
 #' @export
 logout <- function(input, output, session, active) {
-
   shiny::observe({
-    if(active()){
+    if (active()) {
       shinyjs::show(id = "button", anim = TRUE, time = 1, animType = "fade")
-    } else{
+    } else {
       shinyjs::hide(id = "button", anim = TRUE, time = 1, animType = "fade")
     }
   })
 
   # return reactive logout button tracker
-  shiny::reactive({input$button})
+  shiny::reactive({
+    input$button
+  })
 }
