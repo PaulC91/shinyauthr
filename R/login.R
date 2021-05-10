@@ -231,8 +231,6 @@ loginServer <- function(id,
           credentials$user_auth <- TRUE
           credentials$info <- dplyr::filter(data, {{user_col}} == input$user_name)
           
-          dplyr::filter(data, {{user_col}} == input$user_name)
-          
           if (cookie_logins) {
             .sessionid <- randomString()
             shinyjs::js$setcookie(.sessionid)

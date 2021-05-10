@@ -14,7 +14,7 @@
 here to hide/show the logout button}
 }
 \value{
-The reactive output of this module should be supplied as the \code{log_out} argument to the
+Reactive boolean, to be supplied as the \code{log_out} argument of the
   \link{login} module to trigger the logout process
 }
 \description{
