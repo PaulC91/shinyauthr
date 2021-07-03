@@ -5,7 +5,7 @@ This is the first submission to CRAN. The package has existed on github for seve
 ### Local
 * macOS 10.14.6 Mojave, R 4.0.3
 
-### CI
+### github actions CI
 * windows-latest (release)
 * macOS-latest (release)
 * ubuntu-20.04 (release)
@@ -13,6 +13,4 @@ This is the first submission to CRAN. The package has existed on github for seve
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
+0 errors ✓ | 0 warnings ✓ | 0 notes ✓

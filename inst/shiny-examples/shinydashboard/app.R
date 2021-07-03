@@ -61,12 +61,6 @@ ui <- dashboardPage(
     div(textOutput("welcome"), style = "padding: 20px")
   ),
   dashboardBody(
-    tags$head(
-      tags$script(
-        src = "https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.contentWindow.min.js",
-        type = "text/javascript"
-      )
-    ),
     shinyauthr::loginUI(
       "login", 
       cookie_expiry = cookie_expiry, 
@@ -76,8 +70,7 @@ ui <- dashboardPage(
         HTML(knitr::kable(user_base[, -3], format = "html", table.attr = "style='width:100%;'"))
       )
     ),
-    uiOutput("testUI"),
-    HTML("<div data-iframe-height></div>")
+    uiOutput("testUI")
   )
 )
 

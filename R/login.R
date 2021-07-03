@@ -257,6 +257,8 @@ loginServer <- function(id,
 }
 
 #' login server module (deprecated)
+#' 
+#' Deprecated. Use \link{loginServer} instead.
 #'
 #' Shiny authentication module for use with \link{loginUI}
 #' 

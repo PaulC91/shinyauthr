@@ -62,6 +62,8 @@ logoutServer <- function(id, active, ...) {
 }
 
 #' logout server module (deprecated)
+#' 
+#' Deprecated. Use \link{logoutServer} instead.
 #'
 #' Shiny authentication module for use with \link{logoutUI}
 #' 

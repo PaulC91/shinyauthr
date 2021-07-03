@@ -18,9 +18,11 @@ Reactive boolean, to be supplied as the \code{log_out} argument of the
   \link{login} module to trigger the logout process
 }
 \description{
-Shiny authentication module for use with \link{logoutUI}
+Deprecated. Use \link{logoutServer} instead.
 }
 \details{
+Shiny authentication module for use with \link{logoutUI}
+
 Call via \code{shiny::callModule(shinyauthr::logout, "id", ...)}
 
 This function is now deprecated in favour of \link{logoutServer} which uses shiny's new \link[shiny]{moduleServer} 

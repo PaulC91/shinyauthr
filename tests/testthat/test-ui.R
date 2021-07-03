@@ -2,13 +2,16 @@ library(testthat)
 library(shiny)
 library(shinytest)
 
-shinytest::installDependencies()
+# install dependencies on CI machines
+if (!interactive()) {
+  shinytest::installDependencies()
+}
 
 options(shiny.testmode = TRUE)
 
 # Init shiny driver for testing
-get_app <- function() {
-  app <- ShinyDriver$new(system.file("shiny-examples", "test_app", package = "shinyauthr"))
+get_app <- function(app_name = "test_app") {
+  app <- ShinyDriver$new(system.file("shiny-examples", app_name, package = "shinyauthr"))
   return(app)
 }
 
@@ -70,9 +73,15 @@ test_that("cookie login works after app refresh", {
   testthat::expect_equal(login_panel$getCssValue("display"), "none")
   # check logout button is shown after refresh + cookie login
   testthat::expect_equal(logout_button$getCssValue("display"), "inline-block")
-
-  # values <- app$getAllValues()
-  # expect_true(values$export$auth_status)
-  # expect_s3_class(values$export$auth_info, "data.frame")
 })
+
+
+# test login and logout on now deprecated server functions ===================
+app_deprecated <- get_app(app = "old_server_functions")
+Sys.sleep(1)
+test_login_logout(
+  app_deprecated, 
+  "UI changes accordingly with deprecated login and logout server functions"
+)
+
 
