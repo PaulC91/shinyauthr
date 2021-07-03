@@ -28,42 +28,41 @@ app_logout <- function(app) {
   Sys.sleep(1)
 }
 
-# load app in headless browser for use with shiny test
-app <- get_app()
+test_login_logout <- function(app, desc) {
+  test_that(desc, {
+    login_panel <- app$findElement(xpath = "//*[@id='login-panel']")
+    logout_button <- app$findElement(xpath = "//button[@id='logout-button']")
+    # check login panel is shown on start-up
+    testthat::expect_equal(login_panel$getCssValue("display"), "block")
+    # check logout button is hidden on start-up
+    testthat::expect_equal(logout_button$getCssValue("display"), "none")
+    # login
+    app_login(app)
+    # check login panel is hidden after login
+    testthat::expect_equal(login_panel$getCssValue("display"), "none")
+    # check logout button is shown after login
+    testthat::expect_equal(logout_button$getCssValue("display"), "inline-block")
+    # logout
+    app_logout(app)
+    # check login panel is shown again after logout
+    testthat::expect_equal(login_panel$getCssValue("display"), "block")
+    # check logout button is hidden again after logout
+    testthat::expect_equal(logout_button$getCssValue("display"), "none")
+    # check pwd input does not contain previously entered pwd after logout
+    pwd_input <- app$findElement(xpath = "//input[@id='login-password']")
+    testthat::expect_equal(pwd_input$getText(), "")
+  })
+}
+
+# load test app in headless browser for use with shiny test ======================
+app <- get_app(app_name = "test_app")
 Sys.sleep(1)
 
-test_that("UI changes accordingly with login and logout", {
-  login_panel <- app$findElement(xpath = "//*[@id='login-panel']")
-  logout_button <- app$findElement(xpath = "//button[@id='logout-button']")
+# test login and logout ===================
+test_login_logout(app, "UI changes accordingly with login and logout")
 
-  # check login panel is shown on start-up
-  testthat::expect_equal(login_panel$getCssValue("display"), "block")
-  # check logout button is hidden on start-up
-  testthat::expect_equal(logout_button$getCssValue("display"), "none")
-
-  # login
-  app_login(app, role = "admin")
-
-  # check login panel is hidden after login
-  testthat::expect_equal(login_panel$getCssValue("display"), "none")
-  # check logout button is shown after login
-  testthat::expect_equal(logout_button$getCssValue("display"), "inline-block")
-
-  # logout
-  app_logout(app)
-
-  # check login panel is shown again after logout
-  testthat::expect_equal(login_panel$getCssValue("display"), "block")
-  # check logout button is hidden again after logout
-  testthat::expect_equal(logout_button$getCssValue("display"), "none")
-  # check pwd input does not contain previously entered pwd after logout
-  pwd_input <- app$findElement(xpath = "//input[@id='login-password']")
-  testthat::expect_equal(pwd_input$getText(), "")
-
-})
-
+# test cookie logins ===================
 test_that("cookie login works after app refresh", {
-  # either change role away from admin, or call app <- get_app() before test; otherwise get error that app$setInputs(`login-user_name`) sees no change
   app_login(app, role = "user")
   app$refresh()
   Sys.sleep(1)
@@ -74,7 +73,6 @@ test_that("cookie login works after app refresh", {
   # check logout button is shown after refresh + cookie login
   testthat::expect_equal(logout_button$getCssValue("display"), "inline-block")
 })
-
 
 # test login and logout on now deprecated server functions ===================
 app_deprecated <- get_app(app = "old_server_functions")
