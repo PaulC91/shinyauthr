@@ -4,13 +4,10 @@
 
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing) [![R-CMD-check](https://github.com/PaulC91/shinyauthr/workflows/R-CMD-check/badge.svg)](https://github.com/PaulC91/shinyauthr/actions)
 
+[![Codecov test coverage](https://codecov.io/gh/PaulC91/shinyauthr/branch/master/graph/badge.svg)](https://codecov.io/gh/PaulC91/shinyauthr?branch=master)
 <!-- badges: end -->
 
 `shinyauthr` is an R package providing module functions that can be used to add an authentication layer to your shiny apps.
-
-It borrows some code from treysp's [shiny_password](https://github.com/treysp/shiny_password) template with the goal of making implementation simpler for end users and allowing the login/logout UIs to fit easily into any UI framework, including [shinydashboard](https://rstudio.github.io/shinydashboard/).
-
-To enable cookie-based authentication in browsers, it also borrows code from calligross's [Shiny Cookie Based Authentication Example](https://gist.github.com/calligross/e779281b500eb93ee9e42e4d72448189) and from an earlier PR from [aqualogy](https://github.com/aqualogy/shinyauthr).
 
 ## Installation
 
@@ -18,10 +15,14 @@ To enable cookie-based authentication in browsers, it also borrows code from cal
 remotes::install_github("paulc91/shinyauthr")
 ```
 
-## Run example app
+## Run example apps
+
+Code for example apps using various UI frameworks can be found in [inst/shiny-examples](inst/shiny-examples). You can launch the apps with the following functions:
 
 ``` r
-shinyauthr::runShinyExample()
+shinyauthr::runExample()
+shinyauthr::runShinyDashboardExample()
+shinyauthr::runNavbarPageExample()
 ```
 
 [See full code here](inst/shiny-examples/shinyauthr_example).
@@ -244,6 +245,13 @@ credentials <- shinyauthr::loginServer(
   log_out = reactive(logout_init())
 )
 ```
+
+## Credits
+
+`shinyauthr` originally borrowed some code from treysp's [shiny_password](https://github.com/treysp/shiny_password) template with the goal of making implementation simpler for end users and allowing the login/logout UIs to fit easily into any UI framework, including [shinydashboard](https://rstudio.github.io/shinydashboard/).
+
+Thanks to [Michael Dewer](https://github.com/michael-dewar) for his contribution of cookie-based authentication. Some code was borrowed from calligross's [Shiny Cookie Based Authentication Example](https://gist.github.com/calligross/e779281b500eb93ee9e42e4d72448189) and from an earlier PR from [aqualogy](https://github.com/aqualogy/shinyauthr).
+
 
 ## Disclaimer
 

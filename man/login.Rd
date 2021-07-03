@@ -40,9 +40,11 @@ The module will return a reactive 2 element list to your main application.
   When \code{user_auth} is FALSE \code{info} is NULL.
 }
 \description{
-Shiny authentication module for use with \link{loginUI}
+Deprecated. Use \link{loginServer} instead.
 }
 \details{
+Shiny authentication module for use with \link{loginUI}
+
 Call via \code{shiny::callModule(shinyauthr::login, "id", ...)}
 
 This function is now deprecated in favour of \link{loginServer} which uses shiny's new \link[shiny]{moduleServer} 
