@@ -18,9 +18,10 @@ remotes::install_github("paulc91/shinyauthr")
 
 ## Run example apps
 
-Code for example apps using various UI frameworks can be found in [inst/shiny-examples](inst/shiny-examples). You can launch the apps with the following functions:
+Code for example apps using various UI frameworks can be found in [inst/shiny-examples](inst/shiny-examples). You can launch the apps with the following functions.
 
 ``` r
+# login with user1 pass1 or user2 pass2
 shinyauthr::runExample()
 shinyauthr::runShinyDashboardExample()
 shinyauthr::runNavbarPageExample()
