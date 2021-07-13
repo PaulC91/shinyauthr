@@ -27,8 +27,6 @@ shinyauthr::runShinyDashboardExample()
 shinyauthr::runNavbarPageExample()
 ```
 
-[See full code here](inst/shiny-examples/shinyauthr_example).
-
 ## Usage
 
 The package provides 2 module functions each with a UI and server element:
@@ -116,7 +114,7 @@ The first required function must accept two parameters `user` and `session`. The
 
 The second required function is called without parameters and must return a data.frame of valid `user` and `session` ids. If the user's web browser sends your app a cookie which appears in the `session` column, then the corresponding `user` is automatically logged in.
 
-Pass these functions to the login module via `callModule(shinyauthr::login, ...)` as the `cookie_setter` and `cookie_getter` parameters. A minimal example, using [RSQLite](https://rsqlite.r-dbi.org/) as a local database to write and store user session data, is below.
+Pass these functions to the login module via `shinyauthr::loginServer(...)` as the `cookie_setter` and `cookie_getter` parameters. A minimal example, using [RSQLite](https://rsqlite.r-dbi.org/) as a local database to write and store user session data, is below.
 
 ``` r
 library(shiny)
@@ -212,7 +210,7 @@ shinyApp(ui = ui, server = server)
 
 ## Hashing Passwords with `sodium`
 
-If you are hosting your user passwords on the internet, it is a good idea to first encrypt them with a hashing algorithm. You can use the [sodium package](https://github.com/jeroen/sodium) to do this. Sodium uses a slow hashing algorithm that is specifically designed to protect stored passwords from brute-force attacks. More on this [here](https://doc.libsodium.org/password_hashing/). You then tell the `shinyauthr::login` module that your passwords have been hashed by `sodium` and `shinyauthr` will then decrypt when login is requested. Your plain text passwords must be a character vector, not factors, when hashing for this to work as shiny inputs are passed as character strings.
+If you are hosting your user passwords on the internet, it is a good idea to first encrypt them with a hashing algorithm. You can use the [sodium package](https://github.com/jeroen/sodium) to do this. Sodium uses a slow hashing algorithm that is specifically designed to protect stored passwords from brute-force attacks. More on this [here](https://doc.libsodium.org/password_hashing/). You then tell the `shinyauthr::loginServer` module that your passwords have been hashed by `sodium` and `shinyauthr` will then decrypt when login is requested. Your plain text passwords must be a character vector, not factors, when hashing for this to work as shiny inputs are passed as character strings.
 
 For example, a sample user base like the following can be incorporated for use with `shinyauthr`:
 
@@ -259,7 +257,7 @@ Thanks to [Michael Dewer](https://github.com/michael-dewar) for his contribution
 
 I'm not a security professional so cannot guarantee this authentication procedure to be foolproof. It is ultimately the shiny app developer's responsibility not to expose any sensitive content to the client without the necessary login criteria being met.
 
-I would welcome any feedback on any potential vulnerabilities in the process. I know that apps hosted on a server without an SSL certificate could be open to interception of user names and passwords submitted by a user. As such I would not recommend the use of shinyauthr without an HTTPS connection.
+I would welcome any feedback on any potential vulnerabilities in the process. I know that apps hosted on a server without an SSL certificate could be open to interception of user names and passwords submitted by a user. As such I would not recommend the use of shinyauthr without a HTTPS connection.
 
 For apps intended for use within commercial organisations, I would recommend one of RStudio's commercial shiny hosting options, or [shinyproxy](https://www.shinyproxy.io/), both of which have built in authentication options.
 

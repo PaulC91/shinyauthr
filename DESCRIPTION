@@ -1,11 +1,20 @@
 Package: shinyauthr
 Type: Package
-Title: Shiny Authentication Modules
+Title: 'Shiny' Authentication Modules
 Version: 1.0.0
 Authors@R:
-    c(person("Paul", "Campbell", email = "pacampbell91@gmail.com", role = c("aut", "cre")),
-      person("Michael", "Dewar", email = "michael.p.dewar@gmail.com", role = "ctb"))
-Description: Easily add user authentication to 'shiny' apps and build dynamic user interfaces from user information.
+    c(person(given = "Paul", 
+             family = "Campbell", 
+             email = "pacampbell91@gmail.com",
+             role = c("aut", "cre"),
+             comment = c(ORCID = "0000-0003-1018-6606")),
+      person(given = "Michael", 
+             family = "Dewar", 
+             email = "michael.p.dewar@gmail.com", 
+             role = "ctb"))
+Description: Add in-app user authentication to 'shiny', 
+    allowing you to secure publicly hosted apps and 
+    build dynamic user interfaces from user information.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Imports: 
