@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Generate random string — randomString • shinyauthr</title>
+<title>logout server module — logoutServer • shinyauthr</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Generate random string — randomString" />
-<meta property="og:description" content="This function is used to generate random session ids." />
+<meta property="og:title" content="logout server module — logoutServer" />
+<meta property="og:description" content="Shiny authentication module for use with logoutUI" />
 
 
 
@@ -111,30 +111,55 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Generate random string</h1>
-    <small class="dont-index">Source: <a href='https://github.com/paulc91/shinyauthr/blob/master/R/internal.R'><code>R/internal.R</code></a></small>
-    <div class="hidden name"><code>randomString.Rd</code></div>
+    <h1>logout server module</h1>
+    <small class="dont-index">Source: <a href='https://github.com/paulc91/shinyauthr/blob/master/R/logout.R'><code>R/logout.R</code></a></small>
+    <div class="hidden name"><code>logoutServer.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function is used to generate random session ids.</p>
+    <p>Shiny authentication module for use with <a href='logoutUI.html'>logoutUI</a></p>
     </div>
 
-    <pre class="usage"><span class='fu'>randomString</span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>64</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>logoutServer</span><span class='op'>(</span><span class='va'>id</span>, <span class='va'>active</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>n</th>
-      <td><p>length of string</p></td>
+      <th>id</th>
+      <td><p>An ID string that corresponds with the ID used to call the module's UI function</p></td>
+    </tr>
+    <tr>
+      <th>active</th>
+      <td><p><code>reactive</code> supply the returned <code>user_auth</code> boolean reactive from <a href='loginServer.html'>loginServer</a>
+here to hide/show the logout button</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>arguments passed to <a href='https://rdrr.io/pkg/shinyjs/man/visibilityFuncs.html'>toggle</a></p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A random character string.</p>
+    <p>Reactive boolean, to be supplied as the <code>log_out</code> argument of the
+  <a href='loginServer.html'>loginServer</a> module to trigger the logout process</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
+    <p>This module uses shiny's new <a href='https://rdrr.io/pkg/shiny/man/moduleServer.html'>moduleServer</a> method as opposed to the <a href='https://rdrr.io/pkg/shiny/man/callModule.html'>callModule</a>
+method used by the now deprecated <a href='login.html'>login</a> function and must be called differently in your app.
+For details on how to migrate see the 'Migrating from callModule to moduleServer' section of 
+<a href='https://shiny.rstudio.com/articles/modules.html'>Modularizing Shiny app code</a>.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
+<span class='va'>logout_init</span> <span class='op'>&lt;-</span> <span class='fu'>logoutServer</span><span class='op'>(</span>
+  id <span class='op'>=</span> <span class='st'>"logout"</span>,
+  active <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/shiny/man/reactive.html'>reactive</a></span><span class='op'>(</span><span class='fu'>credentials</span><span class='op'>(</span><span class='op'>)</span><span class='op'>$</span><span class='va'>user_auth</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='op'>}</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
