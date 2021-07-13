@@ -3,7 +3,6 @@ library(shiny)
 # dataframe that holds usernames, passwords and other user data
 user_base <- data.frame(
   username = c("user1", "user2"),
-  # in original app, this was called user.  Changing to username breaks the app until we fix default_cookie_getter
   password = c("pass1", "pass2"),
   permissions = c("admin", "standard"),
   name = c("User One", "User Two"),

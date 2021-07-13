@@ -2,25 +2,7 @@
 % Please edit documentation in R/login.R
 \name{login}
 \alias{login}
-\title{login server module}
-\usage{
-login(
-  input,
-  output,
-  session,
-  data,
-  user_col,
-  pwd_col,
-  sodium_hashed = FALSE,
-  hashed,
-  algo,
-  log_out = NULL,
-  sessionid_col,
-  cookie_getter,
-  cookie_setter,
-  reload_on_logout = FALSE
-)
-}
+\title{login server module (deprecated)}
 \arguments{
 \item{input}{shiny input}
 
@@ -58,10 +40,16 @@ The module will return a reactive 2 element list to your main application.
   When \code{user_auth} is FALSE \code{info} is NULL.
 }
 \description{
-Shiny authentication module for use with \link{loginUI}
+Deprecated. Use \link{loginServer} instead.
 }
 \details{
-Call via \code{shiny::callModule(login, "your_id", ...)}
+Shiny authentication module for use with \link{loginUI}
+
+Call via \code{shiny::callModule(shinyauthr::login, "id", ...)}
+
+This function is now deprecated in favour of \link{loginServer} which uses shiny's new \link[shiny]{moduleServer} 
+method as opposed to the \link[shiny]{callModule} method used by this function. 
+See the \link{loginServer} documentation For details on how to migrate.
 }
 \examples{
 \dontrun{

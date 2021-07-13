@@ -2,10 +2,7 @@
 % Please edit documentation in R/logout.R
 \name{logout}
 \alias{logout}
-\title{logout server module}
-\usage{
-logout(input, output, session, active)
-}
+\title{logout server module (deprecated)}
 \arguments{
 \item{input}{shiny input}
 
@@ -17,14 +14,20 @@ logout(input, output, session, active)
 here to hide/show the logout button}
 }
 \value{
-The reactive output of this module should be supplied as the \code{log_out} argument to the
+Reactive boolean, to be supplied as the \code{log_out} argument of the
   \link{login} module to trigger the logout process
 }
 \description{
-Shiny authentication module for use with \link{logoutUI}
+Deprecated. Use \link{logoutServer} instead.
 }
 \details{
-Call via \code{shiny::callModule(logout, "your_id", ...)}
+Shiny authentication module for use with \link{logoutUI}
+
+Call via \code{shiny::callModule(shinyauthr::logout, "id", ...)}
+
+This function is now deprecated in favour of \link{logoutServer} which uses shiny's new \link[shiny]{moduleServer} 
+method as opposed to the \link[shiny]{callModule} method used by this function. 
+See the \link{logoutServer} documentation For details on how to migrate.
 }
 \examples{
 \dontrun{

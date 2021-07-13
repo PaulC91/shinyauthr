@@ -16,7 +16,7 @@ loginUI(
 )
 }
 \arguments{
-\item{id}{Shiny id}
+\item{id}{An ID string that corresponds with the ID used to call the module's server function}
 
 \item{title}{header title for the login panel}
 
@@ -37,10 +37,4 @@ Shiny UI
 }
 \description{
 Shiny UI Module for use with \link{login}
-}
-\details{
-Call via \code{loginUI("your_id")}
-}
-\author{
-Paul Campbell, \email{pacampbell91@gmail.com}
 }

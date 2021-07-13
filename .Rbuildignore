@@ -4,3 +4,6 @@
 ^docs$
 ^pkgdown$
 ^\.github$
+^cran-comments\.md$
+^LICENSE\.md$
+^codecov\.yml$

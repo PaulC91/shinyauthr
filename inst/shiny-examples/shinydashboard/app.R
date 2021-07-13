@@ -31,7 +31,6 @@ add_session_to_db <- function(user, sessionid, conn = db) {
 db <- dbConnect(SQLite(), ":memory:")
 dbCreateTable(db, "sessions", c(user = "TEXT", sessionid = "TEXT", login_time = "TEXT"))
 
-
 user_base <- tibble(
   user = c("user1", "user2"),
   password = c("pass1", "pass2"),
@@ -62,34 +61,40 @@ ui <- dashboardPage(
     div(textOutput("welcome"), style = "padding: 20px")
   ),
   dashboardBody(
-    tags$head(
-      tags$style(".table{margin: 0 auto;}"),
-      tags$script(
-        src = "https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.16/iframeResizer.contentWindow.min.js",
-        type = "text/javascript"
+    shinyauthr::loginUI(
+      "login", 
+      cookie_expiry = cookie_expiry, 
+      additional_ui = tagList(
+        tags$p("test the different outputs from the sample logins below
+             as well as an invalid login attempt.", class = "text-center"),
+        HTML(knitr::kable(user_base[, -3], format = "html", table.attr = "style='width:100%;'"))
       )
     ),
-    shinyauthr::loginUI("login", cookie_expiry = cookie_expiry, additional_ui = uiOutput("user_table")),
-    uiOutput("testUI"),
-    HTML("<div data-iframe-height></div>")
+    uiOutput("testUI")
   )
 )
 
 server <- function(input, output, session) {
-  credentials <- callModule(
-    shinyauthr::login,
-    "login",
+  
+  # call login module supplying data frame, user and password cols and reactive trigger
+  credentials <- shinyauthr::loginServer(
+    id = "login",
     data = user_base,
     user_col = user,
     pwd_col = password_hash,
+    sodium_hashed = TRUE,
+    cookie_logins = TRUE,
     sessionid_col = sessionid,
     cookie_getter = get_sessions_from_db,
     cookie_setter = add_session_to_db,
-    sodium_hashed = TRUE,
     log_out = reactive(logout_init())
   )
 
-  logout_init <- callModule(shinyauthr::logout, "logout", reactive(credentials()$user_auth))
+  # call the logout module with reactive trigger to hide/show
+  logout_init <- shinyauthr::logoutServer(
+    id = "logout",
+    active = reactive(credentials()$user_auth)
+  )
 
   observe({
     if (credentials()$user_auth) {
@@ -97,23 +102,6 @@ server <- function(input, output, session) {
     } else {
       shinyjs::addClass(selector = "body", class = "sidebar-collapse")
     }
-  })
-
-  output$user_table <- renderUI({
-    # only show pre-login
-    if (credentials()$user_auth) {
-      return(NULL)
-    }
-    # if we don't pass this as addition_ui, then we need to add the following to avoid brief flash:
-    # if(credentials()$cookie_already_checked == FALSE) return(NULL)
-
-    tagList(
-      tags$p("test the different outputs from the sample logins below
-             as well as an invalid login attempt.", class = "text-center"),
-      renderTable({
-        user_base[, -3]
-      })
-    )
   })
 
   user_info <- reactive({
