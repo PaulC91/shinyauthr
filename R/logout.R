@@ -9,7 +9,7 @@
 #' @param style css styling for the logout button
 #'
 #' @return Shiny UI action button
-#'
+#' @example inst/shiny-examples/basic/app.R
 #' @export
 logoutUI <- function(id, label = "Log out", icon = NULL, class = "btn-danger", style = "color: white;") {
   ns <- shiny::NS(id)
@@ -36,14 +36,7 @@ logoutUI <- function(id, label = "Log out", icon = NULL, class = "btn-danger", s
 #' @return Reactive boolean, to be supplied as the \code{log_out} argument of the
 #'   \link{loginServer} module to trigger the logout process
 #'
-#' @examples
-#' \dontrun{
-#' logout_init <- logoutServer(
-#'   id = "logout",
-#'   active = reactive(credentials()$user_auth)
-#' )
-#' }
-#'
+#' @example inst/shiny-examples/basic/app.R
 #' @export
 logoutServer <- function(id, active, ...) {
   shiny::moduleServer(

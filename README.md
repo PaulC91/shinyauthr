@@ -18,13 +18,13 @@ remotes::install_github("paulc91/shinyauthr")
 
 ## Run example apps
 
-Code for example apps using various UI frameworks can be found in [inst/shiny-examples](inst/shiny-examples). You can launch the apps with the following functions.
+Code for example apps using various UI frameworks can be found in [inst/shiny-examples](inst/shiny-examples). You can launch 3 example apps with the `runExample` function.
 
 ``` r
 # login with user1 pass1 or user2 pass2
-shinyauthr::runExample()
-shinyauthr::runShinyDashboardExample()
-shinyauthr::runNavbarPageExample()
+runExample("basic")
+runExample("shinydashboard")
+runExample("navbarPage")
 ```
 
 ## Usage
@@ -78,15 +78,10 @@ server <- function(input, output, session) {
     active = reactive(credentials()$user_auth)
   )
 
-  # pulls out the user information returned from login module
-  user_data <- reactive({
-    credentials()$info
-  })
-
   output$user_table <- renderTable({
     # use req to only render results when credentials()$user_auth is TRUE
     req(credentials()$user_auth)
-    user_data()
+    credentials()$info
   })
 }
 

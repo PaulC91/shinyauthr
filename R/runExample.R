@@ -1,36 +1,20 @@
-#' Run shinyauthr example
+#' Run shinyauthr examples
 #'
-#' Launch example shiny app using shinyauthr authentication modules
-#'
+#' Launch an example shiny app using shinyauthr authentication modules.
+#' Use user1 pass1 or user2 pass2 to login.
+#' 
+#' @param example The app to launch. Options are "basic", "shinydashboard" or "navbarPage"
+#' @examples
+#' ## Only run this example in interactive R sessions
+#' if (interactive()) {
+#'   runExample("basic")
+#'   runExample("shinydashboard")
+#'   runExample("navbarPage")
+#' }
 #' @export
-runExample <- function() {
-  appDir <- system.file("shiny-examples", "test_app", package = "shinyauthr")
-  if (appDir == "") {
-    stop("Could not find example directory. Try re-installing `shinyauthr`.", call. = FALSE)
-  }
-  shiny::runApp(appDir, display.mode = "normal")
-}
-
-#' Run shinyauthr example
-#'
-#' Launch example shinydashboard using shinyauthr authentication modules
-#'
-#' @export
-runShinyDashboardExample <- function() {
-  appDir <- system.file("shiny-examples", "shinydashboard", package = "shinyauthr")
-  if (appDir == "") {
-    stop("Could not find example directory. Try re-installing `shinyauthr`.", call. = FALSE)
-  }
-  shiny::runApp(appDir, display.mode = "normal")
-}
-
-#' Run navbarPage example
-#'
-#' Launch example shiny navbarPage app using shinyauthr authentication modules
-#'
-#' @export
-runNavbarPageExample <- function() {
-  appDir <- system.file("shiny-examples", "navbarPage", package = "shinyauthr")
+runExample <- function(example = c("basic", "shinydashboard", "navbarPage")) {
+  example <- match.arg(example, c("basic", "shinydashboard", "navbarPage"), several.ok = FALSE)
+  appDir <- system.file("shiny-examples", example, package = "shinyauthr")
   if (appDir == "") {
     stop("Could not find example directory. Try re-installing `shinyauthr`.", call. = FALSE)
   }

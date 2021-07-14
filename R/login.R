@@ -12,7 +12,7 @@
 #' @param cookie_expiry number of days to request browser to retain login cookie
 #'
 #' @return Shiny UI
-#'
+#' @example inst/shiny-examples/basic/app.R
 #' @export
 loginUI <- function(id,
                     title = "Please log in",
@@ -85,17 +85,7 @@ loginUI <- function(id,
 #'
 #' @importFrom rlang :=
 #'
-#' @examples
-#' \dontrun{
-#' credentials <- loginServer(
-#'   id = "login",
-#'   data = user_base,
-#'   user_col = user,
-#'   pwd_col = password,
-#'   log_out = reactive(logout_init())
-#' )
-#' }
-#'
+#' @example inst/shiny-examples/basic/app.R
 #' @export
 loginServer <- function(id, 
                         data,

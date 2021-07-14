@@ -2,10 +2,22 @@
 % Please edit documentation in R/runExample.R
 \name{runExample}
 \alias{runExample}
-\title{Run shinyauthr example}
+\title{Run shinyauthr examples}
 \usage{
-runExample()
+runExample(example = c("basic", "shinydashboard", "navbarPage"))
+}
+\arguments{
+\item{example}{The app to launch. Options are "basic", "shinydashboard" or "navbarPage"}
 }
 \description{
-Launch example shiny app using shinyauthr authentication modules
+Launch an example shiny app using shinyauthr authentication modules.
+Use user1 pass1 or user2 pass2 to login.
+}
+\examples{
+## Only run this example in interactive R sessions
+if (interactive()) {
+  runExample("basic")
+  runExample("shinydashboard")
+  runExample("navbarPage")
+}
 }

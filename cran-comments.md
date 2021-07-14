@@ -1,5 +1,3 @@
-This is the first submission to CRAN. The package has existed on github for several years.
-
 ## Test environments
 
 ### Local
@@ -11,6 +9,15 @@ This is the first submission to CRAN. The package has existed on github for seve
 * ubuntu-20.04 (release)
 * ubuntu-20.04 (devel)
 
+### win-builder
+* `devtools::check_win_release`
+* `devtools::check_win_devel`
+
+### R-hub
+* `rhub::check_for_cran`
+
 ## R CMD check results
 
-0 errors ✓ | 0 warnings ✓ | 0 notes ✓
+New submission
+
+0 errors ✓ | 0 warnings ✓ | 1 note x
