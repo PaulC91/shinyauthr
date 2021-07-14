@@ -7,3 +7,4 @@
 ^cran-comments\.md$
 ^LICENSE\.md$
 ^codecov\.yml$
+^CRAN-RELEASE$

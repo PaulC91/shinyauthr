@@ -24,10 +24,12 @@ if (shinytest::dependenciesInstalled()) {
     Sys.sleep(1)
   }
 
-  test_login_logout <- function(app, desc) {
+  test_login_logout <- function(app_name = "test_app", desc) {
     test_that(desc, {
       # Don't run these tests on the CRAN build servers
       skip_on_cran()
+      app <- get_app(app_name = app_name)
+      Sys.sleep(1)
       login_panel <- app$findElement(xpath = "//*[@id='login-panel']")
       logout_button <- app$findElement(xpath = "//button[@id='logout-button']")
       # check login panel is shown on start-up
@@ -52,12 +54,17 @@ if (shinytest::dependenciesInstalled()) {
     })
   }
 
-  # load test app in headless browser for use with shiny test ======================
-  app <- get_app(app_name = "test_app")
-  Sys.sleep(1)
-
   # test login and logout ===================
-  test_login_logout(app, "UI changes accordingly with login and logout")
+  test_login_logout(
+    app_name = "test_app", 
+    "UI changes accordingly with login and logout"
+  )
+  
+  # test login and logout on now deprecated server functions ===================
+  test_login_logout(
+    app_name = "old_server_functions",
+    "UI changes accordingly with deprecated login and logout server functions"
+  )
 
   # test cookie logins ===================
   # this test passes locally and on most CI platforms
@@ -77,13 +84,5 @@ if (shinytest::dependenciesInstalled()) {
   #   # check logout button is shown after refresh + cookie login
   #   testthat::expect_equal(logout_button$getCssValue("display"), "inline-block")
   # })
-
-  # test login and logout on now deprecated server functions ===================
-  app_deprecated <- get_app(app = "old_server_functions")
-  Sys.sleep(1)
-  test_login_logout(
-    app_deprecated,
-    "UI changes accordingly with deprecated login and logout server functions"
-  )
 
 }

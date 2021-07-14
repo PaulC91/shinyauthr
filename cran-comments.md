@@ -1,3 +1,9 @@
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Ensured any code related to tests that should not be run on CRAN servers is not run. 
+* Updated an outdated URL
+
 ## Test environments
 
 ### Local

@@ -20,4 +20,4 @@ If you plan to use hashed passwords with shinyauthr you now must use the [sodium
 
 This means that previously used `hashed` and `algo` arguments that interfaced with the `digest` package are now deprecated. If you had previously hashed your passwords with the digest package to use with shinyauthr, please re-hash them with `sodium` and use the `sodium_hashed` argument instead. 
 
-Sorry for this breaking change, but sodium hashing provides added protection against brute-force attacks on stored passwords. More information on this [here](https://download.libsodium.org/doc/password_hashing/).
+Sorry for this breaking change, but sodium hashing provides added protection against brute-force attacks on stored passwords. More information on this [here](https://doc.libsodium.org/password_hashing/).
