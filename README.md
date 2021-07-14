@@ -250,7 +250,7 @@ credentials <- shinyauthr::loginServer(
 
 `shinyauthr` originally borrowed some code from treysp's [shiny_password](https://github.com/treysp/shiny_password) template with the goal of making implementation simpler for end users and allowing the login/logout UIs to fit easily into any UI framework, including [shinydashboard](https://rstudio.github.io/shinydashboard/).
 
-Thanks to [Michael Dewer](https://github.com/michael-dewar) for his contribution of cookie-based authentication. Some code was borrowed from calligross's [Shiny Cookie Based Authentication Example](https://gist.github.com/calligross/e779281b500eb93ee9e42e4d72448189) and from an earlier PR from [aqualogy](https://github.com/aqualogy/shinyauthr).
+Thanks to [Michael Dewar](https://github.com/michael-dewar) for his contribution of cookie-based authentication. Some code was borrowed from calligross's [Shiny Cookie Based Authentication Example](https://gist.github.com/calligross/e779281b500eb93ee9e42e4d72448189) and from an earlier PR from [aqualogy](https://github.com/aqualogy/shinyauthr).
 
 
 ## Disclaimer

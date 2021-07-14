@@ -1,3 +1,9 @@
+# shinyauthr 1.0.0
+
+* New `loginServer` and `logoutServer` functions added. `login` and `logout` are now deprecated, full details in README.
+* Tests added.
+* CRAN submission
+
 # shinyauthr 0.1.1
 
 * Added cookie-based authentication
@@ -8,7 +14,7 @@
 
 # shinyauthr 0.0.99
 
-* switched to the sodium package for password hashing and decryption
+* Switched to the sodium package for password hashing and decryption
 
 If you plan to use hashed passwords with shinyauthr you now must use the [sodium package](https://github.com/jeroen/sodium) to hash your passwords and the `sodium_hashed = TRUE` argument of the `shinyauthr::login` module call for decryption to work appropriately.
 
