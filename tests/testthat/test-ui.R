@@ -65,7 +65,7 @@ if (shinytest::dependenciesInstalled()) {
     skip_on_cran()
     app_login(app, role = "user")
     app$refresh()
-    Sys.sleep(1)
+    Sys.sleep(3)
     login_panel <- app$findElement(xpath = "//*[@id='login-panel']")
     logout_button <- app$findElement(xpath = "//button[@id='logout-button']")
     # check login panel is hidden after refresh + cookie login
