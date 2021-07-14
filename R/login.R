@@ -78,7 +78,7 @@ loginUI <- function(id,
 #' @param cookie_setter a function with two parameters: user and session.  The function must save these to a database.
 #'
 #' @return The module will return a reactive 2 element list to your main application.
-#'   First element \code{user_auth} is a boolean inditcating whether there has been
+#'   First element \code{user_auth} is a boolean indicating whether there has been
 #'   a successful login or not. Second element \code{info} will be the data frame provided
 #'   to the function, filtered to the row matching the successfully logged in username.
 #'   When \code{user_auth} is FALSE \code{info} is NULL.
@@ -276,7 +276,7 @@ loginServer <- function(id,
 #' @param reload_on_logout should app force reload on logout?
 #'
 #' @return The module will return a reactive 2 element list to your main application.
-#'   First element \code{user_auth} is a boolean inditcating whether there has been
+#'   First element \code{user_auth} is a boolean indicating whether there has been
 #'   a successful login or not. Second element \code{info} will be the data frame provided
 #'   to the function, filtered to the row matching the successfully logged in username.
 #'   When \code{user_auth} is FALSE \code{info} is NULL.
