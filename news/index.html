@@ -145,7 +145,7 @@
 </ul>
 <p>If you plan to use hashed passwords with shinyauthr you now must use the <a href="https://github.com/jeroen/sodium">sodium package</a> to hash your passwords and the <code>sodium_hashed = TRUE</code> argument of the <code><a href="../reference/login.html">shinyauthr::login</a></code> module call for decryption to work appropriately.</p>
 <p>This means that previously used <code>hashed</code> and <code>algo</code> arguments that interfaced with the <code>digest</code> package are now deprecated. If you had previously hashed your passwords with the digest package to use with shinyauthr, please re-hash them with <code>sodium</code> and use the <code>sodium_hashed</code> argument instead.</p>
-<p>Sorry for this breaking change, but sodium hashing provides added protection against brute-force attacks on stored passwords. More information on this <a href="https://download.libsodium.org/doc/password_hashing/">here</a>.</p>
+<p>Sorry for this breaking change, but sodium hashing provides added protection against brute-force attacks on stored passwords. More information on this <a href="https://doc.libsodium.org/password_hashing/">here</a>.</p>
 </div>
   </div>
 
