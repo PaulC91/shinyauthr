@@ -1,8 +1,8 @@
 ## Resubmission
-This is a resubmission. In this version I have:
-
-* Ensured any code related to tests that should not be run on CRAN servers is not run. 
 * Updated an outdated URL
+
+## Notes on previous submissions
+* Ensured any code related to tests that should not be run on CRAN servers is not run. 
 
 ## Test environments
 
@@ -24,6 +24,4 @@ This is a resubmission. In this version I have:
 
 ## R CMD check results
 
-New submission
-
-0 errors ✓ | 0 warnings ✓ | 1 note x
+0 errors ✓ | 0 warnings ✓ | 0 notes ✓

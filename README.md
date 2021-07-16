@@ -2,7 +2,7 @@
 
 <!-- badges: start -->
 
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![R-CMD-check](https://github.com/PaulC91/shinyauthr/workflows/R-CMD-check/badge.svg)](https://github.com/PaulC91/shinyauthr/actions)
 [![Codecov test coverage](https://codecov.io/gh/PaulC91/shinyauthr/branch/master/graph/badge.svg)](https://codecov.io/gh/PaulC91/shinyauthr?branch=master)
 
