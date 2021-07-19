@@ -27,7 +27,7 @@ logoutUI(
 Shiny UI action button
 }
 \description{
-Shiny UI Module for use with \link{logout}
+Shiny UI Module for use with \link{logoutServer}
 }
 \examples{
 library(shiny)

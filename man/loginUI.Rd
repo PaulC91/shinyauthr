@@ -28,15 +28,15 @@ loginUI(
 
 \item{error_message}{message to display after failed login}
 
-\item{additional_ui}{additional shiny UI element to add below login button. Wrap multiple inside \code{shiny::tagList()}}
+\item{additional_ui}{additional shiny UI element(s) to add below login button. Wrap multiple inside \code{shiny::tagList()}}
 
 \item{cookie_expiry}{number of days to request browser to retain login cookie}
 }
 \value{
-Shiny UI
+Shiny UI login panel with user name text input, password text input and login action button.
 }
 \description{
-Shiny UI Module for use with \link{login}
+Shiny UI Module for use with \link{loginServer}
 }
 \examples{
 library(shiny)

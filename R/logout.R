@@ -1,6 +1,6 @@
 #' logout UI module
 #'
-#' Shiny UI Module for use with \link{logout}
+#' Shiny UI Module for use with \link{logoutServer}
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's server function
 #' @param label label for the logout button

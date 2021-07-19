@@ -5,7 +5,7 @@
 #' @param n length of string
 #'
 #' @return A random character string.
-#' @keywords internal
+#' @noRd
 randomString <- function(n = 64) {
   paste(
     sample(x = c(letters, LETTERS, 0:9), size = n, replace = TRUE),
@@ -21,7 +21,7 @@ randomString <- function(n = 64) {
 #' get and set the user and session ids in a database.
 #'
 #' @name cookie_placeholders
-#' @keywords internal
+#' @noRd
 #'
 #' @param user character string representing the user id
 #' @param session  character string representing the session id
@@ -30,7 +30,7 @@ randomString <- function(n = 64) {
 NULL
 
 #' @rdname cookie_placeholders
-#' @keywords internal
+#' @noRd
 default_cookie_getter <- function(user_string, session_string) {
   df <- data.frame(user = character(0), session = character(0))
   names(df) <- c(user_string, session_string)
@@ -41,7 +41,7 @@ default_cookie_getter <- function(user_string, session_string) {
 
 
 #' @rdname cookie_placeholders
-#' @keywords internal
+#' @noRd
 default_cookie_setter <- function(user, session) {
   invisible(NULL)
 }
@@ -55,8 +55,8 @@ default_cookie_setter <- function(user, session) {
 #' @param id name of input object to hold the cookie value
 #' @param expire_days number of days to ask browser to retain cookie
 #'
-#' @return Character string of Javascript code
-#' @keywords internal
+#' @return Character string of Javascript code.
+#' @noRd
 #'
 #' @examples
 #' \dontrun{
@@ -90,8 +90,8 @@ js_cookie_to_r_code <- function(id, expire_days = 7) {
 #'
 #' @param idpassword name of password input, with correct namespace
 #' @param idbutton name of action button, with correct namespace
-#'
-#' @keywords internal
+#' @return Character string of Javascript code.
+#' @noRd
 js_return_click <- function(idpassword, idbutton) {
   glue::glue(.open = "{{{", .close = "}}}", '
 	  $(document).keyup(function(event) {
@@ -105,8 +105,7 @@ js_return_click <- function(idpassword, idbutton) {
 #'
 #' This code is minified from the GitHub project js-cookie/js-cookie.  We include it here
 #' to make the shinyauthr package more self-contained
-#'
-#' @keywords internal
+#' @noRd
 jscookie_script <- function() {
   shiny::includeScript(system.file("js-cookie/js-cookie.js", package = "shinyauthr"))
 }

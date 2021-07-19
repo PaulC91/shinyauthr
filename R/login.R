@@ -1,6 +1,6 @@
 #' login UI module
 #'
-#' Shiny UI Module for use with \link{login}
+#' Shiny UI Module for use with \link{loginServer}
 #'
 #' @param id An ID string that corresponds with the ID used to call the module's server function
 #' @param title header title for the login panel
@@ -8,10 +8,10 @@
 #' @param pass_title label for the password text input
 #' @param login_title label for the login button
 #' @param error_message message to display after failed login
-#' @param additional_ui additional shiny UI element to add below login button. Wrap multiple inside \code{shiny::tagList()}
+#' @param additional_ui additional shiny UI element(s) to add below login button. Wrap multiple inside \code{shiny::tagList()}
 #' @param cookie_expiry number of days to request browser to retain login cookie
 #'
-#' @return Shiny UI
+#' @return Shiny UI login panel with user name text input, password text input and login action button.
 #' @example inst/shiny-examples/basic/app.R
 #' @export
 loginUI <- function(id,
@@ -31,7 +31,7 @@ loginUI <- function(id,
       shiny::wellPanel(
         shinyjs::useShinyjs(),
         jscookie_script(),
-        shinyjs::extendShinyjs(text = js_cookie_to_r_code(ns("jscookie")), functions = c("getcookie", "setcookie", "rmcookie")),
+        shinyjs::extendShinyjs(text = js_cookie_to_r_code(ns("jscookie"), expire_days = cookie_expiry), functions = c("getcookie", "setcookie", "rmcookie")),
         shinyjs::extendShinyjs(text = js_return_click(ns("password"), ns("button")), functions = c()),
         shiny::tags$h2(title, class = "text-center", style = "padding-top: 0;"),
         shiny::textInput(ns("user_name"), shiny::tagList(shiny::icon("user"), user_title)),

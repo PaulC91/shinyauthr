@@ -1,7 +1,9 @@
 ## Resubmission
-* Updated an outdated URL
+* Added return value documentation to exported `runExample` function (no return value)
+* Removed .Rd files for internal functions
 
 ## Notes on previous submissions
+* Updated an outdated URL
 * Ensured any code related to tests that should not be run on CRAN servers is not run. 
 
 ## Test environments
@@ -24,4 +26,6 @@
 
 ## R CMD check results
 
-0 errors ✓ | 0 warnings ✓ | 0 notes ✓
+New submission
+
+0 errors ✓ | 0 warnings ✓ | 1 note x
