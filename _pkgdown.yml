@@ -1,5 +1,5 @@
 destination: docs
-url: 
+url: https://paulc91.github.io/shinyauthr/
 
 authors:
   Paul Campbell:
@@ -26,11 +26,11 @@ reference:
     desc: >
       Login modules
     contents:
-      - login
       - loginUI
+      - loginServer
   - title: "Logout"
     desc: >
       Logout modules
     contents:
-      - logout
       - logoutUI
+      - logoutServer

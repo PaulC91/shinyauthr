@@ -2,8 +2,9 @@
 
 <!-- badges: start -->
 
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![CRAN status](https://www.r-pkg.org/badges/version/shinyauthr)](https://CRAN.R-project.org/package=shinyauthr)
 [![R-CMD-check](https://github.com/PaulC91/shinyauthr/workflows/R-CMD-check/badge.svg)](https://github.com/PaulC91/shinyauthr/actions)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![Codecov test coverage](https://codecov.io/gh/PaulC91/shinyauthr/branch/master/graph/badge.svg)](https://codecov.io/gh/PaulC91/shinyauthr?branch=master)
 
 <!-- badges: end -->
@@ -11,6 +12,14 @@
 `shinyauthr` is an R package providing module functions that can be used to add an authentication layer to your shiny apps.
 
 ## Installation
+
+You can install the package from [CRAN](https://cran.r-project.org/package=shinyauthr).
+
+```r
+install.packages("shinyauthr")
+```
+
+Or the development version from github with the [remotes package](https://github.com/r-lib/remotes).
 
 ``` r
 remotes::install_github("paulc91/shinyauthr")

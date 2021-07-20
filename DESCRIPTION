@@ -1,7 +1,7 @@
 Package: shinyauthr
 Type: Package
 Title: 'Shiny' Authentication Modules
-Version: 1.0.0
+Version: 1.0.0.9000
 Authors@R:
     c(person(given = "Paul", 
              family = "Campbell", 
