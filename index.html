@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">shinyauthr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
       </span>
     </div>
 
@@ -81,14 +81,18 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
+<p>You can install the package from <a href="https://cran.r-project.org/package=shinyauthr">CRAN</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"shinyauthr"</span><span class="op">)</span></code></pre></div>
+<p>Or the development version from github with the <a href="https://github.com/r-lib/remotes">remotes package</a>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"paulc91/shinyauthr"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="run-example-apps" class="section level2">
 <h2 class="hasAnchor">
 <a href="#run-example-apps" class="anchor"></a>Run example apps</h2>
 <p>Code for example apps using various UI frameworks can be found in <a href="inst/shiny-examples">inst/shiny-examples</a>. You can launch 3 example apps with the <code>runExample</code> function.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># login with user1 pass1 or user2 pass2</span>
 <span class="fu"><a href="reference/runExample.html">runExample</a></span><span class="op">(</span><span class="st">"basic"</span><span class="op">)</span>
 <span class="fu"><a href="reference/runExample.html">runExample</a></span><span class="op">(</span><span class="st">"shinydashboard"</span><span class="op">)</span>
@@ -106,7 +110,7 @@
 </ul>
 <p><strong>Note</strong>: the server modules use shiny’s new (version &gt;= 1.5.0) <code><a href="https://rdrr.io/pkg/shiny/man/moduleServer.html">shiny::moduleServer</a></code> method as opposed to the <code><a href="https://rdrr.io/pkg/shiny/man/callModule.html">shiny::callModule</a></code> method used by the now deprecated <code><a href="reference/login.html">shinyauthr::login</a></code> and <code><a href="reference/logout.html">shinyauthr::logout</a></code> functions. These functions will remain in the package for backwards compatibility but it is recommended you migrate to the new server functions. This will require some adjustments to the module server function calling method used in your app. For details on how to migrate see the ‘Migrating from callModule to moduleServer’ section of <a href="https://shiny.rstudio.com/articles/modules.html">Modularizing Shiny app code</a>.</p>
 <p>Below is a minimal reproducible example of how to use the authentication modules in a shiny app. Note that this package invisibly calls <code><a href="https://rdrr.io/pkg/shinyjs/man/useShinyjs.html">shinyjs::useShinyjs()</a></code> internally and there is no need for you to do so yourself (although there is no harm if you do).</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span>
 
 <span class="co"># dataframe that holds usernames, passwords and other user data</span>
@@ -172,7 +176,7 @@
 <p>The first required function must accept two parameters <code>user</code> and <code>session</code>. The first of these is the user name for log in. The second is a randomly generated string that identifies the session. The app asks the user’s web browser to save this session id as a cookie.</p>
 <p>The second required function is called without parameters and must return a data.frame of valid <code>user</code> and <code>session</code> ids. If the user’s web browser sends your app a cookie which appears in the <code>session</code> column, then the corresponding <code>user</code> is automatically logged in.</p>
 <p>Pass these functions to the login module via <code><a href="reference/loginServer.html">shinyauthr::loginServer(...)</a></code> as the <code>cookie_setter</code> and <code>cookie_getter</code> parameters. A minimal example, using <a href="https://rsqlite.r-dbi.org/">RSQLite</a> as a local database to write and store user session data, is below.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span>
@@ -269,7 +273,7 @@
 </h2>
 <p>If you are hosting your user passwords on the internet, it is a good idea to first encrypt them with a hashing algorithm. You can use the <a href="https://github.com/jeroen/sodium">sodium package</a> to do this. Sodium uses a slow hashing algorithm that is specifically designed to protect stored passwords from brute-force attacks. More on this <a href="https://doc.libsodium.org/password_hashing/">here</a>. You then tell the <code><a href="reference/loginServer.html">shinyauthr::loginServer</a></code> module that your passwords have been hashed by <code>sodium</code> and <code>shinyauthr</code> will then decrypt when login is requested. Your plain text passwords must be a character vector, not factors, when hashing for this to work as shiny inputs are passed as character strings.</p>
 <p>For example, a sample user base like the following can be incorporated for use with <code>shinyauthr</code>:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># create a user base then hash passwords with sodium</span>
 <span class="co"># then save to an rds file in app directory</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jeroen/sodium#readme">sodium</a></span><span class="op">)</span>
@@ -282,10 +286,10 @@
 <span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">user_base</span>, <span class="st">"user_base.rds"</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># in your app code, read in the user base rds file</span>
 <span class="va">user_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"user_base.rds"</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># then when calling the module set sodium_hashed = TRUE</span>
 <span class="va">credentials</span> <span class="op">&lt;-</span> <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="reference/loginServer.html">loginServer</a></span><span class="op">(</span>
   id <span class="op">=</span> <span class="st">"login"</span>,
@@ -318,6 +322,8 @@
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=shinyauthr">https://​cloud.r-project.org/​package=shinyauthr</a>
+</li>
 <li>Browse source code at <br><a href="https://github.com/paulc91/shinyauthr/">https://​github.com/​paulc91/​shinyauthr/​</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/paulc91/shinyauthr/issues">https://​github.com/​paulc91/​shinyauthr/​issues</a>
@@ -343,8 +349,9 @@
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
+<li><a href="https://CRAN.R-project.org/package=shinyauthr"><img src="https://www.r-pkg.org/badges/version/shinyauthr" alt="CRAN status"></a></li>
 <li><a href="https://github.com/PaulC91/shinyauthr/actions"><img src="https://github.com/PaulC91/shinyauthr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
 <li><a href="https://codecov.io/gh/PaulC91/shinyauthr?branch=master"><img src="https://codecov.io/gh/PaulC91/shinyauthr/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>

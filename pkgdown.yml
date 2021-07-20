@@ -2,5 +2,8 @@ pandoc: 2.7.3
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2021-07-19T10:24Z
+last_built: 2021-07-20T11:09Z
+urls:
+  reference: https://paulc91.github.io/shinyauthr//reference
+  article: https://paulc91.github.io/shinyauthr//articles
 
