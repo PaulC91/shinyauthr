@@ -31,9 +31,9 @@ Code for example apps using various UI frameworks can be found in [inst/shiny-ex
 
 ``` r
 # login with user1 pass1 or user2 pass2
-runExample("basic")
-runExample("shinydashboard")
-runExample("navbarPage")
+shinyauthr::runExample("basic")
+shinyauthr::runExample("shinydashboard")
+shinyauthr::runExample("navbarPage")
 ```
 
 ## Usage
