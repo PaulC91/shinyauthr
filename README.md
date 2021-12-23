@@ -3,7 +3,6 @@
 <!-- badges: start -->
 
 [![CRAN status](https://www.r-pkg.org/badges/version/shinyauthr)](https://CRAN.R-project.org/package=shinyauthr)
-[![CRAN RStudio mirror downloads](https://cranlogs.r-pkg.org/badges/shinyauthr)](https://www.r-pkg.org/pkg/shinyauthr)
 [![](https://cranlogs.r-pkg.org/badges/shinyauthr)](https://cran.r-project.org/package=shinyauthr)
 [![R-CMD-check](https://github.com/PaulC91/shinyauthr/workflows/R-CMD-check/badge.svg)](https://github.com/PaulC91/shinyauthr/actions)
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
