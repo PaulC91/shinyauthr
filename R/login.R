@@ -38,7 +38,7 @@ loginUI <- function(id,
         shiny::passwordInput(ns("password"), shiny::tagList(shiny::icon("unlock-alt"), pass_title)),
         shiny::div(
           style = "text-align: center;",
-          shiny::actionButton(ns("button"), login_title, class = "btn-primary", style = "color: white;")
+          shiny::actionButton(ns("button"), login_title, class = "btn-primary")
         ),
         additional_ui,
         shinyjs::hidden(
