@@ -125,6 +125,9 @@ loginServer <- function(id,
   shiny::moduleServer(
     id,
     function(input, output, session) {
+
+      # remove btn-default class on login button
+      shinyjs::removeCssClass("button", class = "btn-default")
       
       credentials <- shiny::reactiveValues(user_auth = FALSE, info = NULL, cookie_already_checked = FALSE)
       
