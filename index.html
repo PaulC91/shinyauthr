@@ -21,6 +21,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -33,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">shinyauthr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.0.0.9000</span>
       </span>
     </div>
 
@@ -54,7 +56,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/paulc91/shinyauthr">
+  <a href="https://github.com/paulc91/shinyauthr" class="external-link">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -71,26 +73,24 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="shinyauthr" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#shinyauthr" class="anchor"></a>shinyauthr</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="shinyauthr">shinyauthr<a class="anchor" aria-label="anchor" href="#shinyauthr"></a>
+</h1></div>
 <!-- badges: start -->
-
-<!-- badges: end -->
-<p><code>shinyauthr</code> is an R package providing module functions that can be used to add an authentication layer to your shiny apps.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the package from <a href="https://cran.r-project.org/package=shinyauthr">CRAN</a>.</p>
+<!-- badges: end --><p><code>shinyauthr</code> is an R package providing module functions that can be used to add an authentication layer to your shiny apps.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the package from <a href="https://cran.r-project.org/package=shinyauthr" class="external-link">CRAN</a>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"shinyauthr"</span><span class="op">)</span></code></pre></div>
-<p>Or the development version from github with the <a href="https://github.com/r-lib/remotes">remotes package</a>.</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"shinyauthr"</span><span class="op">)</span></code></pre></div>
+<p>Or the development version from github with the <a href="https://github.com/r-lib/remotes" class="external-link">remotes package</a>.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"paulc91/shinyauthr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"paulc91/shinyauthr"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="run-example-apps" class="section level2">
-<h2 class="hasAnchor">
-<a href="#run-example-apps" class="anchor"></a>Run example apps</h2>
+<div class="section level2">
+<h2 id="run-example-apps">Run example apps<a class="anchor" aria-label="anchor" href="#run-example-apps"></a>
+</h2>
 <p>Code for example apps using various UI frameworks can be found in <a href="inst/shiny-examples">inst/shiny-examples</a>. You can launch 3 example apps with the <code>runExample</code> function.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># login with user1 pass1 or user2 pass2</span>
@@ -98,9 +98,9 @@
 <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="reference/runExample.html">runExample</a></span><span class="op">(</span><span class="st">"shinydashboard"</span><span class="op">)</span>
 <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="reference/runExample.html">runExample</a></span><span class="op">(</span><span class="st">"navbarPage"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
+<div class="section level2">
+<h2 id="usage">Usage<a class="anchor" aria-label="anchor" href="#usage"></a>
+</h2>
 <p>The package provides 2 module functions each with a UI and server element:</p>
 <ul>
 <li><code><a href="reference/loginUI.html">loginUI()</a></code></li>
@@ -108,26 +108,26 @@
 <li><code><a href="reference/logoutUI.html">logoutUI()</a></code></li>
 <li><code><a href="reference/logoutServer.html">logoutServer()</a></code></li>
 </ul>
-<p><strong>Note</strong>: the server modules use shiny’s new (version &gt;= 1.5.0) <code><a href="https://rdrr.io/pkg/shiny/man/moduleServer.html">shiny::moduleServer</a></code> method as opposed to the <code><a href="https://rdrr.io/pkg/shiny/man/callModule.html">shiny::callModule</a></code> method used by the now deprecated <code><a href="reference/login.html">shinyauthr::login</a></code> and <code><a href="reference/logout.html">shinyauthr::logout</a></code> functions. These functions will remain in the package for backwards compatibility but it is recommended you migrate to the new server functions. This will require some adjustments to the module server function calling method used in your app. For details on how to migrate see the ‘Migrating from callModule to moduleServer’ section of <a href="https://shiny.rstudio.com/articles/modules.html">Modularizing Shiny app code</a>.</p>
-<p>Below is a minimal reproducible example of how to use the authentication modules in a shiny app. Note that this package invisibly calls <code><a href="https://rdrr.io/pkg/shinyjs/man/useShinyjs.html">shinyjs::useShinyjs()</a></code> internally and there is no need for you to do so yourself (although there is no harm if you do).</p>
+<p><strong>Note</strong>: the server modules use shiny’s new (version &gt;= 1.5.0) <code><a href="https://rdrr.io/pkg/shiny/man/moduleServer.html" class="external-link">shiny::moduleServer</a></code> method as opposed to the <code><a href="https://rdrr.io/pkg/shiny/man/callModule.html" class="external-link">shiny::callModule</a></code> method used by the now deprecated <code><a href="reference/login.html">shinyauthr::login</a></code> and <code><a href="reference/logout.html">shinyauthr::logout</a></code> functions. These functions will remain in the package for backwards compatibility but it is recommended you migrate to the new server functions. This will require some adjustments to the module server function calling method used in your app. For details on how to migrate see the ‘Migrating from callModule to moduleServer’ section of <a href="https://shiny.rstudio.com/articles/modules.html" class="external-link">Modularizing Shiny app code</a>.</p>
+<p>Below is a minimal reproducible example of how to use the authentication modules in a shiny app. Note that this package invisibly calls <code><a href="https://rdrr.io/pkg/shinyjs/man/useShinyjs.html" class="external-link">shinyjs::useShinyjs()</a></code> internally and there is no need for you to do so yourself (although there is no harm if you do).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span>
 
 <span class="co"># dataframe that holds usernames, passwords and other user data</span>
-<span class="va">user_base</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
-  user <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"user1"</span>, <span class="st">"user2"</span><span class="op">)</span>,
-  password <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pass1"</span>, <span class="st">"pass2"</span><span class="op">)</span>,
-  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"admin"</span>, <span class="st">"standard"</span><span class="op">)</span>,
-  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"User One"</span>, <span class="st">"User Two"</span><span class="op">)</span>
+<span class="va">user_base</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
+  user <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"user1"</span>, <span class="st">"user2"</span><span class="op">)</span>,
+  password <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pass1"</span>, <span class="st">"pass2"</span><span class="op">)</span>,
+  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"admin"</span>, <span class="st">"standard"</span><span class="op">)</span>,
+  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"User One"</span>, <span class="st">"User Two"</span><span class="op">)</span>
 <span class="op">)</span>
 
-<span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span>
+<span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span>
   <span class="co"># add logout button UI</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"pull-right"</span>, <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="reference/logoutUI.html">logoutUI</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"logout"</span><span class="op">)</span><span class="op">)</span>,
+  <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">div</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"pull-right"</span>, <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="reference/logoutUI.html">logoutUI</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"logout"</span><span class="op">)</span><span class="op">)</span>,
   <span class="co"># add login panel UI function</span>
   <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="reference/loginUI.html">loginUI</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"login"</span><span class="op">)</span>,
   <span class="co"># setup table output to show user info after login</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/tableOutput.html">tableOutput</a></span><span class="op">(</span><span class="st">"user_table"</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html" class="external-link">tableOutput</a></span><span class="op">(</span><span class="st">"user_table"</span><span class="op">)</span>
 <span class="op">)</span>
 
 <span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
@@ -139,27 +139,27 @@
     data <span class="op">=</span> <span class="va">user_base</span>,
     user_col <span class="op">=</span> <span class="va">user</span>,
     pwd_col <span class="op">=</span> <span class="va">password</span>,
-    log_out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive</a></span><span class="op">(</span><span class="fu">logout_init</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+    log_out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu">logout_init</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
   <span class="op">)</span>
 
   <span class="co"># call the logout module with reactive trigger to hide/show</span>
   <span class="va">logout_init</span> <span class="op">&lt;-</span> <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="reference/logoutServer.html">logoutServer</a></span><span class="op">(</span>
     id <span class="op">=</span> <span class="st">"logout"</span>,
-    active <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive</a></span><span class="op">(</span><span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">user_auth</span><span class="op">)</span>
+    active <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">user_auth</span><span class="op">)</span>
   <span class="op">)</span>
 
-  <span class="va">output</span><span class="op">$</span><span class="va">user_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html">renderTable</a></span><span class="op">(</span><span class="op">{</span>
+  <span class="va">output</span><span class="op">$</span><span class="va">user_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html" class="external-link">renderTable</a></span><span class="op">(</span><span class="op">{</span>
     <span class="co"># use req to only render results when credentials()$user_auth is TRUE</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/req.html">req</a></span><span class="op">(</span><span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">user_auth</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/req.html" class="external-link">req</a></span><span class="op">(</span><span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">user_auth</span><span class="op">)</span>
     <span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">info</span>
   <span class="op">}</span><span class="op">)</span>
 <span class="op">}</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="details" class="section level2">
-<h2 class="hasAnchor">
-<a href="#details" class="anchor"></a>Details</h2>
+<div class="section level2">
+<h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a>
+</h2>
 <p>When the login module is called, it returns a reactive list containing 2 elements:</p>
 <ul>
 <li><code>user_auth</code></li>
@@ -167,28 +167,28 @@
 </ul>
 <p>The initial values of these variables are <code>FALSE</code> and <code>NULL</code> respectively. However, given a data frame or tibble containing user names, passwords and other user data (optional), the login module will assign a <code>user_auth</code> value of <code>TRUE</code> if the user supplies a matching user name and password. The value of <code>info</code> then becomes the row of data associated with that user which can be used in the main app to control content based on user permission variables etc.</p>
 <p>The logout button will only show when <code>user_auth</code> is <code>TRUE</code>. Clicking the button will reset <code>user_auth</code> back to <code>FALSE</code> which will hide the button and show the login panel again.</p>
-<p>You can set the code in your server functions to only run after a successful login through use of the <code><a href="https://rdrr.io/pkg/shiny/man/req.html">req()</a></code> function inside all reactives, renders and observers. In the example above, using <code><a href="https://rdrr.io/pkg/shiny/man/req.html">req(credentials()$user_auth)</a></code> inside the <code>renderTable</code> function ensures the table showing the returned user information is only rendered when <code>user_auth</code> is <code>TRUE</code>.</p>
+<p>You can set the code in your server functions to only run after a successful login through use of the <code><a href="https://rdrr.io/pkg/shiny/man/req.html" class="external-link">req()</a></code> function inside all reactives, renders and observers. In the example above, using <code>req(credentials()$user_auth)</code> inside the <code>renderTable</code> function ensures the table showing the returned user information is only rendered when <code>user_auth</code> is <code>TRUE</code>.</p>
 </div>
-<div id="cookie-based-authentication" class="section level2">
-<h2 class="hasAnchor">
-<a href="#cookie-based-authentication" class="anchor"></a>Cookie-Based Authentication</h2>
-<p>Most authentication systems use browser cookies to avoid returning users having to re-enter their user name and password every time they return to the app. <code>shinyauthr</code> provides a method for cookie-based automatic login, but you must create your own functions to save and load session info into a database with <a href="https://shiny.rstudio.com/articles/persistent-data-storage.html">persistent data storage</a>.</p>
+<div class="section level2">
+<h2 id="cookie-based-authentication">Cookie-Based Authentication<a class="anchor" aria-label="anchor" href="#cookie-based-authentication"></a>
+</h2>
+<p>Most authentication systems use browser cookies to avoid returning users having to re-enter their user name and password every time they return to the app. <code>shinyauthr</code> provides a method for cookie-based automatic login, but you must create your own functions to save and load session info into a database with <a href="https://shiny.rstudio.com/articles/persistent-data-storage.html" class="external-link">persistent data storage</a>.</p>
 <p>The first required function must accept two parameters <code>user</code> and <code>session</code>. The first of these is the user name for log in. The second is a randomly generated string that identifies the session. The app asks the user’s web browser to save this session id as a cookie.</p>
 <p>The second required function is called without parameters and must return a data.frame of valid <code>user</code> and <code>session</code> ids. If the user’s web browser sends your app a cookie which appears in the <code>session</code> column, then the corresponding <code>user</code> is automatically logged in.</p>
-<p>Pass these functions to the login module via <code><a href="reference/loginServer.html">shinyauthr::loginServer(...)</a></code> as the <code>cookie_setter</code> and <code>cookie_getter</code> parameters. A minimal example, using <a href="https://rsqlite.r-dbi.org/">RSQLite</a> as a local database to write and store user session data, is below.</p>
+<p>Pass these functions to the login module via <code>shinyauthr::loginServer(...)</code> as the <code>cookie_setter</code> and <code>cookie_getter</code> parameters. A minimal example, using <a href="https://rsqlite.r-dbi.org/" class="external-link">RSQLite</a> as a local database to write and store user session data, is below.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org">lubridate</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org">DBI</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rsqlite.r-dbi.org">RSQLite</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lubridate.tidyverse.org" class="external-link">lubridate</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dbi.r-dbi.org" class="external-link">DBI</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rsqlite.r-dbi.org" class="external-link">RSQLite</a></span><span class="op">)</span>
 
 <span class="co"># connect to, or setup and connect to local SQLite db</span>
-<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.exists</a></span><span class="op">(</span><span class="st">"my_db_file"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"my_db_file"</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="st">"my_db_file"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"my_db_file"</span><span class="op">)</span>
 <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span>
-  <span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html">dbConnect</a></span><span class="op">(</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html">SQLite</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"my_db_file"</span><span class="op">)</span>
-  <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbCreateTable.html">dbCreateTable</a></span><span class="op">(</span><span class="va">db</span>, <span class="st">"sessionids"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>user <span class="op">=</span> <span class="st">"TEXT"</span>, sessionid <span class="op">=</span> <span class="st">"TEXT"</span>, login_time <span class="op">=</span> <span class="st">"TEXT"</span><span class="op">)</span><span class="op">)</span>
+  <span class="va">db</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbConnect.html" class="external-link">dbConnect</a></span><span class="op">(</span><span class="fu"><a href="https://rsqlite.r-dbi.org/reference/SQLite.html" class="external-link">SQLite</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"my_db_file"</span><span class="op">)</span>
+  <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbCreateTable.html" class="external-link">dbCreateTable</a></span><span class="op">(</span><span class="va">db</span>, <span class="st">"sessionids"</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>user <span class="op">=</span> <span class="st">"TEXT"</span>, sessionid <span class="op">=</span> <span class="st">"TEXT"</span>, login_time <span class="op">=</span> <span class="st">"TEXT"</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="co"># a user who has not visited the app for this many days</span>
@@ -199,35 +199,35 @@
 <span class="co"># successfully logs in with a password.  This function saves to your database.</span>
 
 <span class="va">add_sessionid_to_db</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">user</span>, <span class="va">sessionid</span>, <span class="va">conn</span> <span class="op">=</span> <span class="va">db</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>user <span class="op">=</span> <span class="va">user</span>, sessionid <span class="op">=</span> <span class="va">sessionid</span>, login_time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="fu"><a href="http://lubridate.tidyverse.org/reference/now.html">now</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html">dbWriteTable</a></span><span class="op">(</span><span class="va">conn</span>, <span class="st">"sessionids"</span>, <span class="va">.</span>, append <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+  <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>user <span class="op">=</span> <span class="va">user</span>, sessionid <span class="op">=</span> <span class="va">sessionid</span>, login_time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu"><a href="https://lubridate.tidyverse.org/reference/now.html" class="external-link">now</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbWriteTable.html" class="external-link">dbWriteTable</a></span><span class="op">(</span><span class="va">conn</span>, <span class="st">"sessionids"</span>, <span class="va">.</span>, append <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="co"># This function must return a data.frame with columns user and sessionid  Other columns are also okay</span>
 <span class="co"># and will be made available to the app after log in as columns in credentials()$user_auth</span>
 
 <span class="va">get_sessionids_from_db</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">conn</span> <span class="op">=</span> <span class="va">db</span>, <span class="va">expiry</span> <span class="op">=</span> <span class="va">cookie_expiry</span><span class="op">)</span> <span class="op">{</span>
-  <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbReadTable.html">dbReadTable</a></span><span class="op">(</span><span class="va">conn</span>, <span class="st">"sessionids"</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>login_time <span class="op">=</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/ymd_hms.html">ymd_hms</a></span><span class="op">(</span><span class="va">login_time</span><span class="op">)</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">login_time</span> <span class="op">&gt;</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/now.html">now</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="http://lubridate.tidyverse.org/reference/period.html">days</a></span><span class="op">(</span><span class="va">expiry</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://dbi.r-dbi.org/reference/dbReadTable.html" class="external-link">dbReadTable</a></span><span class="op">(</span><span class="va">conn</span>, <span class="st">"sessionids"</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>login_time <span class="op">=</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/ymd_hms.html" class="external-link">ymd_hms</a></span><span class="op">(</span><span class="va">login_time</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+    <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">login_time</span> <span class="op">&gt;</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/now.html" class="external-link">now</a></span><span class="op">(</span><span class="op">)</span> <span class="op">-</span> <span class="fu"><a href="https://lubridate.tidyverse.org/reference/period.html" class="external-link">days</a></span><span class="op">(</span><span class="va">expiry</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
 
 <span class="co"># dataframe that holds usernames, passwords and other user data</span>
-<span class="va">user_base</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
-  user <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"user1"</span>, <span class="st">"user2"</span><span class="op">)</span>,
-  password <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pass1"</span>, <span class="st">"pass2"</span><span class="op">)</span>,
-  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"admin"</span>, <span class="st">"standard"</span><span class="op">)</span>,
-  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"User One"</span>, <span class="st">"User Two"</span><span class="op">)</span>
+<span class="va">user_base</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
+  user <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"user1"</span>, <span class="st">"user2"</span><span class="op">)</span>,
+  password <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pass1"</span>, <span class="st">"pass2"</span><span class="op">)</span>,
+  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"admin"</span>, <span class="st">"standard"</span><span class="op">)</span>,
+  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"User One"</span>, <span class="st">"User Two"</span><span class="op">)</span>
 <span class="op">)</span>
 
-<span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span>
+<span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span>
   <span class="co"># add logout button UI</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html">div</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"pull-right"</span>, <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="reference/logoutUI.html">logoutUI</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"logout"</span><span class="op">)</span><span class="op">)</span>,
+  <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">div</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"pull-right"</span>, <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="reference/logoutUI.html">logoutUI</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"logout"</span><span class="op">)</span><span class="op">)</span>,
   <span class="co"># add login panel UI function</span>
   <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="reference/loginUI.html">loginUI</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"login"</span>, cookie_expiry <span class="op">=</span> <span class="va">cookie_expiry</span><span class="op">)</span>,
   <span class="co"># setup table output to show user info after login</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/tableOutput.html">tableOutput</a></span><span class="op">(</span><span class="st">"user_table"</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html" class="external-link">tableOutput</a></span><span class="op">(</span><span class="st">"user_table"</span><span class="op">)</span>
 <span class="op">)</span>
 
 <span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span>
@@ -235,7 +235,7 @@
   <span class="co"># call the logout module with reactive trigger to hide/show</span>
   <span class="va">logout_init</span> <span class="op">&lt;-</span> <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="reference/logoutServer.html">logoutServer</a></span><span class="op">(</span>
     id <span class="op">=</span> <span class="st">"logout"</span>,
-    active <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive</a></span><span class="op">(</span><span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">user_auth</span><span class="op">)</span>
+    active <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">user_auth</span><span class="op">)</span>
   <span class="op">)</span>
 
   <span class="co"># call login module supplying data frame, user and password cols</span>
@@ -249,46 +249,46 @@
     sessionid_col <span class="op">=</span> <span class="va">sessionid</span>,
     cookie_getter <span class="op">=</span> <span class="va">get_sessionids_from_db</span>,
     cookie_setter <span class="op">=</span> <span class="va">add_sessionid_to_db</span>,
-    log_out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive</a></span><span class="op">(</span><span class="fu">logout_init</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+    log_out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu">logout_init</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
   <span class="op">)</span>
 
   <span class="co"># pulls out the user information returned from login module</span>
-  <span class="va">user_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive</a></span><span class="op">(</span><span class="op">{</span>
+  <span class="va">user_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="op">{</span>
     <span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">info</span>
   <span class="op">}</span><span class="op">)</span>
 
-  <span class="va">output</span><span class="op">$</span><span class="va">user_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html">renderTable</a></span><span class="op">(</span><span class="op">{</span>
+  <span class="va">output</span><span class="op">$</span><span class="va">user_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html" class="external-link">renderTable</a></span><span class="op">(</span><span class="op">{</span>
     <span class="co"># use req to only render results when credentials()$user_auth is TRUE</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/req.html">req</a></span><span class="op">(</span><span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">user_auth</span><span class="op">)</span>
-    <span class="fu">user_data</span><span class="op">(</span><span class="op">)</span> <span class="op">%&gt;%</span>
-      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html">starts_with</a></span><span class="op">(</span><span class="st">"login_time"</span><span class="op">)</span>, <span class="va">as.character</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/req.html" class="external-link">req</a></span><span class="op">(</span><span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">user_auth</span><span class="op">)</span>
+    <span class="fu">user_data</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>
+      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/starts_with.html" class="external-link">starts_with</a></span><span class="op">(</span><span class="st">"login_time"</span><span class="op">)</span>, <span class="va">as.character</span><span class="op">)</span><span class="op">)</span>
   <span class="op">}</span><span class="op">)</span>
 <span class="op">}</span>
 
-<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="hashing-passwords-with-sodium" class="section level2">
-<h2 class="hasAnchor">
-<a href="#hashing-passwords-with-sodium" class="anchor"></a>Hashing Passwords with <code>sodium</code>
+<div class="section level2">
+<h2 id="hashing-passwords-with-sodium">Hashing Passwords with <code>sodium</code>
+<a class="anchor" aria-label="anchor" href="#hashing-passwords-with-sodium"></a>
 </h2>
-<p>If you are hosting your user passwords on the internet, it is a good idea to first encrypt them with a hashing algorithm. You can use the <a href="https://github.com/jeroen/sodium">sodium package</a> to do this. Sodium uses a slow hashing algorithm that is specifically designed to protect stored passwords from brute-force attacks. More on this <a href="https://doc.libsodium.org/password_hashing/">here</a>. You then tell the <code><a href="reference/loginServer.html">shinyauthr::loginServer</a></code> module that your passwords have been hashed by <code>sodium</code> and <code>shinyauthr</code> will then decrypt when login is requested. Your plain text passwords must be a character vector, not factors, when hashing for this to work as shiny inputs are passed as character strings.</p>
+<p>If you are hosting your user passwords on the internet, it is a good idea to first encrypt them with a hashing algorithm. You can use the <a href="https://github.com/jeroen/sodium" class="external-link">sodium package</a> to do this. Sodium uses a slow hashing algorithm that is specifically designed to protect stored passwords from brute-force attacks. More on this <a href="https://doc.libsodium.org/password_hashing/" class="external-link">here</a>. You then tell the <code><a href="reference/loginServer.html">shinyauthr::loginServer</a></code> module that your passwords have been hashed by <code>sodium</code> and <code>shinyauthr</code> will then decrypt when login is requested. Your plain text passwords must be a character vector, not factors, when hashing for this to work as shiny inputs are passed as character strings.</p>
 <p>For example, a sample user base like the following can be incorporated for use with <code>shinyauthr</code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># create a user base then hash passwords with sodium</span>
 <span class="co"># then save to an rds file in app directory</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jeroen/sodium#readme">sodium</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jeroen/sodium" class="external-link">sodium</a></span><span class="op">)</span>
 
-<span class="va">user_base</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html">tibble</a></span><span class="op">(</span>
-  user <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"user1"</span>, <span class="st">"user2"</span><span class="op">)</span>,
-  password <span class="op">=</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html">map_chr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"pass1"</span>, <span class="st">"pass2"</span><span class="op">)</span>, <span class="fu">sodium</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sodium/man/password.html">password_store</a></span><span class="op">)</span>,
-  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"admin"</span>, <span class="st">"standard"</span><span class="op">)</span>,
-  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"User One"</span>, <span class="st">"User Two"</span><span class="op">)</span>
+<span class="va">user_base</span> <span class="op">&lt;-</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>
+  user <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"user1"</span>, <span class="st">"user2"</span><span class="op">)</span>,
+  password <span class="op">=</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">map_chr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pass1"</span>, <span class="st">"pass2"</span><span class="op">)</span>, <span class="fu">sodium</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/sodium/man/password.html" class="external-link">password_store</a></span><span class="op">)</span>,
+  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"admin"</span>, <span class="st">"standard"</span><span class="op">)</span>,
+  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"User One"</span>, <span class="st">"User Two"</span><span class="op">)</span>
 <span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">saveRDS</a></span><span class="op">(</span><span class="va">user_base</span>, <span class="st">"user_base.rds"</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">saveRDS</a></span><span class="op">(</span><span class="va">user_base</span>, <span class="st">"user_base.rds"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># in your app code, read in the user base rds file</span>
-<span class="va">user_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html">readRDS</a></span><span class="op">(</span><span class="st">"user_base.rds"</span><span class="op">)</span></code></pre></div>
+<span class="va">user_base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/readRDS.html" class="external-link">readRDS</a></span><span class="op">(</span><span class="st">"user_base.rds"</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># then when calling the module set sodium_hashed = TRUE</span>
 <span class="va">credentials</span> <span class="op">&lt;-</span> <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="reference/loginServer.html">loginServer</a></span><span class="op">(</span>
@@ -297,21 +297,21 @@
   user_col <span class="op">=</span> <span class="va">user</span>,
   pwd_col <span class="op">=</span> <span class="va">password</span>,
   sodium_hashed <span class="op">=</span> <span class="cn">TRUE</span>,
-  log_out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html">reactive</a></span><span class="op">(</span><span class="fu">logout_init</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+  log_out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu">logout_init</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 </div>
-<div id="credits" class="section level2">
-<h2 class="hasAnchor">
-<a href="#credits" class="anchor"></a>Credits</h2>
-<p><code>shinyauthr</code> originally borrowed some code from treysp’s <a href="https://github.com/treysp/shiny_password">shiny_password</a> template with the goal of making implementation simpler for end users and allowing the login/logout UIs to fit easily into any UI framework, including <a href="https://rstudio.github.io/shinydashboard/">shinydashboard</a>.</p>
-<p>Thanks to <a href="https://github.com/michael-dewar">Michael Dewar</a> for his contribution of cookie-based authentication. Some code was borrowed from calligross’s <a href="https://gist.github.com/calligross/e779281b500eb93ee9e42e4d72448189">Shiny Cookie Based Authentication Example</a> and from an earlier PR from <a href="https://github.com/aqualogy/shinyauthr">aqualogy</a>.</p>
+<div class="section level2">
+<h2 id="credits">Credits<a class="anchor" aria-label="anchor" href="#credits"></a>
+</h2>
+<p><code>shinyauthr</code> originally borrowed some code from treysp’s <a href="https://github.com/treysp/shiny_password" class="external-link">shiny_password</a> template with the goal of making implementation simpler for end users and allowing the login/logout UIs to fit easily into any UI framework, including <a href="https://rstudio.github.io/shinydashboard/" class="external-link">shinydashboard</a>.</p>
+<p>Thanks to <a href="https://github.com/michael-dewar" class="external-link">Michael Dewar</a> for his contribution of cookie-based authentication. Some code was borrowed from calligross’s <a href="https://gist.github.com/calligross/e779281b500eb93ee9e42e4d72448189" class="external-link">Shiny Cookie Based Authentication Example</a> and from an earlier PR from <a href="https://github.com/aqualogy/shinyauthr" class="external-link">aqualogy</a>.</p>
 </div>
-<div id="disclaimer" class="section level2">
-<h2 class="hasAnchor">
-<a href="#disclaimer" class="anchor"></a>Disclaimer</h2>
+<div class="section level2">
+<h2 id="disclaimer">Disclaimer<a class="anchor" aria-label="anchor" href="#disclaimer"></a>
+</h2>
 <p>I’m not a security professional so cannot guarantee this authentication procedure to be foolproof. It is ultimately the shiny app developer’s responsibility not to expose any sensitive content to the client without the necessary login criteria being met.</p>
 <p>I would welcome any feedback on any potential vulnerabilities in the process. I know that apps hosted on a server without an SSL certificate could be open to interception of user names and passwords submitted by a user. As such I would not recommend the use of shinyauthr without a HTTPS connection.</p>
-<p>For apps intended for use within commercial organisations, I would recommend one of RStudio’s commercial shiny hosting options, or <a href="https://www.shinyproxy.io/">shinyproxy</a>, both of which have built in authentication options.</p>
+<p>For apps intended for use within commercial organisations, I would recommend one of RStudio’s commercial shiny hosting options, or <a href="https://www.shinyproxy.io/" class="external-link">shinyproxy</a>, both of which have built in authentication options.</p>
 <p>However, I hope that having an easy-to-implement open-source shiny authentication option like this will prove useful when alternative options are not feasible.</p>
 <p><em>Paul Campbell</em></p>
 </div>
@@ -320,51 +320,62 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=shinyauthr">https://​cloud.r-project.org/​package=shinyauthr</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/paulc91/shinyauthr/">https://​github.com/​paulc91/​shinyauthr/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/paulc91/shinyauthr/issues">https://​github.com/​paulc91/​shinyauthr/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>
-<a href="https://github.com/paulc91">Paul Campbell</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-1018-6606" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="https://cloud.r-project.org/package=shinyauthr" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/paulc91/shinyauthr/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/paulc91/shinyauthr/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://CRAN.R-project.org/package=shinyauthr"><img src="https://www.r-pkg.org/badges/version/shinyauthr" alt="CRAN status"></a></li>
-<li><a href="https://github.com/PaulC91/shinyauthr/actions"><img src="https://github.com/PaulC91/shinyauthr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
-<li><a href="https://codecov.io/gh/PaulC91/shinyauthr?branch=master"><img src="https://codecov.io/gh/PaulC91/shinyauthr/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing shinyauthr</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>
+<a href="https://github.com/paulc91" class="external-link">Paul Campbell</a> <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-1018-6606" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://CRAN.R-project.org/package=shinyauthr" class="external-link"><img src="https://www.r-pkg.org/badges/version/shinyauthr" alt="CRAN status"></a></li>
+<li><a href="https://cran.r-project.org/package=shinyauthr" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/shinyauthr"></a></li>
+<li><a href="https://github.com/PaulC91/shinyauthr/actions" class="external-link"><img src="https://github.com/PaulC91/shinyauthr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
+<li><a href="https://codecov.io/gh/PaulC91/shinyauthr?branch=master" class="external-link"><img src="https://codecov.io/gh/PaulC91/shinyauthr/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://github.com/paulc91">Paul Campbell</a>.</p>
+  <p></p>
+<p>Developed by <a href="https://github.com/paulc91" class="external-link">Paul Campbell</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
@@ -372,6 +383,8 @@
 
   
 
+
+  
 
   </body>
 </html>
