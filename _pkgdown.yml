@@ -34,3 +34,14 @@ reference:
     contents:
       - logoutUI
       - logoutServer
+  - title: "Examples"
+    desc: >
+      Run example apps
+    contents:
+      - runExample
+  - title: "Deprecated"
+    desc: >
+      Deprecated login and logout server functions
+    contents:
+      - login
+      - logout
