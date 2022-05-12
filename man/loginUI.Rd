@@ -10,6 +10,7 @@ loginUI(
   user_title = "User Name",
   pass_title = "Password",
   login_title = "Log in",
+  login_btn_class = "btn-primary",
   error_message = "Invalid username or password!",
   additional_ui = NULL,
   cookie_expiry = 7
@@ -25,6 +26,8 @@ loginUI(
 \item{pass_title}{label for the password text input}
 
 \item{login_title}{label for the login button}
+
+\item{login_btn_class}{bootstrap class for the login button. defaults to "btn-primary"}
 
 \item{error_message}{message to display after failed login}
 

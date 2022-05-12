@@ -7,6 +7,7 @@
 #' @param user_title label for the user name text input
 #' @param pass_title label for the password text input
 #' @param login_title label for the login button
+#' @param login_btn_class bootstrap class for the login button. defaults to "btn-primary"
 #' @param error_message message to display after failed login
 #' @param additional_ui additional shiny UI element(s) to add below login button. Wrap multiple inside \code{shiny::tagList()}
 #' @param cookie_expiry number of days to request browser to retain login cookie
@@ -19,6 +20,7 @@ loginUI <- function(id,
                     user_title = "User Name",
                     pass_title = "Password",
                     login_title = "Log in",
+                    login_btn_class = "btn-primary",
                     error_message = "Invalid username or password!",
                     additional_ui = NULL,
                     cookie_expiry = 7) {
@@ -38,7 +40,7 @@ loginUI <- function(id,
         shiny::passwordInput(ns("password"), shiny::tagList(shiny::icon("unlock-alt"), pass_title)),
         shiny::div(
           style = "text-align: center;",
-          shiny::actionButton(ns("button"), login_title, class = "btn-primary")
+          shiny::tags$button(id = ns("button"), type = "button", class = paste("btn", login_btn_class, "action-button"), login_title)
         ),
         additional_ui,
         shinyjs::hidden(
@@ -125,9 +127,6 @@ loginServer <- function(id,
   shiny::moduleServer(
     id,
     function(input, output, session) {
-
-      # remove btn-default class on login button
-      shinyjs::removeCssClass("button", class = "btn-default")
       
       credentials <- shiny::reactiveValues(user_auth = FALSE, info = NULL, cookie_already_checked = FALSE)
       
