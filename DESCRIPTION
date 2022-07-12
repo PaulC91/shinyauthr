@@ -23,7 +23,8 @@ Imports:
     dplyr,
     rlang,
     sodium,
-    glue
+    glue,
+    digest
 Suggests: 
     DBI,
     RSQLite,
