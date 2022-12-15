@@ -121,8 +121,12 @@ loginServer <- function(id,
     }
   }
   
-  # ensure all text columns are character class
-  data <- dplyr::mutate_if(data, is.factor, as.character)
+  data_reactive <- reactive({
+    # if not already reactive, make data reactive
+    data_temp <- if(is.reactive(data)) data else reactive(data)
+    # ensure all text columns are character class
+    dplyr::mutate_if(data_temp(), is.factor, as.character)
+  })
   
   shiny::moduleServer(
     id,
@@ -191,7 +195,7 @@ loginServer <- function(id,
             
             credentials$user_auth <- TRUE
             credentials$info <- dplyr::bind_cols(
-              dplyr::filter(data, {{user_col}} == .userid),
+              dplyr::filter(data_reactive(), {{user_col}} == .userid),
               dplyr::select(cookie_data, -{{user_col}})
             )
           }
@@ -203,10 +207,10 @@ loginServer <- function(id,
       shiny::observeEvent(input$button, {
         
         # check for match of input username to username column in data
-        row_username <- which(dplyr::pull(data, {{user_col}}) == input$user_name)
+        row_username <- which(dplyr::pull(data_reactive(), {{user_col}}) == input$user_name)
         
         if (length(row_username)) {
-          row_password <- dplyr::filter(data, dplyr::row_number() == row_username)
+          row_password <- dplyr::filter(data_reactive(), dplyr::row_number() == row_username)
           row_password <- dplyr::pull(row_password, {{pwd_col}})
           if (sodium_hashed) {
             password_match <- sodium::password_verify(row_password, input$password)
@@ -221,7 +225,7 @@ loginServer <- function(id,
         if (length(row_username) == 1 && password_match) {
           
           credentials$user_auth <- TRUE
-          credentials$info <- dplyr::filter(data, {{user_col}} == input$user_name)
+          credentials$info <- dplyr::filter(data_reactive(), {{user_col}} == input$user_name)
           
           if (cookie_logins) {
             .sessionid <- randomString()
