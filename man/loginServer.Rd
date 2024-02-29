@@ -21,7 +21,8 @@ loginServer(
 \arguments{
 \item{id}{An ID string that corresponds with the ID used to call the module's UI function}
 
-\item{data}{data frame or tibble containing user names, passwords and other user data}
+\item{data}{data frame or tibble containing user names, passwords and other user data. Can be either
+a static object or a shiny \link[shiny]{reactive} object}
 
 \item{user_col}{bare (unquoted) or quoted column name containing user names}
 

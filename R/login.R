@@ -68,7 +68,8 @@ loginUI <- function(id,
 #' \href{https://shiny.rstudio.com/articles/modules.html}{Modularizing Shiny app code}.
 #'
 #' @param id 	An ID string that corresponds with the ID used to call the module's UI function
-#' @param data data frame or tibble containing user names, passwords and other user data
+#' @param data data frame or tibble containing user names, passwords and other user data. Can be either
+#'  a static object or a shiny \link[shiny]{reactive} object
 #' @param user_col bare (unquoted) or quoted column name containing user names
 #' @param pwd_col bare (unquoted) or quoted column name containing passwords
 #' @param sodium_hashed have the passwords been hash encrypted using the sodium package? defaults to FALSE
@@ -121,9 +122,9 @@ loginServer <- function(id,
     }
   }
   
-  data_reactive <- reactive({
+  data_reactive <- shiny::reactive({
     # if not already reactive, make data reactive
-    data_temp <- if(is.reactive(data)) data else reactive(data)
+    data_temp <- if (shiny::is.reactive(data)) data else shiny::reactive(data)
     # ensure all text columns are character class
     dplyr::mutate_if(data_temp(), is.factor, as.character)
   })

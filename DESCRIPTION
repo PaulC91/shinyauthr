@@ -34,7 +34,7 @@ Suggests:
     knitr,
     rmarkdown,
     covr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 URL: https://github.com/paulc91/shinyauthr
 BugReports: https://github.com/paulc91/shinyauthr/issues
 Config/testthat/edition: 3
