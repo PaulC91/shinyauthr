@@ -94,6 +94,7 @@ loginServer <- function(id,
                         data,
                         user_col,
                         pwd_col,
+			salt_col,
                         sodium_hashed = FALSE,
                         log_out = shiny::reactiveVal(),
                         reload_on_logout = FALSE,
@@ -111,6 +112,11 @@ loginServer <- function(id,
   try_class_pc <- try(class(pwd_col), silent = TRUE)
   if (try_class_pc == "character") {
     pwd_col <- rlang::sym(pwd_col)
+  }
+
+  try_class_pc <- try(class(salt_col), silent = TRUE)
+  if (try_class_pc == "character") {
+    salt_col <- rlang::sym(salt_col)
   }
   
   if (cookie_logins && (missing(cookie_getter) | missing(cookie_setter) | missing(sessionid_col))) {
@@ -213,10 +219,13 @@ loginServer <- function(id,
         if (length(row_username)) {
           row_password <- dplyr::filter(data_reactive(), dplyr::row_number() == row_username)
           row_password <- dplyr::pull(row_password, {{pwd_col}})
+	  salt_password <- dplyr::filter(data, dplyr::row_number() == row_username)
+	  salt_password <- dplyr::pull(salt_password, {{salt_col}})
+
           if (sodium_hashed) {
-            password_match <- sodium::password_verify(row_password, input$password)
+            password_match <- sodium::password_verify(row_password, digest(paste(salt_password,input$password),algo="sha256"))
           } else {
-            password_match <- identical(row_password, input$password)
+            password_match <- identical(row_password, digest(paste(salt_password,input$password),algo="sha256"))
           }
         } else {
           password_match <- FALSE
