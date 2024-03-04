@@ -1,3 +1,9 @@
+# shinyauthr 1.0.1
+
+* `loginServer` now accepts reactive data courtesy of #62
+* Updated r-lib github actions to v2
+* Moved the 'sodium' package to suggests 
+
 # shinyauthr 1.0.0
 
 * New `loginServer` and `logoutServer` functions added. `login` and `logout` are now deprecated, full details in README.

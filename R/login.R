@@ -214,6 +214,9 @@ loginServer <- function(id,
           row_password <- dplyr::filter(data_reactive(), dplyr::row_number() == row_username)
           row_password <- dplyr::pull(row_password, {{pwd_col}})
           if (sodium_hashed) {
+            if (!rlang::is_installed("sodium")) {
+              rlang::check_installed("sodium", reason = "to decrypt passwords hashed by sodium.")
+            }
             password_match <- sodium::password_verify(row_password, input$password)
           } else {
             password_match <- identical(row_password, input$password)
@@ -416,6 +419,9 @@ login <- function(input,
       row_password <- dplyr::filter(data, dplyr::row_number() == row_username)
       row_password <- dplyr::pull(row_password, !!pwds)
       if (sodium_hashed) {
+        if (!rlang::is_installed("sodium")) {
+          rlang::check_installed("sodium", reason = "to decrypt passwords hashed by sodium.")
+        }
         password_match <- sodium::password_verify(row_password, input$password)
       } else {
         password_match <- identical(row_password, input$password)

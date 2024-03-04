@@ -22,9 +22,9 @@ Imports:
     shinyjs,
     dplyr,
     rlang,
-    sodium,
     glue
 Suggests: 
+    sodium,
     DBI,
     RSQLite,
     lubridate,

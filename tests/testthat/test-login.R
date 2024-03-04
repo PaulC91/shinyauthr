@@ -116,6 +116,7 @@ test_that("incorrect credentials does not log in", {
 })
 
 test_that("sodium decrypts password", {
+  skip_if_not_installed("sodium")
   user_base <- dplyr::tibble(
     user = "user1",
     password = sodium::password_store("pass1")
