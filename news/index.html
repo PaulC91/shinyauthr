@@ -54,6 +54,13 @@
     </div>
 
     <div class="section level2">
+<h2 class="page-header" data-toc-text="1.0.1" id="shinyauthr-101">shinyauthr 1.0.1<a class="anchor" aria-label="anchor" href="#shinyauthr-101"></a></h2>
+<ul><li>
+<code>loginServer</code> now accepts reactive data courtesy of <a href="https://github.com/paulc91/shinyauthr/issues/62" class="external-link">#62</a></li>
+<li>Updated r-lib github actions to v2</li>
+<li>Moved the ‘sodium’ package to suggests</li>
+</ul></div>
+    <div class="section level2">
 <h2 class="page-header" data-toc-text="1.0.0" id="shinyauthr-100">shinyauthr 1.0.0<small>2021-07-20</small><a class="anchor" aria-label="anchor" href="#shinyauthr-100"></a></h2>
 <ul><li>New <code>loginServer</code> and <code>logoutServer</code> functions added. <code>login</code> and <code>logout</code> are now deprecated, full details in README.</li>
 <li>Tests added.</li>
@@ -61,13 +68,16 @@
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.1" id="shinyauthr-011">shinyauthr 0.1.1<a class="anchor" aria-label="anchor" href="#shinyauthr-011"></a></h2>
-<ul><li>Added cookie-based authentication</li></ul></div>
+<ul><li>Added cookie-based authentication</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.0" id="shinyauthr-010">shinyauthr 0.1.0<a class="anchor" aria-label="anchor" href="#shinyauthr-010"></a></h2>
-<ul><li>Prepare for CRAN submission</li></ul></div>
+<ul><li>Prepare for CRAN submission</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.0.99" id="shinyauthr-0099">shinyauthr 0.0.99<a class="anchor" aria-label="anchor" href="#shinyauthr-0099"></a></h2>
-<ul><li>Switched to the sodium package for password hashing and decryption</li></ul><p>If you plan to use hashed passwords with shinyauthr you now must use the <a href="https://github.com/jeroen/sodium" class="external-link">sodium package</a> to hash your passwords and the <code>sodium_hashed = TRUE</code> argument of the <code><a href="../reference/login.html">shinyauthr::login</a></code> module call for decryption to work appropriately.</p>
+<ul><li>Switched to the sodium package for password hashing and decryption</li>
+</ul><p>If you plan to use hashed passwords with shinyauthr you now must use the <a href="https://github.com/jeroen/sodium" class="external-link">sodium package</a> to hash your passwords and the <code>sodium_hashed = TRUE</code> argument of the <code><a href="../reference/login.html">shinyauthr::login</a></code> module call for decryption to work appropriately.</p>
 <p>This means that previously used <code>hashed</code> and <code>algo</code> arguments that interfaced with the <code>digest</code> package are now deprecated. If you had previously hashed your passwords with the digest package to use with shinyauthr, please re-hash them with <code>sodium</code> and use the <code>sodium_hashed</code> argument instead.</p>
 <p>Sorry for this breaking change, but sodium hashing provides added protection against brute-force attacks on stored passwords. More information on this <a href="https://doc.libsodium.org/password_hashing/" class="external-link">here</a>.</p>
 </div>
@@ -85,7 +95,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

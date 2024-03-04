@@ -59,49 +59,73 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">loginServer</span><span class="op">(</span>
-  <span class="va">id</span>,
-  <span class="va">data</span>,
-  <span class="va">user_col</span>,
-  <span class="va">pwd_col</span>,
-  sodium_hashed <span class="op">=</span> <span class="cn">FALSE</span>,
-  log_out <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactiveVal.html" class="external-link">reactiveVal</a></span><span class="op">(</span><span class="op">)</span>,
-  reload_on_logout <span class="op">=</span> <span class="cn">FALSE</span>,
-  cookie_logins <span class="op">=</span> <span class="cn">FALSE</span>,
-  <span class="va">sessionid_col</span>,
-  <span class="va">cookie_getter</span>,
-  <span class="va">cookie_setter</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">loginServer</span><span class="op">(</span></span>
+<span>  <span class="va">id</span>,</span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">user_col</span>,</span>
+<span>  <span class="va">pwd_col</span>,</span>
+<span>  sodium_hashed <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  log_out <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactiveVal.html" class="external-link">reactiveVal</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  reload_on_logout <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  cookie_logins <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  <span class="va">sessionid_col</span>,</span>
+<span>  <span class="va">cookie_getter</span>,</span>
+<span>  <span class="va">cookie_setter</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>id</dt>
 <dd><p>An ID string that corresponds with the ID used to call the module's UI function</p></dd>
+
+
 <dt>data</dt>
-<dd><p>data frame or tibble containing user names, passwords and other user data</p></dd>
+<dd><p>data frame or tibble containing user names, passwords and other user data. Can be either
+a static object or a shiny <a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a> object</p></dd>
+
+
 <dt>user_col</dt>
 <dd><p>bare (unquoted) or quoted column name containing user names</p></dd>
+
+
 <dt>pwd_col</dt>
 <dd><p>bare (unquoted) or quoted column name containing passwords</p></dd>
+
+
 <dt>sodium_hashed</dt>
 <dd><p>have the passwords been hash encrypted using the sodium package? defaults to FALSE</p></dd>
+
+
 <dt>log_out</dt>
 <dd><p>[reactive] supply the returned reactive from <a href="logoutServer.html">logoutServer</a> here to trigger a user logout</p></dd>
+
+
 <dt>reload_on_logout</dt>
 <dd><p>should app force a session reload on logout?</p></dd>
+
+
 <dt>cookie_logins</dt>
 <dd><p>enable automatic logins via browser cookies?</p></dd>
+
+
 <dt>sessionid_col</dt>
 <dd><p>bare (unquoted) or quoted column name containing session ids</p></dd>
+
+
 <dt>cookie_getter</dt>
 <dd><p>a function that returns a data.frame with at least two columns: user and session</p></dd>
+
+
 <dt>cookie_setter</dt>
 <dd><p>a function with two parameters: user and session.  The function must save these to a database.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The module will return a reactive 2 element list to your main application.
+    
+
+<p>The module will return a reactive 2 element list to your main application.
   First element <code>user_auth</code> is a boolean indicating whether there has been
   a successful login or not. Second element <code>info</code> will be the data frame provided
   to the function, filtered to the row matching the successfully logged in username.
@@ -117,55 +141,55 @@ For details on how to migrate see the 'Migrating from callModule to moduleServer
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘shiny’</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:shinyauthr’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     runExample</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># dataframe that holds usernames, passwords and other user data</span></span>
-<span class="r-in"><span class="va">user_base</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span class="r-in">  user <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"user1"</span>, <span class="st">"user2"</span><span class="op">)</span>,</span>
-<span class="r-in">  password <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pass1"</span>, <span class="st">"pass2"</span><span class="op">)</span>,</span>
-<span class="r-in">  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"admin"</span>, <span class="st">"standard"</span><span class="op">)</span>,</span>
-<span class="r-in">  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"User One"</span>, <span class="st">"User Two"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="co"># add logout button UI</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/htmltools/man/builder.html" class="external-link">div</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"pull-right"</span>, <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="logoutUI.html">logoutUI</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"logout"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span class="r-in">  <span class="co"># add login panel UI function</span></span>
-<span class="r-in">  <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="loginUI.html">loginUI</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"login"</span><span class="op">)</span>,</span>
-<span class="r-in">  <span class="co"># setup table output to show user info after login</span></span>
-<span class="r-in">  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html" class="external-link">tableOutput</a></span><span class="op">(</span><span class="st">"user_table"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in">  <span class="co"># call login module supplying data frame, </span></span>
-<span class="r-in">  <span class="co"># user and password cols and reactive trigger</span></span>
-<span class="r-in">  <span class="va">credentials</span> <span class="op">&lt;-</span> <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu">loginServer</span><span class="op">(</span></span>
-<span class="r-in">    id <span class="op">=</span> <span class="st">"login"</span>,</span>
-<span class="r-in">    data <span class="op">=</span> <span class="va">user_base</span>,</span>
-<span class="r-in">    user_col <span class="op">=</span> <span class="va">user</span>,</span>
-<span class="r-in">    pwd_col <span class="op">=</span> <span class="va">password</span>,</span>
-<span class="r-in">    log_out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu">logout_init</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in">  </span>
-<span class="r-in">  <span class="co"># call the logout module with reactive trigger to hide/show</span></span>
-<span class="r-in">  <span class="va">logout_init</span> <span class="op">&lt;-</span> <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="logoutServer.html">logoutServer</a></span><span class="op">(</span></span>
-<span class="r-in">    id <span class="op">=</span> <span class="st">"logout"</span>,</span>
-<span class="r-in">    active <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">user_auth</span><span class="op">)</span></span>
-<span class="r-in">  <span class="op">)</span></span>
-<span class="r-in">  </span>
-<span class="r-in">  <span class="va">output</span><span class="op">$</span><span class="va">user_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html" class="external-link">renderTable</a></span><span class="op">(</span><span class="op">{</span></span>
-<span class="r-in">    <span class="co"># use req to only render results when credentials()$user_auth is TRUE</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/req.html" class="external-link">req</a></span><span class="op">(</span><span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">user_auth</span><span class="op">)</span></span>
-<span class="r-in">    <span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">info</span></span>
-<span class="r-in">  <span class="op">}</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># dataframe that holds usernames, passwords and other user data</span></span></span>
+<span class="r-in"><span><span class="va">user_base</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  user <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"user1"</span>, <span class="st">"user2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  password <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"pass1"</span>, <span class="st">"pass2"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  permissions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"admin"</span>, <span class="st">"standard"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"User One"</span>, <span class="st">"User Two"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="co"># add logout button UI</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rstudio.github.io/htmltools/reference/builder.html" class="external-link">div</a></span><span class="op">(</span>class <span class="op">=</span> <span class="st">"pull-right"</span>, <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="logoutUI.html">logoutUI</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"logout"</span><span class="op">)</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># add login panel UI function</span></span></span>
+<span class="r-in"><span>  <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="loginUI.html">loginUI</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"login"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="co"># setup table output to show user info after login</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html" class="external-link">tableOutput</a></span><span class="op">(</span><span class="st">"user_table"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span>, <span class="va">session</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="co"># call login module supplying data frame, </span></span></span>
+<span class="r-in"><span>  <span class="co"># user and password cols and reactive trigger</span></span></span>
+<span class="r-in"><span>  <span class="va">credentials</span> <span class="op">&lt;-</span> <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu">loginServer</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"login"</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">user_base</span>,</span></span>
+<span class="r-in"><span>    user_col <span class="op">=</span> <span class="va">user</span>,</span></span>
+<span class="r-in"><span>    pwd_col <span class="op">=</span> <span class="va">password</span>,</span></span>
+<span class="r-in"><span>    log_out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu">logout_init</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="co"># call the logout module with reactive trigger to hide/show</span></span></span>
+<span class="r-in"><span>  <span class="va">logout_init</span> <span class="op">&lt;-</span> <span class="fu">shinyauthr</span><span class="fu">::</span><span class="fu"><a href="logoutServer.html">logoutServer</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"logout"</span>,</span></span>
+<span class="r-in"><span>    active <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">user_auth</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="va">output</span><span class="op">$</span><span class="va">user_table</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html" class="external-link">renderTable</a></span><span class="op">(</span><span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="co"># use req to only render results when credentials()$user_auth is TRUE</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/req.html" class="external-link">req</a></span><span class="op">(</span><span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">user_auth</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    <span class="fu">credentials</span><span class="op">(</span><span class="op">)</span><span class="op">$</span><span class="va">info</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span>ui <span class="op">=</span> <span class="va">ui</span>, server <span class="op">=</span> <span class="va">server</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -180,7 +204,7 @@ For details on how to migrate see the 'Migrating from callModule to moduleServer
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

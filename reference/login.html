@@ -63,36 +63,65 @@
     <h2>Arguments</h2>
     <dl><dt>input</dt>
 <dd><p>shiny input</p></dd>
+
+
 <dt>output</dt>
 <dd><p>shiny output</p></dd>
+
+
 <dt>session</dt>
 <dd><p>shiny session</p></dd>
+
+
 <dt>data</dt>
 <dd><p>data frame or tibble containing usernames, passwords and other user data</p></dd>
+
+
 <dt>user_col</dt>
 <dd><p>bare (unquoted) column name containing usernames</p></dd>
+
+
 <dt>pwd_col</dt>
 <dd><p>bare (unquoted) column name containing passwords</p></dd>
+
+
 <dt>sodium_hashed</dt>
 <dd><p>have the passwords been hash encrypted using the sodium package? defaults to FALSE</p></dd>
+
+
 <dt>hashed</dt>
 <dd><p>Deprecated. shinyauthr now uses the sodium package for password hashing and decryption. If you have previously hashed your passwords with the digest package to use with shinyauthr please re-hash them with sodium for decryption to work.</p></dd>
+
+
 <dt>algo</dt>
 <dd><p>Deprecated</p></dd>
+
+
 <dt>log_out</dt>
 <dd><p>[reactive] supply the returned reactive from <a href="logout.html">logout</a> here to trigger a user logout</p></dd>
+
+
 <dt>sessionid_col</dt>
 <dd><p>bare (unquoted) column name containing session ids</p></dd>
+
+
 <dt>cookie_getter</dt>
 <dd><p>a function that returns a data.frame with at least two columns: user and session</p></dd>
+
+
 <dt>cookie_setter</dt>
 <dd><p>a function with two parameters: user and session.  The function must save these to a database.</p></dd>
+
+
 <dt>reload_on_logout</dt>
 <dd><p>should app force reload on logout?</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>The module will return a reactive 2 element list to your main application.
+    
+
+<p>The module will return a reactive 2 element list to your main application.
   First element <code>user_auth</code> is a boolean indicating whether there has been
   a successful login or not. Second element <code>info</code> will be the data frame provided
   to the function, filtered to the row matching the successfully logged in username.
@@ -109,17 +138,17 @@ See the <a href="loginServer.html">loginServer</a> documentation For details on 
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">user_credentials</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/callModule.html" class="external-link">callModule</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">login</span>,</span>
-<span class="r-in">  id <span class="op">=</span> <span class="st">"login"</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">user_base</span>,</span>
-<span class="r-in">  user_col <span class="op">=</span> <span class="va">user</span>,</span>
-<span class="r-in">  pwd_col <span class="op">=</span> <span class="va">password</span>,</span>
-<span class="r-in">  log_out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu">logout_init</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">user_credentials</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/callModule.html" class="external-link">callModule</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">login</span>,</span></span>
+<span class="r-in"><span>  id <span class="op">=</span> <span class="st">"login"</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">user_base</span>,</span></span>
+<span class="r-in"><span>  user_col <span class="op">=</span> <span class="va">user</span>,</span></span>
+<span class="r-in"><span>  pwd_col <span class="op">=</span> <span class="va">password</span>,</span></span>
+<span class="r-in"><span>  log_out <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reactive.html" class="external-link">reactive</a></span><span class="op">(</span><span class="fu">logout_init</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -134,7 +163,7 @@ See the <a href="loginServer.html">loginServer</a> documentation For details on 
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
